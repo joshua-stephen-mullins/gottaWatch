@@ -3,18 +3,17 @@
 $(document).ready(() => {
 
 
-    // fetch(`https://api.themoviedb.org/3/movie/436270?api_key=${apiKeyTMDP}`)
-    //     .then(response => response.json())
-    //     .then(response => console.log('fight club', response))
-    //     .catch(err => console.error(err));
-    //
-    // fetch(`https://api.themoviedb.org/3/discover/movie?api_key=54951791afdc95528d883865dd7c21cd&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_watch_monetization_types=flatrate`)
-    //     .then(response => response.json())
-    //     .then(response => console.log(response))
-    //     .catch(err => console.error(err));
+    onLoad();
 
+    function onLoad(){
+    fetch(`https://api.themoviedb.org/3/trending/all/day?api_key=${apiKeyTMDP}`)
+        .then(response => response.json())
+        // .then(response => console.log('Results', response))
+        .then((response) => generateSmallCards(response, 5, '#trendingResults'))
+        .catch(err => console.error(err));
+    }
 
-    function movieSearch(input) {
+    function allSearch(input) {
         fetch(`https://api.themoviedb.org/3/search/multi?api_key=${apiKeyTMDP}&language=en-US&query=${input}&include_adult=false`)
             .then(response => response.json())
             .then(response => console.log('Search Results', response))
@@ -23,17 +22,79 @@ $(document).ready(() => {
 
     function tvSearch(input) {
         fetch(`https://api.themoviedb.org/3/search/tv?api_key=${apiKeyTMDP}&language=en-US&page=1&query=${input}&include_adult=false`)
-
-
             .then(response => response.json())
             .then(response => console.log('Search Results', response))
             .catch(err => console.error(err));
     }
 
-
+    function generateSmallCards(data, numberOfCards, container){
+        for (let i = 0; i < numberOfCards; i++){
+            $(container).append(`
+                <div class="card text-white bg-primary mb-3 col-1" style="max-width: 20rem;">
+                    <div class="">
+                        <img class="w-100 h-100" src="https://image.tmdb.org/t/p/original/${data.results[i].poster_path}" alt="Poster">
+                    </div>
+                    <div class="card-footer">
+                        <span id="resultTitle_${data.results[i].id}"></span>
+                    </div>
+                </div>
+            `);
+                if (data.results[i].hasOwnProperty('title')){
+                    $(`#resultTitle_${data.results[i].id}`).html(data.results[i].title)
+                } else {
+                    $(`#resultTitle_${data.results[i].id}`).html(data.results[i].name)
+                }
+        }
+    }
 
     $('#movieSearchButton').click(function(){
-        movieSearch($('#movieSearchInput').val());
+        allSearch($('#movieSearchInput').val());
     })
 
 })
+
+
+// backdrop_path
+//     :
+//     "/ypFD4TJ3nLJesou76V59CnweaT0.jpg"
+// genre_ids
+//     :
+//     (4) [28, 53, 36, 18]
+// id
+//     :
+//     715931
+// media_type
+//     :
+//     "movie"
+// original_language
+//     :
+//     "en"
+// original_title
+//     :
+//     "Emancipation"
+// overview
+//     :
+//     "Inspired by the gripping true story of a man who would do anything for his family—and for freedom. When Peter, an enslaved man, risks his life to escape and return to his family, he embarks on a perilous journey of love and endurance."
+// popularity
+//     :
+//     42.095
+// poster_path
+//     :
+//     "/s9sUK1vAaOcxJfKzNTszrNkPhkH.jpg"
+// release_date
+//     :
+//     "2022-12-02"
+// title
+//     :
+//     "Emancipation"
+// video
+//     :
+//     false
+// vote_average
+//     :
+//     6.8
+// vote_count
+//     :
+//     7
+
+// https://image.tmdb.org/t/p/original/[poster_path]

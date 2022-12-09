@@ -1,8 +1,6 @@
 'use strict';
 
 $(document).ready(() => {
-
-
     onLoad();
 
     function onLoad(){
@@ -20,17 +18,22 @@ $(document).ready(() => {
             .catch(err => console.error(err));
     }
 
-    function tvSearch(input) {
-        fetch(`https://api.themoviedb.org/3/search/tv?api_key=${apiKeyTMDP}&language=en-US&page=1&query=${input}&include_adult=false`)
+    $('#movieSearchButton').click(function(){
+        allSearch($('#movieSearchInput').val());
+    })
+
+
+    function searchById(searchType, id) {
+        fetch(`https://api.themoviedb.org/3/${searchType}/${id}?api_key=${apiKeyTMDP}&language=en-US`)
             .then(response => response.json())
-            .then(response => console.log('Search Results', response))
+            .then(response => console.log('Results by id', response))
             .catch(err => console.error(err));
     }
 
     function generateSmallCards(data, numberOfCards, container){
         for (let i = 0; i < numberOfCards; i++){
             $(container).append(`
-                <div class="card text-white bg-primary mb-3 col-1" style="max-width: 20rem;">
+                <div class="card showCard text-white bg-primary mb-3 col-1" data-type="${data.results[i].media_type} data-id="${data.results[i].id}">
                     <div class="">
                         <img class="w-100 h-100" src="https://image.tmdb.org/t/p/original/${data.results[i].poster_path}" alt="Poster">
                     </div>
@@ -45,12 +48,11 @@ $(document).ready(() => {
                     $(`#resultTitle_${data.results[i].id}`).html(data.results[i].name)
                 }
         }
+        $('.showCard').click(() => {
+            console.log(this);
+            // searchById();
+        })
     }
-
-    $('#movieSearchButton').click(function(){
-        allSearch($('#movieSearchInput').val());
-    })
-
 })
 
 
@@ -96,5 +98,3 @@ $(document).ready(() => {
 // vote_count
 //     :
 //     7
-
-// https://image.tmdb.org/t/p/original/[poster_path]

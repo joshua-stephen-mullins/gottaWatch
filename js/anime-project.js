@@ -30,28 +30,27 @@ $(document).ready(() => {
             .catch(err => console.error(err));
     }
 
-    function generateSmallCards(data, numberOfCards, container){
+    function generateSmallCards(showInfo, numberOfCards, container){
         for (let i = 0; i < numberOfCards; i++){
             $(container).append(`
-                <div class="card showCard text-white bg-primary mb-3 col-1" data-type="${data.results[i].media_type} data-id="${data.results[i].id}">
+                <div class="card text-white bg-primary mb-3 col-1" id="showCard${i}" data-type="${showInfo.results[i].media_type} data-showId="${showInfo.results[i].id}">
                     <div class="">
-                        <img class="w-100 h-100" src="https://image.tmdb.org/t/p/original/${data.results[i].poster_path}" alt="Poster">
+                        <img class="w-100 h-100" src="https://image.tmdb.org/t/p/original/${showInfo.results[i].poster_path}" alt="Poster">
                     </div>
                     <div class="card-footer">
-                        <span id="resultTitle_${data.results[i].id}"></span>
+                        <span id="resultTitle_${showInfo.results[i].id}"></span>
                     </div>
                 </div>
             `);
-                if (data.results[i].hasOwnProperty('title')){
-                    $(`#resultTitle_${data.results[i].id}`).html(data.results[i].title)
+                if (showInfo.results[i].hasOwnProperty('title')){
+                    $(`#resultTitle_${showInfo.results[i].id}`).html(showInfo.results[i].title)
                 } else {
-                    $(`#resultTitle_${data.results[i].id}`).html(data.results[i].name)
+                    $(`#resultTitle_${showInfo.results[i].id}`).html(showInfo.results[i].name)
                 }
+            $(`#showCard${i}`).click(() => {
+                searchById(showInfo.results[i].media_type, showInfo.results[i].id);
+            })
         }
-        $('.showCard').click(() => {
-            console.log(this);
-            // searchById();
-        })
     }
 })
 

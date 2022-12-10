@@ -38,12 +38,12 @@ $(document).ready(() => {
                         <img class="w-100 h-100" src="https://image.tmdb.org/t/p/original/${showInfo.results[i].poster_path}" alt="Poster">
                     </div>
                     <div class="card-footer">
-                        <span id="resultTitle_${showInfo.results[i].id}"></span>
+                        <h5><span id="resultTitle_${showInfo.results[i].id}"></span></h5>
                         <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-                          <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked="">
-                          <label class="btn btn-outline-primary" for="btnradio1"><i class="fa-solid fa-fire"></i></label>
+                          <input type="radio" class="btn-check " name="btnradio" id="btnradio1" autocomplete="off" checked="">
+                          <label class="btn btn-outline-danger fs-3" for="btnradio1"><i class="fa-solid fa-fire"></i></label>
                           <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off" checked="">
-                          <label class="btn btn-outline-primary" for="btnradio2"><i class="fa-solid fa-eye"></i></label>
+                          <label class="btn btn-outline-danger fs-3" for="btnradio2"><i class="fa-solid fa-eye"></i></label>
                         </div>
                     </div>
                 </div>

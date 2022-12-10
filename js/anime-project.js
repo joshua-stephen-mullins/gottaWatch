@@ -33,7 +33,7 @@ $(document).ready(() => {
     function generateSmallCards(showInfo, numberOfCards, container){
         for (let i = 0; i < numberOfCards; i++){
             $(container).append(`
-                <div class="card text-white bg-primary mb-3 col-1" id="showCard${i}" data-type="${showInfo.results[i].media_type} data-showId="${showInfo.results[i].id}">
+                <div class="card text-white bg-primary mb-3 col-2" id="showCard${i}" data-type="${showInfo.results[i].media_type} data-showId="${showInfo.results[i].id}">
                     <div class="">
                         <img class="w-100 h-100" src="https://image.tmdb.org/t/p/original/${showInfo.results[i].poster_path}" alt="Poster">
                     </div>
@@ -41,9 +41,9 @@ $(document).ready(() => {
                         <span id="resultTitle_${showInfo.results[i].id}"></span>
                         <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
                           <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked="">
-                          <label class="btn btn-outline-primary" for="btnradio1">Radio 1</label>
+                          <label class="btn btn-outline-primary" for="btnradio1"><i class="fa-solid fa-fire"></i></label>
                           <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off" checked="">
-                          <label class="btn btn-outline-primary" for="btnradio2">Radio 2</label>
+                          <label class="btn btn-outline-primary" for="btnradio2"><i class="fa-solid fa-eye"></i></label>
                         </div>
                     </div>
                 </div>

@@ -36,7 +36,11 @@ $(document).ready(() => {
                 }
                 $('#moreInfoPoster').attr('src', `https://image.tmdb.org/t/p/original/${data.poster_path}`);
                 $('#moreInfoOverview').html(data.overview);
-                // $('#moreInfoYear').html(data);
+                if (data.hasOwnProperty('release_date')){
+                    $(`#moreInfoYear`).html(`(${data.release_date})`)
+                } else {
+                    $(`#moreInfoYear`).html(`(${data.last_air_date})`)
+                }
             })
             .catch(err => console.error(err));
     }

@@ -11,14 +11,13 @@ $(document).ready(() => {
                 generateSmallCards(response, 5, '#trendingResults');
             })
             .catch(err => console.error(err));
-        fetch(`https://api.themoviedb.org/3/genre/movie/list?api_key=${apiKeyTMDP}&language=en-US`)
+        fetch(`https://api.themoviedb.org/3/genre/tv/list?api_key=${apiKeyTMDP}&language=en-US`)
             .then(response => response.json())
             .then((response) => {
-                console.log('Results', response)
+                console.log('Results', response);
             })
             .catch(err => console.error(err));
     }
-
 
     function allSearch(input) {
         fetch(`https://api.themoviedb.org/3/search/multi?api_key=${apiKeyTMDP}&language=en-US&query=${input}&include_adult=false`)
@@ -31,7 +30,6 @@ $(document).ready(() => {
         e.preventDefault();
         allSearch($('#movieSearchInput').val());
     })
-
 
     function searchById(searchType, id) {
         fetch(`https://api.themoviedb.org/3/${searchType}/${id}?api_key=${apiKeyTMDP}&language=en-US`)
@@ -97,7 +95,6 @@ $(document).ready(() => {
             .catch(err => console.error(err));
     }
 
-
     function generateSmallCards(showInfo, numberOfCards, container) {
         for (let i = 0; i < numberOfCards; i++) {
             $(container).append(`
@@ -106,7 +103,7 @@ $(document).ready(() => {
                         <button data-bs-toggle="modal" data-bs-target="#moreInfoModal"><img class="w-100 h-100" src="https://image.tmdb.org/t/p/original/${showInfo.results[i].poster_path}" alt="Poster"></button>
                     </div>
                     <div class="card-footer">
-                        <h5><span id="resultTitle_${showInfo.results[i].id}"></span></h5>
+                        <h5><span id="resultTitle_${showInfo.results[i].id}"></span> <span class="text-muted" id="resultDate_${showInfo.results[i].id}"></span></h5>
                         <p><span id="previewGenre${i}"></span></p>
                         <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
                           <input type="radio" class="btn-check " name="btnradio" id="btnradio1" autocomplete="off" checked="">
@@ -122,11 +119,15 @@ $(document).ready(() => {
             } else {
                 $(`#resultTitle_${showInfo.results[i].id}`).html(showInfo.results[i].name)
             }
-            $(`#showCard${i}`).click(() => {
-                searchById(showInfo.results[i].media_type, showInfo.results[i].id);
-            })
+            $(`#showCard${i}`).click(() => searchById(showInfo.results[i].media_type, showInfo.results[i].id));
+            console.log(showInfo.results[i].release_date);
+            if (showInfo.results[i].hasOwnProperty('release_date')) {
+                $(`#resultDate_${showInfo.results[i].id}`).html("(" + showInfo.results[i].release_date.slice(0, 4) + ")")
+            } else {
+                $(`#resultDate_${showInfo.results[i].id}`).html("(" + showInfo.results[i].first_air_date.slice(0, 4) + ")")
+            }
             for (let j = 0; j < showInfo.results[i].genre_ids.length; j++) {
-                if (i === (showInfo.results[i].genre_ids.length - 1)) {
+                if (j === (showInfo.results[i].genre_ids.length - 1)) {
                     $('#previewGenre' + i).append(genreIdToText(showInfo.results[i].genre_ids[j]))
                 } else {
                     $('#previewGenre' + i).append(genreIdToText(showInfo.results[i].genre_ids[j]) + ', &nbsp;')
@@ -134,87 +135,58 @@ $(document).ready(() => {
             }
         }
     }
-})
 
+    function toHoursAndMinutes(totalMinutes) {
+        const hours = Math.floor(totalMinutes / 60);
+        const minutes = totalMinutes % 60;
+        if (hours > 0) {
+            return `${hours}h${minutes > 0 ? ` ${minutes}m` : ''}`;
+        } else
+            return ` ${minutes}m`;
+    }
 
-function toHoursAndMinutes(totalMinutes) {
-    const hours = Math.floor(totalMinutes / 60);
-    const minutes = totalMinutes % 60;
-    if (hours > 0) {
-        return `${hours}h${minutes > 0 ? ` ${minutes}m` : ''}`;
-    } else
-        return ` ${minutes}m`;
-}
-
-
-function genreIdToText(id) {
-    let genres = [
-        {id: 28, name: 'Action'},
-        {id: 12, name: 'Adventure'},
-        {id: 16, name: 'Animation'},
-        {id: 35, name: 'Comedy'},
-        {id: 80, name: 'Crime'},
-        {id: 99, name: 'Documentary'},
-        {id: 18, name: 'Drama'},
-        {id: 10751, name: 'Family'},
-        {id: 14, name: 'Fantasy'},
-        {id: 36, name: 'History'},
-        {id: 27, name: 'Horror'},
-        {id: 10402, name: 'Music'},
-        {id: 9648, name: 'Mystery'},
-        {id: 10749, name: 'Romance'},
-        {id: 878, name: 'Science Fiction'},
-        {id: 10770, name: 'TV Movie'},
-        {id: 53, name: 'Thriller'},
-        {id: 10752, name: 'War'},
-        {id: 37, name: 'Western'}
-    ]
-    genres.forEach(function (genre) {
-        if (id === genre.id) {
-            return genre.name
+    function genreIdToText(id) {
+        let genres = [
+            {id: 28, name: 'Action'},
+            {id: 12, name: 'Adventure'},
+            {id: 16, name: 'Animation'},
+            {id: 35, name: 'Comedy'},
+            {id: 80, name: 'Crime'},
+            {id: 99, name: 'Documentary'},
+            {id: 18, name: 'Drama'},
+            {id: 10751, name: 'Family'},
+            {id: 14, name: 'Fantasy'},
+            {id: 36, name: 'History'},
+            {id: 27, name: 'Horror'},
+            {id: 10402, name: 'Music'},
+            {id: 9648, name: 'Mystery'},
+            {id: 10749, name: 'Romance'},
+            {id: 878, name: 'Science Fiction'},
+            {id: 10770, name: 'TV Movie'},
+            {id: 53, name: 'Thriller'},
+            {id: 10752, name: 'War'},
+            {id: 37, name: 'Western'},
+            {id: 10759, name: 'Action & Adventure'},
+            {id: 16, name: 'Animation'},
+            {id: 35, name: 'Comedy'},
+            {id: 80, name: 'Crime'},
+            {id: 99, name: 'Documentary'},
+            {id: 18, name: 'Drama'},
+            {id: 10751, name: 'Family'},
+            {id: 10762, name: 'Kids'},
+            {id: 9648, name: 'Mystery'},
+            {id: 10763, name: 'News'},
+            {id: 10764, name: 'Reality'},
+            {id: 10765, name: 'Sci-Fi & Fantasy'},
+            {id: 10766, name: 'Soap'},
+            {id: 10767, name: 'Talk'},
+            {id: 10768, name: 'War & Politics'},
+            {id: 37, name: 'Western'}
+        ];
+        for (let i = 0; i < genres.length; i++) {
+            if (id === genres[i].id) {
+                return genres[i].name;
+            }
         }
-    })
-}
-
-// backdrop_path
-//     :
-//     "/ypFD4TJ3nLJesou76V59CnweaT0.jpg"
-// genre_ids
-//     :
-//     (4) [28, 53, 36, 18]
-// id
-//     :
-//     715931
-// media_type
-//     :
-//     "movie"
-// original_language
-//     :
-//     "en"
-// original_title
-//     :
-//     "Emancipation"
-// overview
-//     :
-//     "Inspired by the gripping true story of a man who would do anything for his family—and for freedom. When Peter, an enslaved man, risks his life to escape and return to his family, he embarks on a perilous journey of love and endurance."
-// popularity
-//     :
-//     42.095
-// poster_path
-//     :
-//     "/s9sUK1vAaOcxJfKzNTszrNkPhkH.jpg"
-// release_date
-//     :
-//     "2022-12-02"
-// title
-//     :
-//     "Emancipation"
-// video
-//     :
-//     false
-// vote_average
-//     :
-//     6.8
-// vote_count
-//     :
-//     7
+    }
+})

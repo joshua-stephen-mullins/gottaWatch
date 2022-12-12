@@ -61,19 +61,20 @@
     <div class="row" id="trendingResults">
     </div>
     <div>
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#moreInfoModal">
             Launch demo modal
         </button>
-        <div class="modal" id="exampleModal">
+        <div class="modal" id="moreInfoModal">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Modal title</h5>
+                        <h5 class="modal-title"><span id="moreInfoTitle"></span></h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true"></span>
                         </button>
                     </div>
                     <div class="modal-body">
+                        <img class="w-100 h-100" id="moreInfoPoster" src="" alt="Poster">
                         <p>Modal body text goes here.</p>
                     </div>
                     <div class="modal-footer">

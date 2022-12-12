@@ -26,7 +26,16 @@ $(document).ready(() => {
     function searchById(searchType, id) {
         fetch(`https://api.themoviedb.org/3/${searchType}/${id}?api_key=${apiKeyTMDP}&language=en-US`)
             .then(response => response.json())
-            .then(response => console.log('Results by id', response))
+            // .then(response => console.log('Results by id', response)
+            .then((data) => {
+                console.log(data);
+                if (data.hasOwnProperty('title')){
+                    $(`#moreInfoTitle`).html(data.title)
+                } else {
+                    $(`#moreInfoTitle`).html(data.name)
+                }
+                $('#moreInfoPoster').attr('src', `https://image.tmdb.org/t/p/original/${data.poster_path}`)
+            })
             .catch(err => console.error(err));
     }
 
@@ -35,7 +44,7 @@ $(document).ready(() => {
             $(container).append(`
                 <div class="card text-white bg-primary mb-3 col-2" id="showCard${i}" data-type="${showInfo.results[i].media_type} data-showId="${showInfo.results[i].id}">
                     <div class="">
-                        <img class="w-100 h-100" src="https://image.tmdb.org/t/p/original/${showInfo.results[i].poster_path}" alt="Poster">
+                        <button data-bs-toggle="modal" data-bs-target="#moreInfoModal"><img class="w-100 h-100" src="https://image.tmdb.org/t/p/original/${showInfo.results[i].poster_path}" alt="Poster"></button>
                     </div>
                     <div class="card-footer">
                         <h5><span id="resultTitle_${showInfo.results[i].id}"></span></h5>

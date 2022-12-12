@@ -63,19 +63,19 @@
     <div>
         <div class="modal modal-xl fade" id="moreInfoModal">
             <div class="modal-dialog" role="document">
-                <div class="modal-content justify-content-around">
+                <div class="modal-content justify-content-around bg-dark">
                     <div class="modal-header">
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                        <button type="button" class="btn-close btn-light" data-bs-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true"></span>
                         </button>
                     </div>
                     <div class="modal-body row">
-                        <div class="col-5">
+                        <div class="col-3">
                             <img class="w-100 h-100" id="moreInfoPoster" src="" alt="Poster">
                         </div>
-                        <div class="col-5">
-                            <h1 class="modal-title"><span id="moreInfoTitle"></span> <span id="moreInfoYear"></span></h1>
-                            <p id="moreInfoGenre"></p>
+                        <div class="col-9">
+                            <h1 class="modal-title"><span id="moreInfoTitle"></span> <span class="text-muted h2" id="moreInfoYear"></span></h1>
+                            <h5 class="text-muted"><span class="badge bg-danger" id="moreInfoRating"></span> <span id="moreInfoGenre"></span> | <span id="moreInfoRuntime"></span></h5>
                             <h3><span id="moreInfoOverview"></span></h3>
                         </div>
                     </div>

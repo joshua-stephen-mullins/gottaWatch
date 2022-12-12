@@ -37,9 +37,17 @@ $(document).ready(() => {
                 $('#moreInfoPoster').attr('src', `https://image.tmdb.org/t/p/original/${data.poster_path}`);
                 $('#moreInfoOverview').html(data.overview);
                 if (data.hasOwnProperty('release_date')){
-                    $(`#moreInfoYear`).html(`(${data.release_date})`)
+                    $(`#moreInfoYear`).html("(" + data.release_date.slice(0, 4) + ")")
                 } else {
-                    $(`#moreInfoYear`).html(`(${data.last_air_date})`)
+                    $(`#moreInfoYear`).html("(" + data.last_air_date.slice(0, 4) + ")")
+                }
+                $('#moreInfoGenre').html('');
+                for (let i = 0; i < data.genres.length; i++){
+                    if (i === (data.genres.length - 1)){
+                        $('#moreInfoGenre').append(`${data.genres[i].name}`)
+                    } else {
+                        $('#moreInfoGenre').append(data.genres[i].name + ', &nbsp;')
+                    }
                 }
             })
             .catch(err => console.error(err));

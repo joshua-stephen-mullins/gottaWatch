@@ -34,7 +34,9 @@ $(document).ready(() => {
                 } else {
                     $(`#moreInfoTitle`).html(data.name)
                 }
-                $('#moreInfoPoster').attr('src', `https://image.tmdb.org/t/p/original/${data.poster_path}`)
+                $('#moreInfoPoster').attr('src', `https://image.tmdb.org/t/p/original/${data.poster_path}`);
+                $('#moreInfoOverview').html(data.overview);
+                // $('#moreInfoYear').html(data);
             })
             .catch(err => console.error(err));
     }

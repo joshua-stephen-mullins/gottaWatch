@@ -4,17 +4,23 @@ $(document).ready(() => {
     onLoad();
 
     function onLoad() {
-        fetch(`https://api.themoviedb.org/3/trending/all/day?api_key=${apiKeyTMDP}`)
+        // fetch(`https://api.themoviedb.org/3/trending/movie/day?api_key=${apiKeyTMDP}`)
+        //     .then(response => response.json())
+        //     .then((response) => {
+        //         console.log('Results', response);
+        //         generateSmallCards(response, 5, '#trendingMovieResults');
+        //     })
+        //     .catch(err => console.error(err));
+        loadPopular('movie', '#popularMovieResults');
+        loadPopular('tv', '#popularTVResults');
+    }
+
+    function loadPopular(showType, location) {
+        fetch(`https://api.themoviedb.org/3/${showType}/popular?api_key=${apiKeyTMDP}&language=en-US&page=1`)
             .then(response => response.json())
             .then((response) => {
                 console.log('Results', response);
-                generateSmallCards(response, 5, '#trendingResults');
-            })
-            .catch(err => console.error(err));
-        fetch(`https://api.themoviedb.org/3/genre/tv/list?api_key=${apiKeyTMDP}&language=en-US`)
-            .then(response => response.json())
-            .then((response) => {
-                console.log('Results', response);
+                generateSmallCards(response, 5, location);
             })
             .catch(err => console.error(err));
     }
@@ -102,13 +108,13 @@ $(document).ready(() => {
     function generateSmallCards(showInfo, numberOfCards, container) {
         for (let i = 0; i < numberOfCards; i++) {
             $(container).append(`
-                <div class="card border-0 p-0 text-white bg-primary m-3 mb-3 col-1" id="showCard${i}" data-type="${showInfo.results[i].media_type} data-showId="${showInfo.results[i].id}">
+                <div class="card border-1 border-light p-0 text-white bg-primary m-3 mb-3 smallCard" id="showCard${i}" data-type="${showInfo.results[i].media_type} data-showId="${showInfo.results[i].id}">
                     <div class="">
                         <img class="w-100 h-100" src="https://image.tmdb.org/t/p/original/${showInfo.results[i].poster_path}" alt="Poster" data-bs-toggle="modal" data-bs-target="#moreInfoModal">
                     </div>
                     <div class="card-footer">
                         <h5><span id="resultTitle_${showInfo.results[i].id}"></span> <span class="text-muted" id="resultDate_${showInfo.results[i].id}"></span></h5>
-                        <p><span id="previewGenre${i}"></span></p>
+                        <p><span class="badge bg-danger" id="smallCardRating_${showInfo.results[i].id}"></span> <span id="previewGenre_${showInfo.results[i].id}"></span></p>
                     </div>
                 </div>
             `);
@@ -128,10 +134,39 @@ $(document).ready(() => {
             }
             for (let j = 0; j < showInfo.results[i].genre_ids.length; j++) {
                 if (j === (showInfo.results[i].genre_ids.length - 1)) {
-                    $('#previewGenre' + i).append(genreIdToText(showInfo.results[i].genre_ids[j]))
+                    $(`#previewGenre_${showInfo.results[i].id}`).append(genreIdToText(showInfo.results[i].genre_ids[j]))
                 } else {
-                    $('#previewGenre' + i).append(genreIdToText(showInfo.results[i].genre_ids[j]) + ', &nbsp;')
+                    $(`#previewGenre_${showInfo.results[i].id}`).append(genreIdToText(showInfo.results[i].genre_ids[j]) + ', &nbsp;')
                 }
+            }
+            if (showInfo.results[i].hasOwnProperty('title')) {
+                fetch(`https://api.themoviedb.org/3/movie/${showInfo.results[i].id}/release_dates?api_key=${apiKeyTMDP}`)
+                    .then(response => response.json())
+                    // .then(response => console.log('Results by id', response)
+                    .then((data) => {
+                        console.log(data);
+                        data.results.forEach(function (country) {
+                            if (country.iso_3166_1 === "US") {
+                                country.release_dates.forEach(function (result) {
+                                    if (result.certification !== '') {
+                                        $(`#smallCardRating_${showInfo.results[i].id}`).html(result.certification);
+                                    }
+                                })
+                            }
+                        })
+                    })
+            } else {
+                fetch(`https://api.themoviedb.org/3/tv/${showInfo.results[i].id}/content_ratings?api_key=${apiKeyTMDP}&language=en-US`)
+                    .then(response => response.json())
+                    // .then(response => console.log('Results by id', response)
+                    .then((data) => {
+                        console.log(data);
+                        data.results.forEach(function (country) {
+                            if (country.iso_3166_1 === "US") {
+                                $(`#smallCardRating_${showInfo.results[i].id}`).html(country.rating);
+                            }
+                        })
+                    })
             }
         }
     }

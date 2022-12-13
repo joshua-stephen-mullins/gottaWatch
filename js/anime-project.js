@@ -20,7 +20,7 @@ $(document).ready(() => {
             .then(response => response.json())
             .then((response) => {
                 console.log('Results', response);
-                generateSmallCards(response, 5, location);
+                generateSmallCards(response, 5, location, showType);
             })
             .catch(err => console.error(err));
     }
@@ -105,10 +105,10 @@ $(document).ready(() => {
         }
     }
 
-    function generateSmallCards(showInfo, numberOfCards, container) {
+    function generateSmallCards(showInfo, numberOfCards, container, showType) {
         for (let i = 0; i < numberOfCards; i++) {
             $(container).append(`
-                <div class="card border-1 border-light p-0 text-white bg-primary m-3 mb-3 smallCard" id="showCard${i}" data-type="${showInfo.results[i].media_type} data-showId="${showInfo.results[i].id}">
+                <div class="card border-1 border-light p-0 text-white bg-primary m-3 mb-3 smallCard" id="showCard_${showInfo.results[i].id}" data-type="${showType}" data-showId="${showInfo.results[i].id}">
                     <div class="">
                         <img class="w-100 h-100" src="https://image.tmdb.org/t/p/original/${showInfo.results[i].poster_path}" alt="Poster" data-bs-toggle="modal" data-bs-target="#moreInfoModal">
                     </div>
@@ -123,8 +123,8 @@ $(document).ready(() => {
             } else {
                 $(`#resultTitle_${showInfo.results[i].id}`).html(showInfo.results[i].name)
             }
-            $(`#showCard${i}`).click(() => {
-                searchById(showInfo.results[i].media_type, showInfo.results[i].id);
+            $(`#showCard_${showInfo.results[i].id}`).click(() => {
+                searchById(showType, showInfo.results[i].id);
                 console.log(showInfo.results[i].release_date);
             })
             if (showInfo.results[i].hasOwnProperty('release_date')) {

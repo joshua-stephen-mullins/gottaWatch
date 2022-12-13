@@ -4,13 +4,6 @@ $(document).ready(() => {
     onLoad();
 
     function onLoad() {
-        // fetch(`https://api.themoviedb.org/3/trending/movie/day?api_key=${apiKeyTMDP}`)
-        //     .then(response => response.json())
-        //     .then((response) => {
-        //         console.log('Results', response);
-        //         generateSmallCards(response, 5, '#trendingMovieResults');
-        //     })
-        //     .catch(err => console.error(err));
         loadPopular('movie', '#popularMovieResults');
         loadPopular('tv', '#popularTVResults');
     }
@@ -28,14 +21,19 @@ $(document).ready(() => {
     function allSearch(input) {
         fetch(`https://api.themoviedb.org/3/search/multi?api_key=${apiKeyTMDP}&language=en-US&query=${input}&include_adult=false`)
             .then(response => response.json())
-            .then(response => console.log('Search Results', response))
+            // .then(response => console.log('Search Results', response))
+            .then(response => {
+
+            })
             .catch(err => console.error(err));
     }
 
     $('#movieSearchButton').click(function (e) {
         e.preventDefault();
         allSearch($('#movieSearchInput').val());
+        $('#homePage').addClass('d-none');
     })
+    $('#homeButton').click((e) => $('#homePage').removeClass('d-none'));
 
     function searchById(searchType, id) {
         fetch(`https://api.themoviedb.org/3/${searchType}/${id}?api_key=${apiKeyTMDP}&language=en-US`)
@@ -46,6 +44,10 @@ $(document).ready(() => {
                 moreInfo(data, searchType, id);
             })
             .catch(err => console.error(err));
+    }
+
+    function generateSearchResults(){
+
     }
 
     function moreInfo(data, searchType, id) {
@@ -144,7 +146,7 @@ $(document).ready(() => {
                     .then(response => response.json())
                     // .then(response => console.log('Results by id', response)
                     .then((data) => {
-                        console.log(data);
+                        // console.log(data);
                         data.results.forEach(function (country) {
                             if (country.iso_3166_1 === "US") {
                                 country.release_dates.forEach(function (result) {
@@ -160,7 +162,7 @@ $(document).ready(() => {
                     .then(response => response.json())
                     // .then(response => console.log('Results by id', response)
                     .then((data) => {
-                        console.log(data);
+                        // console.log(data);
                         data.results.forEach(function (country) {
                             if (country.iso_3166_1 === "US") {
                                 $(`#smallCardRating_${showInfo.results[i].id}`).html(country.rating);

@@ -31,6 +31,7 @@ $(document).ready(() => {
     $('#movieSearchButton').click(function (e) {
         e.preventDefault();
         allSearch($('#movieSearchInput').val());
+        $('#resultsContainer').html('');
         $('#homePage').addClass('d-none');
     })
     $('#homeButton').click((e) => $('#homePage').removeClass('d-none'));
@@ -49,8 +50,8 @@ $(document).ready(() => {
     function generateSearchResults(data) {
         for (let i = 0; i < data.results.length; i++) {
             $('#resultsContainer').append(`
-                <div class="searchResultCard rounded border border-1 border-light m-3 row">
-                    <div class="col-2">
+                <div class="card searchResultCard rounded border border-1 border-light m-3 row flex-row">
+                    <div class="col-2 p-0">
                         <img class="col-12" src="https://image.tmdb.org/t/p/original/${data.results[i].poster_path}" alt=""Search Result>
                     </div>
                     <div class="col-10">

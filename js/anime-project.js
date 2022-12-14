@@ -49,20 +49,26 @@ $(document).ready(() => {
     function generateSearchResults(data) {
         for (let i = 0; i < data.results.length; i++) {
             $('#resultsContainer').append(`
-                <div class="searchResultCard rounded border border-1 border-light row">
-                    <img class="col-2" src="https://image.tmdb.org/t/p/original/${data.results[i].poster_path}" alt=""Search Result>
-                    <h3 class="col-10 searchResultTitle_${data.results[i].id}"></h3>
-                    <h5><span class="col-10 searchResultDate_${data.results[i].id}"></span></h5>
-                    <p><span class="col-10 searchResultOverview_${data.results[i].id}"></span></p>
+                <div class="searchResultCard rounded border border-1 border-light m-3 row">
+                    <div class="col-2">
+                        <img class="col-12" src="https://image.tmdb.org/t/p/original/${data.results[i].poster_path}" alt=""Search Result>
+                    </div>
+                    <div class="col-10">
+                        <h3 class="searchResultTitle_${data.results[i].id}"></h3>
+                        <h5><span class="searchResultDate_${data.results[i].id}"></span></h5>
+                        <p><span class="searchResultOverview_${data.results[i].id}"></span></p>
+                    </div>
                 </div>
             `)
             if (data.results[i].hasOwnProperty('title')) {
                 console.log(data.results[i].title)
-                $(`#searchResultTitle_${data.results[i].id}`).html(data.results[i].title)
+                $(`.searchResultTitle_${data.results[i].id}`).html(data.results[i].title)
             } else {
                 console.log(data.results[i].name)
-                $(`#searchResultTitle_${data.results[i].id}`).html(data.results[i].name)
+                $(`.searchResultTitle_${data.results[i].id}`).html(data.results[i].name)
             }
+            $(`.searchResultDate_${data.results[i].id}`).html(data.results[i].first_air_date);
+            $(`.searchResultOverview_${data.results[i].id}`).html(data.results[i].overview);
         }
     }
 

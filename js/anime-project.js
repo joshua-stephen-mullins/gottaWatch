@@ -88,7 +88,7 @@ $(document).ready(() => {
         $(`#resultsContainer`).html('');
         for (let i = 0; i < data.length; i++) {
             $('#resultsContainer').append(`
-                <div class="card col-10 searchResultCard rounded border-1 border-primary bg-primary m-3 row flex-row" id="searchResult_${data[i].id}" data-bs-toggle="modal" data-bs-target="#moreInfoModal">
+                <div class="card col-12 searchResultCard rounded border-1 border-primary bg-primary m-3 row flex-row" id="searchResult_${data[i].id}" data-bs-toggle="modal" data-bs-target="#moreInfoModal">
                     <div class="col-2 p-0">
                         <img class="col-12" src="https://image.tmdb.org/t/p/original/${data[i].poster_path}" alt=""Search Result>
                     </div>

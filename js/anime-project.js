@@ -23,11 +23,27 @@ $(document).ready(() => {
             .then(response => response.json())
             // .then(response => console.log('Search Results', response))
             .then(response => {
-                console.log(response);
-                generateSearchResults(response);
+                console.log('Search Results', response);
+                filterSearchData(response);
             })
             .catch(err => console.error(err));
     }
+
+    function filterSearchData(data) {
+        let filteredData = [];
+// if ($('input[name=filterRadio]:checked').val() !== '')
+        for (let i = 0; i < data.results.length; i++) {
+            if (data.results[i].media_type === $('input[name=filterRadio]:checked').val()) {
+                filteredData.push(data.results[i]);
+            }
+        }
+        generateSearchResults(filteredData);
+    }
+
+    $('.filterBtn').click(function (e) {
+        console.log($('input[name=filterRadio]:checked').val());
+        allSearch($('#movieSearchInput').val())
+    })
 
     $('#movieSearchButton').click(function (e) {
         e.preventDefault();
@@ -50,9 +66,10 @@ $(document).ready(() => {
     }
 
     function generateSearchResults(data) {
-        for (let i = 0; i < data.results.length; i++) {
+        console.log(data);
+        for (let i = 0; i < data.length; i++) {
             $('#resultsContainer').append(`
-                <div class="card searchResultCard rounded border border-1 border-light m-3 row flex-row" id="searchResult_${data.results[i].id}" data-bs-toggle="modal" data-bs-target="#moreInfoModal">
+                <div class="card col-10 searchResultCard rounded border-1 border-primary bg-primary m-3 row flex-row" id="searchResult_${data.results[i].id}" data-bs-toggle="modal" data-bs-target="#moreInfoModal">
                     <div class="col-2 p-0">
                         <img class="col-12" src="https://image.tmdb.org/t/p/original/${data.results[i].poster_path}" alt=""Search Result>
                     </div>
@@ -68,7 +85,11 @@ $(document).ready(() => {
             } else {
                 $(`.searchResultTitle_${data.results[i].id}`).html(data.results[i].name)
             }
-            $(`.searchResultDate_${data.results[i].id}`).html(data.results[i].first_air_date);
+            if (data.results[i].hasOwnProperty('release_date')) {
+                $(`.searchResultDate_${data.results[i].id}`).html(data.results[i].release_date)
+            } else {
+                $(`.searchResultDate_${data.results[i].id}`).html(data.results[i].first_air_date);
+            }
             $(`.searchResultOverview_${data.results[i].id}`).html(data.results[i].overview);
             $(`#searchResult_${data.results[i].id}`).click(() => {
                 console.log(data.results[i].media_type)

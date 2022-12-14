@@ -62,19 +62,6 @@
                             type="button" role="tab" aria-controls="pills-profile" aria-selected="false">TV Shows
                     </button>
                 </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill"
-                            data-bs-target="#pills-contact"
-                            type="button" role="tab" aria-controls="pills-contact" aria-selected="false">Contact
-                    </button>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="pills-disabled-tab" data-bs-toggle="pill"
-                            data-bs-target="#pills-disabled"
-                            type="button" role="tab" aria-controls="pills-disabled" aria-selected="false" disabled>
-                        Disabled
-                    </button>
-                </li>
             </ul>
             <div class="tab-content" id="pills-tabContent">
                 <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab"
@@ -85,16 +72,35 @@
                      tabindex="0">
                     <div class="d-flex justify-content-center" id="popularTVResults"></div>
                 </div>
-                <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab"
-                     tabindex="0">
-                    ...
-                </div>
-                <div class="tab-pane fade" id="pills-disabled" role="tabpanel" aria-labelledby="pills-disabled-tab"
-                     tabindex="0">...
-                </div>
             </div>
         </div>
-        <div class="row col-10 justify-content-end" id="searchResults">
+        <div class="row col-12 justify-content-end" id="searchResults">
+            <div class="col-3 p-0 m-3" id="searchResultFilter">
+                <div class="card text-white bg-warning mb-3">
+                    <div class="card-header">Filter Results</div>
+                    <div class="card-body">
+                        <div class="d-grid gap-2">
+                            <input class="btn-check" type="radio" name="filterRadio" id="all"
+                                   autocomplete="off" value="" checked>
+                            <input class="btn-check" type="radio" name="filterRadio" id="filterMovie"
+                                   autocomplete="off" value="movie">
+                            <label class="btn btn-lg btn-primary filterBtn" for="filterMovie">Movies <span
+                                    class="badge rounded-pill bg-success" id="numberMovieResults">Success</span>
+                            </label>
+                            <input class="btn-check" type="radio" name="filterRadio" id="filterTV" autocomplete="off"
+                            value="tv">
+                            <label class="btn btn-lg btn-primary filterBtn" for="filterTV">TV Shows <span
+                                    class="badge rounded-pill bg-success" id="numberTVResults">Success</span>
+                            </label>
+                            <input class="btn-check" type="radio" name="filterRadio" id="filterPeople"
+                                   autocomplete="off" value="person">
+                            <label class="btn btn-lg btn-primary filterBtn" for="filterPeople">People <span
+                                    class="badge rounded-pill bg-success" id="numberPeopleResults">Success</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="col-8 justify-content-end" id="resultsContainer">
             </div>
         </div>

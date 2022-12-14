@@ -14,7 +14,7 @@
 </head>
 <body>
 <!--NAVBAR-->
-<div class="row justify-content-center" id="mainPageBody">
+<div class="row justify-content-center p-0 m-0" id="mainPageBody">
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">MOVIES!</a>
@@ -74,28 +74,32 @@
                 </div>
             </div>
         </div>
-        <div class="row col-12 justify-content-end" id="searchResults">
+        <div class="row col-12 justify-content-center d-none" id="searchResults">
+            <div class="col-11 input-group m-3">
+                <span class="input-group-text" id="basic-addon1"><i class="fa-solid fa-magnifying-glass"></i></span>
+                <input class="form-control form-control-lg" type="text" placeholder=".form-control-lg" id="inputLarge">
+            </div>
             <div class="col-3 p-0 m-3" id="searchResultFilter">
                 <div class="card text-white bg-warning mb-3">
-                    <div class="card-header">Filter Results</div>
+                    <div class="card-header h3 text-center">Filter Results</div>
                     <div class="card-body">
                         <div class="d-grid gap-2">
-                            <input class="btn-check" type="radio" name="filterRadio" id="all"
-                                   autocomplete="off" value="" checked>
+                            <input class="btn-check" type="radio" name="filterRadio"
+                                   autocomplete="off" value="all" checked>
                             <input class="btn-check" type="radio" name="filterRadio" id="filterMovie"
                                    autocomplete="off" value="movie">
                             <label class="btn btn-lg btn-primary filterBtn" for="filterMovie">Movies <span
-                                    class="badge rounded-pill bg-success" id="numberMovieResults">Success</span>
+                                    class="badge rounded-pill bg-success" id="numberMovieResults"></span>
                             </label>
                             <input class="btn-check" type="radio" name="filterRadio" id="filterTV" autocomplete="off"
-                            value="tv">
+                                   value="tv">
                             <label class="btn btn-lg btn-primary filterBtn" for="filterTV">TV Shows <span
-                                    class="badge rounded-pill bg-success" id="numberTVResults">Success</span>
+                                    class="badge rounded-pill bg-success" id="numberTVResults"></span>
                             </label>
                             <input class="btn-check" type="radio" name="filterRadio" id="filterPeople"
                                    autocomplete="off" value="person">
                             <label class="btn btn-lg btn-primary filterBtn" for="filterPeople">People <span
-                                    class="badge rounded-pill bg-success" id="numberPeopleResults">Success</span>
+                                    class="badge rounded-pill bg-success" id="numberPeopleResults"></span>
                             </label>
                         </div>
                     </div>

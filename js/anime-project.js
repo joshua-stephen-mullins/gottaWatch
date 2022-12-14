@@ -30,14 +30,31 @@ $(document).ready(() => {
     }
 
     function filterSearchData(data) {
+        console.log(data);
         let filteredData = [];
-// if ($('input[name=filterRadio]:checked').val() !== '')
+        let movieCounter = 0;
+        let tvCounter = 0;
+        let personCounter = 0;
         for (let i = 0; i < data.results.length; i++) {
-            if (data.results[i].media_type === $('input[name=filterRadio]:checked').val()) {
+            if (data.results[i].media_type === 'movie') {
+                movieCounter += 1;
+            } else if (data.results[i].media_type === 'tv') {
+                tvCounter += 1;
+            } else if (data.results[i].media_type === 'person') {
+                personCounter += 1;
+            }
+        }
+        for (let i = 0; i < data.results.length; i++) {
+            if ($('input[name=filterRadio]:checked').val() === 'all') {
+                filteredData.push(data.results[i]);
+            } else if (data.results[i].media_type === $('input[name=filterRadio]:checked').val()) {
                 filteredData.push(data.results[i]);
             }
         }
         generateSearchResults(filteredData);
+        $(`#numberMovieResults`).html(movieCounter);
+        $(`#numberTVResults`).html(tvCounter);
+        $(`#numberPeopleResults`).html(personCounter);
     }
 
     $('.filterBtn').click(function (e) {
@@ -50,6 +67,7 @@ $(document).ready(() => {
         allSearch($('#movieSearchInput').val());
         $('#resultsContainer').html('');
         $('#homePage').addClass('d-none');
+        $('#searchResults').removeClass('d-none');
     })
     $('#homeButton').click((e) => $('#homePage').removeClass('d-none'));
 
@@ -67,34 +85,32 @@ $(document).ready(() => {
 
     function generateSearchResults(data) {
         console.log(data);
+        $(`#resultsContainer`).html('');
         for (let i = 0; i < data.length; i++) {
             $('#resultsContainer').append(`
-                <div class="card col-10 searchResultCard rounded border-1 border-primary bg-primary m-3 row flex-row" id="searchResult_${data.results[i].id}" data-bs-toggle="modal" data-bs-target="#moreInfoModal">
+                <div class="card col-10 searchResultCard rounded border-1 border-primary bg-primary m-3 row flex-row" id="searchResult_${data[i].id}" data-bs-toggle="modal" data-bs-target="#moreInfoModal">
                     <div class="col-2 p-0">
-                        <img class="col-12" src="https://image.tmdb.org/t/p/original/${data.results[i].poster_path}" alt=""Search Result>
+                        <img class="col-12" src="https://image.tmdb.org/t/p/original/${data[i].poster_path}" alt=""Search Result>
                     </div>
                     <div class="col-10">
-                        <h3 class="searchResultTitle_${data.results[i].id}"></h3>
-                        <h5><span class="searchResultDate_${data.results[i].id}"></span></h5>
-                        <p><span class="searchResultOverview_${data.results[i].id}"></span></p>
+                        <h3 class="searchResultTitle_${data[i].id}"></h3>
+                        <h5><span class="searchResultDate_${data[i].id}"></span></h5>
+                        <p><span class="searchResultOverview_${data[i].id}"></span></p>
                     </div>
                 </div>
             `)
-            if (data.results[i].hasOwnProperty('title')) {
-                $(`.searchResultTitle_${data.results[i].id}`).html(data.results[i].title)
+            if (data[i].hasOwnProperty('title')) {
+                $(`.searchResultTitle_${data[i].id}`).html(data[i].title)
             } else {
-                $(`.searchResultTitle_${data.results[i].id}`).html(data.results[i].name)
+                $(`.searchResultTitle_${data[i].id}`).html(data[i].name)
             }
-            if (data.results[i].hasOwnProperty('release_date')) {
-                $(`.searchResultDate_${data.results[i].id}`).html(data.results[i].release_date)
+            if (data[i].hasOwnProperty('release_date')) {
+                $(`.searchResultDate_${data[i].id}`).html(data[i].release_date)
             } else {
-                $(`.searchResultDate_${data.results[i].id}`).html(data.results[i].first_air_date);
+                $(`.searchResultDate_${data[i].id}`).html(data[i].first_air_date);
             }
-            $(`.searchResultOverview_${data.results[i].id}`).html(data.results[i].overview);
-            $(`#searchResult_${data.results[i].id}`).click(() => {
-                console.log(data.results[i].media_type)
-                searchById(data.results[i].media_type, data.results[i].id);
-            })
+            $(`.searchResultOverview_${data[i].id}`).html(data[i].overview);
+            $(`#searchResult_${data[i].id}`).click(() => searchById(data[i].media_type, data[i].id));
         }
     }
 

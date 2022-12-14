@@ -23,6 +23,7 @@ $(document).ready(() => {
             .then(response => response.json())
             // .then(response => console.log('Search Results', response))
             .then(response => {
+                console.log(response);
                 generateSearchResults(response);
             })
             .catch(err => console.error(err));
@@ -37,6 +38,7 @@ $(document).ready(() => {
     $('#homeButton').click((e) => $('#homePage').removeClass('d-none'));
 
     function searchById(searchType, id) {
+        console.log(searchType);
         fetch(`https://api.themoviedb.org/3/${searchType}/${id}?api_key=${apiKeyTMDP}&language=en-US`)
             .then(response => response.json())
             // .then(response => console.log('Results by id', response)
@@ -50,7 +52,7 @@ $(document).ready(() => {
     function generateSearchResults(data) {
         for (let i = 0; i < data.results.length; i++) {
             $('#resultsContainer').append(`
-                <div class="card searchResultCard rounded border border-1 border-light m-3 row flex-row">
+                <div class="card searchResultCard rounded border border-1 border-light m-3 row flex-row" id="searchResult_${data.results[i].id}" data-bs-toggle="modal" data-bs-target="#moreInfoModal">
                     <div class="col-2 p-0">
                         <img class="col-12" src="https://image.tmdb.org/t/p/original/${data.results[i].poster_path}" alt=""Search Result>
                     </div>
@@ -62,14 +64,16 @@ $(document).ready(() => {
                 </div>
             `)
             if (data.results[i].hasOwnProperty('title')) {
-                console.log(data.results[i].title)
                 $(`.searchResultTitle_${data.results[i].id}`).html(data.results[i].title)
             } else {
-                console.log(data.results[i].name)
                 $(`.searchResultTitle_${data.results[i].id}`).html(data.results[i].name)
             }
             $(`.searchResultDate_${data.results[i].id}`).html(data.results[i].first_air_date);
             $(`.searchResultOverview_${data.results[i].id}`).html(data.results[i].overview);
+            $(`#searchResult_${data.results[i].id}`).click(() => {
+                console.log(data.results[i].media_type)
+                searchById(data.results[i].media_type, data.results[i].id);
+            })
         }
     }
 
@@ -150,7 +154,6 @@ $(document).ready(() => {
             }
             $(`#showCard_${showInfo.results[i].id}`).click(() => {
                 searchById(showType, showInfo.results[i].id);
-                console.log(showInfo.results[i].release_date);
             })
             if (showInfo.results[i].hasOwnProperty('release_date')) {
                 $(`#resultDate_${showInfo.results[i].id}`).html("(" + showInfo.results[i].release_date.slice(0, 4) + ")")
@@ -250,34 +253,3 @@ $(document).ready(() => {
         }
     }
 })
-
-
-// < div
-// className = "btn-group"
-// role = "group"
-// aria - label = "Basic radio toggle button group" >
-//     < input
-// type = "radio"
-// className = "btn-check "
-// name = "btnradio"
-// id = "btnradio1"
-// autoComplete = "off"
-// checked = "" >
-//     < label
-// className = "btn btn-outline-danger fs-3"
-// htmlFor = "btnradio1" > < i
-// className = "fa-solid fa-fire" > < /i></
-// label >
-// < input
-// type = "radio"
-// className = "btn-check"
-// name = "btnradio"
-// id = "btnradio2"
-// autoComplete = "off"
-// checked = "" >
-//     < label
-// className = "btn btn-outline-danger fs-3"
-// htmlFor = "btnradio2" > < i
-// className = "fa-solid fa-eye" > < /i></
-// label >
-// < /div>

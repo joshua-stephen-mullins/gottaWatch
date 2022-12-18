@@ -69,7 +69,10 @@ $(document).ready(() => {
         $('#homePage').addClass('d-none');
         $('#searchResults').removeClass('d-none');
     })
-    $('#homeButton').click((e) => $('#homePage').removeClass('d-none'));
+    $('#homeButton').click((e) => {
+        $('#homePage').removeClass('d-none');
+        $('#searchResults').addClass('d-none');
+    })
 
     function searchById(searchType, id) {
         console.log(searchType);

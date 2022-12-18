@@ -171,7 +171,6 @@ $(document).ready(() => {
                 .then(response => response.json())
                 // .then(response => console.log('Results by id', response)
                 .then((data) => {
-                    console.log(data);
                     data.results.forEach(function (country) {
                         if (country.iso_3166_1 === "US") {
                             $('#moreInfoRating').html(country.rating);
@@ -179,6 +178,12 @@ $(document).ready(() => {
                     })
                 })
         }
+        fetch(`https://api.themoviedb.org/3/${searchType}/${id}/credits?api_key=${apiKeyTMDP}&language=en-US`)
+            .then(response => response.json())
+            // .then(response => console.log('Results by id', response)
+            .then((data) => {
+                console.log(data);
+            })
     }
 
     function generateSmallCards(showInfo, numberOfCards, container, showType) {

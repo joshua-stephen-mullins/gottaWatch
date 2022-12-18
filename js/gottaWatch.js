@@ -64,7 +64,6 @@ $(document).ready(() => {
 
     $('#movieSearchButton').click(function (e) {
         e.preventDefault();
-        $('#resultsContainer').html('');
         $('#homePage').addClass('d-none');
         $('#searchResults').removeClass('d-none');
     })
@@ -72,8 +71,9 @@ $(document).ready(() => {
         $('#homePage').removeClass('d-none');
         $('#searchResults').addClass('d-none');
     })
-    $('#movieSearchInputButton').click(function(e){
+    $('#movieSearchInputButton').click(function (e) {
         e.preventDefault();
+        $('#resultsContainer').html('');
         allSearch($('#movieSearchInput').val());
     })
 
@@ -115,7 +115,11 @@ $(document).ready(() => {
             } else {
                 $(`.searchResultDate_${data[i].id}`).html(data[i].first_air_date);
             }
-            $(`.searchResultOverview_${data[i].id}`).html(data[i].overview);
+            if (data[i].overview.length > 310) {
+                $(`.searchResultOverview_${data[i].id}`).html(data[i].overview.slice(0, 310) + "...");
+            } else {
+                $(`.searchResultOverview_${data[i].id}`).html(data[i].overview);
+            }
             $(`#searchResult_${data[i].id}`).click(() => searchById(data[i].media_type, data[i].id));
         }
     }

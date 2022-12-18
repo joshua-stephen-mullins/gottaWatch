@@ -12,7 +12,7 @@ $(document).ready(() => {
         fetch(`https://api.themoviedb.org/3/${showType}/popular?api_key=${apiKeyTMDP}&language=en-US&page=1`)
             .then(response => response.json())
             .then((response) => {
-                console.log('Results', response);
+                console.log(`Results ${showType}`, response);
                 generateSmallCards(response, 5, location, showType);
             })
             .catch(err => console.error(err));

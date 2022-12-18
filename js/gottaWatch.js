@@ -64,7 +64,6 @@ $(document).ready(() => {
 
     $('#movieSearchButton').click(function (e) {
         e.preventDefault();
-        allSearch($('#movieSearchInput').val());
         $('#resultsContainer').html('');
         $('#homePage').addClass('d-none');
         $('#searchResults').removeClass('d-none');
@@ -72,6 +71,10 @@ $(document).ready(() => {
     $('#homeButton').click((e) => {
         $('#homePage').removeClass('d-none');
         $('#searchResults').addClass('d-none');
+    })
+    $('#movieSearchInputButton').click(function(e){
+        e.preventDefault();
+        allSearch($('#movieSearchInput').val());
     })
 
     function searchById(searchType, id) {

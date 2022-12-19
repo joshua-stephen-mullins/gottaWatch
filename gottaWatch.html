@@ -130,11 +130,27 @@
                     </div>
                     <div class="col-9">
                         <h1 class="modal-title"><span id="moreInfoTitle"></span> <span class="text-muted h2"
-                                                                                       id="moreInfoYear"></span></h1>
+                                                                                       id="moreInfoYear"></span>
+                            <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+                                <button type="button" class="btn btn-success">Success</button>
+                                <div class="btn-group" role="group">
+                                    <button id="btnGroupDrop2" type="button"
+                                            class="btn btn-success dropdown-toggle show" data-bs-toggle="dropdown"
+                                            aria-haspopup="true" aria-expanded="true"></button>
+                                    <div class="dropdown-menu show" aria-labelledby="btnGroupDrop2"
+                                         data-popper-placement="bottom-start"
+                                         style="position: absolute; inset: 0px auto auto 0px; margin: 0px; transform: translate3d(0px, 38px, 0px);">
+                                        <a class="dropdown-item" href="#">Dropdown link</a>
+                                        <a class="dropdown-item" href="#">Dropdown link</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </h1>
                         <h5 class="text-muted"><span class="badge bg-danger" id="moreInfoRating"></span> <span
                                 id="moreInfoGenre"></span> | <span id="moreInfoRuntime"></span></h5>
                         <h3><span id="moreInfoOverview"></span></h3>
-                        <h5 class="text-muted fw-bold">Director: <span class="fw-normal" id="moreInfoDirector"></span></h5>
+                        <h5 class="text-muted fw-bold">Director: <span class="fw-normal" id="moreInfoDirector"></span>
+                        </h5>
                         <h5 class="text-muted fw-bold">Cast: <span class="fw-normal" id="moreInfoCast"></span></h5>
                     </div>
                 </div>

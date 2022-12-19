@@ -190,15 +190,28 @@ $(document).ready(() => {
                         $(`#moreInfoDirector`).append(person.name)
                     }
                 })
-                for (let i = 0; i < 5; i++) {
-                    if (data.cast[i] === data.cast[4]) {
-                        $(`#moreInfoCast`).append(data.cast[i].name)
-                    } else {
-                        $(`#moreInfoCast`).append(`${data.cast[i].name}, &nbsp;`)
+
+                console.log(data.cast.length);
+                if (data.cast.length > 5) {
+                    for (let i = 0; i < 5; i++) {
+                        if (data.cast[i] === data.cast[4]) {
+                            $(`#moreInfoCast`).append(data.cast[i].name)
+                        } else {
+                            $(`#moreInfoCast`).append(`${data.cast[i].name}, &nbsp;`)
+                        }
+                    }
+                } else {
+                    for (let i = 0; i < data.cast.length; i++) {
+                        if (data.cast.indexOf(data.cast[i]) === data.cast.length - 1) {
+                            $(`#moreInfoCast`).append(data.cast[i].name)
+                        } else {
+                            $(`#moreInfoCast`).append(`${data.cast[i].name}, &nbsp;`)
+                        }
                     }
                 }
             })
     }
+
 
     function generateSmallCards(showInfo, numberOfCards, container, showType) {
         for (let i = 0; i < numberOfCards; i++) {

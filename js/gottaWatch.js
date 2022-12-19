@@ -138,6 +138,7 @@ $(document).ready(() => {
             $(`#moreInfoYear`).html("(" + data.last_air_date.slice(0, 4) + ")")
         }
         $('#moreInfoGenre').html('');
+        $('#moreInfoCast').html('');
         for (let i = 0; i < data.genres.length; i++) {
             if (i === (data.genres.length - 1)) {
                 $('#moreInfoGenre').append(`${data.genres[i].name}`)
@@ -183,6 +184,13 @@ $(document).ready(() => {
             // .then(response => console.log('Results by id', response)
             .then((data) => {
                 console.log(data);
+                for (let i = 0; i < 5; i++) {
+                    if (data.cast[i] === data.cast[4]) {
+                        $(`#moreInfoCast`).append(data.cast[i].name)
+                    } else {
+                        $(`#moreInfoCast`).append(`${data.cast[i].name}, &nbsp;`)
+                    }
+                }
             })
     }
 

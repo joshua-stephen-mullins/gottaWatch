@@ -139,6 +139,7 @@ $(document).ready(() => {
         }
         $('#moreInfoGenre').html('');
         $('#moreInfoCast').html('');
+        $('#moreInfoDirector').html('');
         for (let i = 0; i < data.genres.length; i++) {
             if (i === (data.genres.length - 1)) {
                 $('#moreInfoGenre').append(`${data.genres[i].name}`)
@@ -184,6 +185,11 @@ $(document).ready(() => {
             // .then(response => console.log('Results by id', response)
             .then((data) => {
                 console.log(data);
+                data.crew.forEach(function (person) {
+                    if (person.job === "Director") {
+                        $(`#moreInfoDirector`).append(person.name)
+                    }
+                })
                 for (let i = 0; i < 5; i++) {
                     if (data.cast[i] === data.cast[4]) {
                         $(`#moreInfoCast`).append(data.cast[i].name)

@@ -191,8 +191,6 @@ $(document).ready(() => {
                         $(`#moreInfoDirector`).append(person.name)
                     }
                 })
-
-                console.log(data.cast.length);
                 if (data.cast.length > 5) {
                     for (let i = 0; i < 5; i++) {
                         if (data.cast[i] === data.cast[4]) {
@@ -210,6 +208,12 @@ $(document).ready(() => {
                         }
                     }
                 }
+            })
+        fetch(`https://api.themoviedb.org/3/${searchType}/${id}/credits?api_key=${apiKeyTMDP}&language=en-US`)
+            .then(response => response.json())
+            // .then(response => console.log('Results by id', response)
+            .then((data) => {
+                console.log(data);
             })
     }
 
@@ -252,7 +256,6 @@ $(document).ready(() => {
                     .then(response => response.json())
                     // .then(response => console.log('Results by id', response)
                     .then((data) => {
-                        // console.log(data);
                         data.results.forEach(function (country) {
                             if (country.iso_3166_1 === "US") {
                                 country.release_dates.forEach(function (result) {
@@ -268,7 +271,6 @@ $(document).ready(() => {
                     .then(response => response.json())
                     // .then(response => console.log('Results by id', response)
                     .then((data) => {
-                        // console.log(data);
                         data.results.forEach(function (country) {
                             if (country.iso_3166_1 === "US") {
                                 $(`#smallCardRating_${showInfo.results[i].id}`).html(country.rating);

@@ -65,16 +65,24 @@ $(document).ready(() => {
     $('#movieSearchButton').click(function (e) {
         e.preventDefault();
         $('#homePage').addClass('d-none');
+        $('#listsButton').addClass('d-none');
         $('#searchResults').removeClass('d-none');
     })
     $('#homeButton').click((e) => {
         $('#homePage').removeClass('d-none');
         $('#searchResults').addClass('d-none');
+        $('#listsButton').addClass('d-none');
     })
     $('#movieSearchInputButton').click(function (e) {
         e.preventDefault();
         $('#resultsContainer').html('');
         allSearch($('#movieSearchInput').val());
+    })
+    $('#listsButton').click((e) => {
+        e.preventDefault();
+        $('#homePage').addClass('d-none');
+        $('#searchResults').addClass('d-none');
+        $('#listsButton').removeClass('d-none');
     })
 
     function searchById(searchType, id) {
@@ -211,14 +219,36 @@ $(document).ready(() => {
                     }
                 }
             })
+        $('#addListList').html("");
         fetch(`https://daffy-tasteful-brownie.glitch.me/lists`)
             .then(response => response.json())
             // .then(response => console.log('Results by id', response)
             .then((data) => {
                 console.log(data);
+                let movies = data.movies;
+                data.forEach(function (list){
+                    $('#addListList').append(`<li><button class="dropdown-item" id="listName_${list.list_name}" href="#" value="${list.id}">${list.list_name}</button></li>`);
+                    $(`#listName_${list.list_name}`).click(function (){
+                        movieList.push($('#listAddBtn').val());
+                        addMovieToList(movieList, $(`#listName_${list.list_name}`).val());
+                    })
+                })
             })
     }
 
+    function addMovieToList(data, listId) {
+        const url = 'https://daffy-tasteful-brownie.glitch.me/lists/' + listId;
+        const options = {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        };
+        fetch(url, options)
+            .then(response => response.json()).then(data => console.log(data))
+            .catch(error => console.error(error));
+    }
 
     function generateSmallCards(showInfo, numberOfCards, container, showType) {
         for (let i = 0; i < numberOfCards; i++) {

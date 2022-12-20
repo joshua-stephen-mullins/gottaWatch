@@ -137,6 +137,7 @@ $(document).ready(() => {
         } else {
             $(`#moreInfoYear`).html("(" + data.last_air_date.slice(0, 4) + ")")
         }
+        $('#listAddBtn').val(data.id);
         $('#moreInfoGenre').html('');
         $('#moreInfoCast').html('');
         $('#moreInfoDirector').html('');

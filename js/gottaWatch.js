@@ -115,10 +115,12 @@ $(document).ready(() => {
             } else {
                 $(`.searchResultDate_${data[i].id}`).html(data[i].first_air_date);
             }
-            if (data[i].overview.length > 310) {
-                $(`.searchResultOverview_${data[i].id}`).html(data[i].overview.slice(0, 310) + "...");
-            } else {
-                $(`.searchResultOverview_${data[i].id}`).html(data[i].overview);
+            if (data[i].hasOwnProperty('overview')) {
+                if (data[i].overview.length > 310) {
+                    $(`.searchResultOverview_${data[i].id}`).html(data[i].overview.slice(0, 310) + "...");
+                } else {
+                    $(`.searchResultOverview_${data[i].id}`).html(data[i].overview);
+                }
             }
             $(`#searchResult_${data[i].id}`).click(() => searchById(data[i].media_type, data[i].id));
         }
@@ -185,7 +187,7 @@ $(document).ready(() => {
             .then(response => response.json())
             // .then(response => console.log('Results by id', response)
             .then((data) => {
-                console.log(data);
+                // console.log(data);
                 data.crew.forEach(function (person) {
                     if (person.job === "Director") {
                         $(`#moreInfoDirector`).append(person.name)
@@ -209,7 +211,7 @@ $(document).ready(() => {
                     }
                 }
             })
-        fetch(`https://api.themoviedb.org/3/${searchType}/${id}/credits?api_key=${apiKeyTMDP}&language=en-US`)
+        fetch(`https://daffy-tasteful-brownie.glitch.me/lists`)
             .then(response => response.json())
             // .then(response => console.log('Results by id', response)
             .then((data) => {

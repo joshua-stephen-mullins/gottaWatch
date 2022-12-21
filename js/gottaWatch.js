@@ -104,7 +104,7 @@ $(document).ready(() => {
             $('#resultsContainer').append(`
                 <div class="card col-12 searchResultCard rounded border-1 border-primary bg-primary m-3 row flex-row" id="searchResult_${data[i].id}" data-bs-toggle="modal" data-bs-target="#moreInfoModal">
                     <div class="col-2 p-0">
-                        <img class="col-12" src="https://image.tmdb.org/t/p/original/${data[i].poster_path}" alt=""Search Result>
+                        <img class="col-12" src="https://image.tmdb.org/t/p/original/${data[i].poster_path}" id="searchResult_${i}" alt=""Search Result>
                     </div>
                     <div class="col-10">
                         <h3 class="searchResultTitle_${data[i].id}"></h3>
@@ -117,6 +117,11 @@ $(document).ready(() => {
                 $(`.searchResultTitle_${data[i].id}`).html(data[i].title)
             } else {
                 $(`.searchResultTitle_${data[i].id}`).html(data[i].name)
+            }
+            if (data.hasOwnProperty('poster_path')) {
+                $(`#searchResult_${i}`).attr('src', `https://image.tmdb.org/t/p/original/${data.poster_path}`);
+            } else if (data.hasOwnProperty('profile_path')){
+                $(`#searchResult_${i}`).attr('src', `https://image.tmdb.org/t/p/original/${data.profile_path}`);
             }
             if (data[i].hasOwnProperty('release_date')) {
                 $(`.searchResultDate_${data[i].id}`).html(data[i].release_date)
@@ -140,7 +145,11 @@ $(document).ready(() => {
         } else {
             $(`#moreInfoTitle`).html(data.name)
         }
-        $('#moreInfoPoster').attr('src', `https://image.tmdb.org/t/p/original/${data.poster_path}`);
+        if (data.hasOwnProperty('poster_path')) {
+            $('#moreInfoPoster').attr('src', `https://image.tmdb.org/t/p/original/${data.poster_path}`);
+        } else if (data.hasOwnProperty('profile_path')){
+            $('#moreInfoPoster').attr('src', `https://image.tmdb.org/t/p/original/${data.profile_path}`);
+        }
         $('#moreInfoOverview').html(data.overview);
         if (data.hasOwnProperty('release_date')) {
             $(`#moreInfoYear`).html("(" + data.release_date.slice(0, 4) + ")")
@@ -226,19 +235,19 @@ $(document).ready(() => {
             .then((data) => {
                 console.log(data);
                 data.forEach(function (list){
-                    let movies = list.movies;
+                    let content = list.content;
                     $('#addListList').append(`<li><button class="dropdown-item" id="listName_${list.id}" href="#" value="${list.id}">${list.list_name}</button></li>`);
                     $(`#listName_${list.id}`).click(function (){
-                        movies.push($('#listAddBtn').val());
-                        addMovieToList(movies, $(`#listName_${list.id}`).val());
+                        content.push($('#listAddBtn').val());
+                        addMovieToList(content, $(`#listName_${list.id}`).val());
                     })
                 })
             })
     }
 
     function addMovieToList(data, listId) {
-        let newMovies = {
-            movies: data
+        let updateContent = {
+            content: data
         }
         const url = 'https://daffy-tasteful-brownie.glitch.me/lists/' + listId;
         const options = {
@@ -246,7 +255,7 @@ $(document).ready(() => {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(newMovies)
+            body: JSON.stringify(updateContent)
         };
         console.log(JSON.stringify(data));
         fetch(url, options)

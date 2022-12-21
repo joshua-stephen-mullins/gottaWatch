@@ -225,13 +225,14 @@ $(document).ready(() => {
             // .then(response => console.log('Results by id', response)
             .then((data) => {
                 console.log(data);
-                let movies = data.movies;
                 data.forEach(function (list){
+                    let movies = list.movies;
                     $('#addListList').append(`<li><button class="dropdown-item" id="listName_${list.list_name}" href="#" value="${list.id}">${list.list_name}</button></li>`);
                     $(`#listName_${list.list_name}`).click(function (){
                         console.log($('#listAddBtn').val());
-                        // movies.push($('#listAddBtn').val());
-                        // addMovieToList(movieList, $(`#listName_${list.list_name}`).val());
+                        movies.push($('#listAddBtn').val());
+                        console.log(movies);
+                        addMovieToList(movies, $(`#listName_${list.list_name}`).val());
                     })
                 })
             })

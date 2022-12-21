@@ -121,7 +121,7 @@ $(document).ready(() => {
             if (data[i].hasOwnProperty('poster_path')) {
                 console.log('psoter path')
                 $(`#searchResult_${i}`).attr('src', `https://image.tmdb.org/t/p/original/${data[i].poster_path}`);
-            } else if (data[i].hasOwnProperty('profile_path')){
+            } else if (data[i].hasOwnProperty('profile_path')) {
                 console.log("profile path")
                 $(`#searchResult_${i}`).attr('src', `https://image.tmdb.org/t/p/original/${data[i].profile_path}`);
             }
@@ -137,6 +137,13 @@ $(document).ready(() => {
                     $(`.searchResultOverview_${data[i].id}`).html(data[i].overview);
                 }
             }
+            if (data[i].hasOwnProperty('biography')) {
+                if (data[i].biography.length > 310) {
+                    $(`.searchResultOverview_${data[i].id}`).html(data[i].biography.slice(0, 310) + "...");
+                } else {
+                    $(`.searchResultOverview_${data[i].id}`).html(data[i].biography);
+                }
+            }
             $(`#searchResult_${data[i].id}`).click(() => searchById(data[i].media_type, data[i].id));
         }
     }
@@ -149,10 +156,15 @@ $(document).ready(() => {
         }
         if (data.hasOwnProperty('poster_path')) {
             $('#moreInfoPoster').attr('src', `https://image.tmdb.org/t/p/original/${data.poster_path}`);
-        } else if (data.hasOwnProperty('profile_path')){
+        } else if (data.hasOwnProperty('profile_path')) {
             $('#moreInfoPoster').attr('src', `https://image.tmdb.org/t/p/original/${data.profile_path}`);
         }
-        $('#moreInfoOverview').html(data.overview);
+        $(`#moreInfoOverview`).html('');
+        if (data.hasOwnProperty('biography')) {
+            $(`#moreInfoOverview`).html(data.biography);
+        } else if (data.hasOwnProperty('overview')) {
+            $('#moreInfoOverview').html(data.overview);
+        }
         if (data.hasOwnProperty('release_date')) {
             $(`#moreInfoYear`).html("(" + data.release_date.slice(0, 4) + ")")
         } else {
@@ -236,10 +248,10 @@ $(document).ready(() => {
             // .then(response => console.log('Results by id', response)
             .then((data) => {
                 console.log(data);
-                data.forEach(function (list){
+                data.forEach(function (list) {
                     let content = list.content;
                     $('#addListList').append(`<li><button class="dropdown-item" id="listName_${list.id}" href="#" value="${list.id}">${list.list_name}</button></li>`);
-                    $(`#listName_${list.id}`).click(function (){
+                    $(`#listName_${list.id}`).click(function () {
                         content.push($('#listAddBtn').val());
                         addMovieToList(content, $(`#listName_${list.id}`).val());
                     })

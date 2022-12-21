@@ -229,8 +229,9 @@ $(document).ready(() => {
                 data.forEach(function (list){
                     $('#addListList').append(`<li><button class="dropdown-item" id="listName_${list.list_name}" href="#" value="${list.id}">${list.list_name}</button></li>`);
                     $(`#listName_${list.list_name}`).click(function (){
-                        movieList.push($('#listAddBtn').val());
-                        addMovieToList(movieList, $(`#listName_${list.list_name}`).val());
+                        console.log($('#listAddBtn').val());
+                        // movies.push($('#listAddBtn').val());
+                        // addMovieToList(movieList, $(`#listName_${list.list_name}`).val());
                     })
                 })
             })

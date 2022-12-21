@@ -104,7 +104,7 @@ $(document).ready(() => {
             $('#resultsContainer').append(`
                 <div class="card col-12 searchResultCard rounded border-1 border-primary bg-primary m-3 row flex-row" id="searchResult_${data[i].id}" data-bs-toggle="modal" data-bs-target="#moreInfoModal">
                     <div class="col-2 p-0">
-                        <img class="col-12" src="https://image.tmdb.org/t/p/original/${data[i].poster_path}" id="searchResult_${i}" alt=""Search Result>
+                        <img class="col-12" src="x" id="searchResult_${i}" alt=""Search Result>
                     </div>
                     <div class="col-10">
                         <h3 class="searchResultTitle_${data[i].id}"></h3>
@@ -118,10 +118,12 @@ $(document).ready(() => {
             } else {
                 $(`.searchResultTitle_${data[i].id}`).html(data[i].name)
             }
-            if (data.hasOwnProperty('poster_path')) {
-                $(`#searchResult_${i}`).attr('src', `https://image.tmdb.org/t/p/original/${data.poster_path}`);
-            } else if (data.hasOwnProperty('profile_path')){
-                $(`#searchResult_${i}`).attr('src', `https://image.tmdb.org/t/p/original/${data.profile_path}`);
+            if (data[i].hasOwnProperty('poster_path')) {
+                console.log('psoter path')
+                $(`#searchResult_${i}`).attr('src', `https://image.tmdb.org/t/p/original/${data[i].poster_path}`);
+            } else if (data[i].hasOwnProperty('profile_path')){
+                console.log("profile path")
+                $(`#searchResult_${i}`).attr('src', `https://image.tmdb.org/t/p/original/${data[i].profile_path}`);
             }
             if (data[i].hasOwnProperty('release_date')) {
                 $(`.searchResultDate_${data[i].id}`).html(data[i].release_date)

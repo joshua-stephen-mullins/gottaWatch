@@ -227,12 +227,10 @@ $(document).ready(() => {
                 console.log(data);
                 data.forEach(function (list){
                     let movies = list.movies;
-                    $('#addListList').append(`<li><button class="dropdown-item" id="listName_${list.list_name}" href="#" value="${list.id}">${list.list_name}</button></li>`);
-                    $(`#listName_${list.list_name}`).click(function (){
-                        console.log($('#listAddBtn').val());
+                    $('#addListList').append(`<li><button class="dropdown-item" id="listName_${list.id}" href="#" value="${list.id}">${list.list_name}</button></li>`);
+                    $(`#listName_${list.id}`).click(function (){
                         movies.push($('#listAddBtn').val());
-                        console.log(movies);
-                        addMovieToList(movies, $(`#listName_${list.list_name}`).val());
+                        addMovieToList(movies, $(`#listName_${list.id}`).val());
                     })
                 })
             })

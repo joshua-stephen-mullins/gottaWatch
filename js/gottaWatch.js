@@ -239,14 +239,18 @@ $(document).ready(() => {
     }
 
     function addMovieToList(data, listId) {
+        let newMovies = {
+            movies: data
+        }
         const url = 'https://daffy-tasteful-brownie.glitch.me/lists/' + listId;
         const options = {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(data)
+            body: JSON.stringify(newMovies)
         };
+        console.log(JSON.stringify(data));
         fetch(url, options)
             .then(response => response.json()).then(data => console.log(data))
             .catch(error => console.error(error));

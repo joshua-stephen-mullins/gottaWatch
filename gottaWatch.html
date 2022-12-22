@@ -17,7 +17,7 @@
 <div class="row justify-content-center p-0 m-0" id="mainPageBody">
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">MOVIES!</a>
+            <a class="navbar-brand" href="#">gotta Watch</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01"
                     aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -41,7 +41,7 @@
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="#" id="listsButton">Lists Home</a></li>
                             <li><a class="dropdown-item" data-bs-toggle="offcanvas" href="#offcanvasListCreate"
-                                   role="button" aria-controls="offcanvasListCreate">Create New List</a></li>
+                                   role="button" aria-controls="offcanvasListCreate" id="createNewListButton">Create New List</a></li>
                         </ul>
                     </li>
                     <li class="nav-item">
@@ -127,10 +127,10 @@
 <!--more info modal-->
 <div>
     <div class="modal modal-xl fade" id="moreInfoModal">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content justify-content-around bg-dark">
                 <div class="modal-header">
-                    <button type="button" class="btn-close btn-light" data-bs-dismiss="modal" aria-label="Close">
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true"></span>
                     </button>
                 </div>
@@ -188,7 +188,7 @@
                 </div>
             </div>
             <div class="d-grid gap-2 mt-3">
-                <button class="btn btn-lg btn-warning" type="submit">Create List</button>
+                <button class="btn btn-lg btn-warning" type="submit" data-bs-dismiss="offcanvas">Create List</button>
             </div>
         </form>
     </div>

@@ -84,10 +84,12 @@ $(document).ready(() => {
         $('#searchResults').addClass('d-none');
         $('#listsPage').removeClass('d-none');
     })
-    $('#submitNewList').submit(function(e){
-        // e.preventDefault();
+    $('#submitNewList').submit(function(){
         createNewList();
-        // console.log('lets post it');
+    })
+    $('#createNewListButton').click(function(){
+        $('#listCreateName').html('');
+        $('#listCreateDesc').html('');
     })
 
     function searchById(searchType, id) {

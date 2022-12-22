@@ -65,13 +65,13 @@ $(document).ready(() => {
     $('#movieSearchButton').click(function (e) {
         e.preventDefault();
         $('#homePage').addClass('d-none');
-        $('#listsButton').addClass('d-none');
+        $('#listsPage').addClass('d-none');
         $('#searchResults').removeClass('d-none');
     })
     $('#homeButton').click((e) => {
         $('#homePage').removeClass('d-none');
         $('#searchResults').addClass('d-none');
-        $('#listsButton').addClass('d-none');
+        $('#listsPage').addClass('d-none');
     })
     $('#movieSearchInputButton').click(function (e) {
         e.preventDefault();
@@ -82,7 +82,7 @@ $(document).ready(() => {
         e.preventDefault();
         $('#homePage').addClass('d-none');
         $('#searchResults').addClass('d-none');
-        $('#listsButton').removeClass('d-none');
+        $('#listsPage').removeClass('d-none');
     })
 
     function searchById(searchType, id) {
@@ -104,7 +104,7 @@ $(document).ready(() => {
             $('#resultsContainer').append(`
                 <div class="card col-12 searchResultCard rounded border-1 border-primary bg-primary m-3 row flex-row" id="searchResult_${data[i].id}" data-bs-toggle="modal" data-bs-target="#moreInfoModal">
                     <div class="col-2 p-0">
-                        <img class="col-12" src="x" id="searchResult_${i}" alt=""Search Result>
+                        <img class="col-12" src="" id="searchResult_${i}" alt=""Search Result>
                     </div>
                     <div class="col-10">
                         <h3 class="searchResultTitle_${data[i].id}"></h3>
@@ -119,73 +119,45 @@ $(document).ready(() => {
                 $(`.searchResultTitle_${data[i].id}`).html(data[i].name)
             }
             if (data[i].hasOwnProperty('poster_path')) {
-                console.log('psoter path')
                 $(`#searchResult_${i}`).attr('src', `https://image.tmdb.org/t/p/original/${data[i].poster_path}`);
             } else if (data[i].hasOwnProperty('profile_path')) {
-                console.log("profile path")
                 $(`#searchResult_${i}`).attr('src', `https://image.tmdb.org/t/p/original/${data[i].profile_path}`);
             }
-            if (data[i].hasOwnProperty('release_date')) {
-                $(`.searchResultDate_${data[i].id}`).html(data[i].release_date)
-            } else {
-                $(`.searchResultDate_${data[i].id}`).html(data[i].first_air_date);
-            }
+            (data[i].hasOwnProperty('release_date')) ? $(`.searchResultDate_${data[i].id}`).html(data[i].release_date) : $(`.searchResultDate_${data[i].id}`).html(data[i].first_air_date);
             if (data[i].hasOwnProperty('overview')) {
-                if (data[i].overview.length > 310) {
-                    $(`.searchResultOverview_${data[i].id}`).html(data[i].overview.slice(0, 310) + "...");
-                } else {
-                    $(`.searchResultOverview_${data[i].id}`).html(data[i].overview);
-                }
+                (data[i].overview.length > 310) ? $(`.searchResultOverview_${data[i].id}`).html(data[i].overview.slice(0, 310) + "...") : $(`.searchResultOverview_${data[i].id}`).html(data[i].overview);
             }
             if (data[i].hasOwnProperty('biography')) {
-                if (data[i].biography.length > 310) {
-                    $(`.searchResultOverview_${data[i].id}`).html(data[i].biography.slice(0, 310) + "...");
-                } else {
-                    $(`.searchResultOverview_${data[i].id}`).html(data[i].biography);
-                }
+                (data[i].biography.length > 310) ? $(`.searchResultOverview_${data[i].id}`).html(data[i].biography.slice(0, 310) + "...") : $(`.searchResultOverview_${data[i].id}`).html(data[i].biography);
             }
             $(`#searchResult_${data[i].id}`).click(() => searchById(data[i].media_type, data[i].id));
         }
     }
 
     function moreInfo(data, searchType, id) {
-        if (data.hasOwnProperty('title')) {
-            $(`#moreInfoTitle`).html(data.title)
-        } else {
-            $(`#moreInfoTitle`).html(data.name)
-        }
+        $(`#moreInfoOverview`).html('');
+        $('#moreInfoGenre').html('');
+        $('#moreInfoCast').html('');
+        $('#moreInfoDirector').html('');
+        $('#addListList').html("");
+
+        (data.hasOwnProperty('title')) ? $(`#moreInfoTitle`).html(data.title) : $(`#moreInfoTitle`).html(data.name);
         if (data.hasOwnProperty('poster_path')) {
             $('#moreInfoPoster').attr('src', `https://image.tmdb.org/t/p/original/${data.poster_path}`);
         } else if (data.hasOwnProperty('profile_path')) {
             $('#moreInfoPoster').attr('src', `https://image.tmdb.org/t/p/original/${data.profile_path}`);
         }
-        $(`#moreInfoOverview`).html('');
         if (data.hasOwnProperty('biography')) {
             $(`#moreInfoOverview`).html(data.biography);
         } else if (data.hasOwnProperty('overview')) {
             $('#moreInfoOverview').html(data.overview);
         }
-        if (data.hasOwnProperty('release_date')) {
-            $(`#moreInfoYear`).html("(" + data.release_date.slice(0, 4) + ")")
-        } else {
-            $(`#moreInfoYear`).html("(" + data.last_air_date.slice(0, 4) + ")")
-        }
+        (data.hasOwnProperty('release_date')) ? $(`#moreInfoYear`).html("(" + data.release_date.slice(0, 4) + ")") : $(`#moreInfoYear`).html("(" + data.last_air_date.slice(0, 4) + ")");
         $('#listAddBtn').val(data.id);
-        $('#moreInfoGenre').html('');
-        $('#moreInfoCast').html('');
-        $('#moreInfoDirector').html('');
         for (let i = 0; i < data.genres.length; i++) {
-            if (i === (data.genres.length - 1)) {
-                $('#moreInfoGenre').append(`${data.genres[i].name}`)
-            } else {
-                $('#moreInfoGenre').append(data.genres[i].name + ', &nbsp;')
-            }
+            (i === (data.genres.length - 1)) ? $('#moreInfoGenre').append(`${data.genres[i].name}`) : $('#moreInfoGenre').append(data.genres[i].name + ', &nbsp;');
         }
-        if (data.hasOwnProperty('runtime')) {
-            $('#moreInfoRuntime').html(toHoursAndMinutes(data.runtime))
-        } else {
-            $('#moreInfoRuntime').html(toHoursAndMinutes(data.last_episode_to_air.runtime))
-        }
+        (data.hasOwnProperty('runtime')) ? $('#moreInfoRuntime').html(toHoursAndMinutes(data.runtime)) : $('#moreInfoRuntime').html(toHoursAndMinutes(data.last_episode_to_air.runtime));
         if (searchType === 'movie') {
             fetch(`https://api.themoviedb.org/3/movie/${id}/release_dates?api_key=${apiKeyTMDP}`)
                 .then(response => response.json())
@@ -226,23 +198,14 @@ $(document).ready(() => {
                 })
                 if (data.cast.length > 5) {
                     for (let i = 0; i < 5; i++) {
-                        if (data.cast[i] === data.cast[4]) {
-                            $(`#moreInfoCast`).append(data.cast[i].name)
-                        } else {
-                            $(`#moreInfoCast`).append(`${data.cast[i].name}, &nbsp;`)
-                        }
+                        (data.cast[i] === data.cast[4]) ? $(`#moreInfoCast`).append(data.cast[i].name) : $(`#moreInfoCast`).append(`${data.cast[i].name}, &nbsp;`);
                     }
                 } else {
                     for (let i = 0; i < data.cast.length; i++) {
-                        if (data.cast.indexOf(data.cast[i]) === data.cast.length - 1) {
-                            $(`#moreInfoCast`).append(data.cast[i].name)
-                        } else {
-                            $(`#moreInfoCast`).append(`${data.cast[i].name}, &nbsp;`)
-                        }
+                        (data.cast.indexOf(data.cast[i]) === data.cast.length - 1) ? $(`#moreInfoCast`).append(data.cast[i].name) : $(`#moreInfoCast`).append(`${data.cast[i].name}, &nbsp;`);
                     }
                 }
             })
-        $('#addListList').html("");
         fetch(`https://daffy-tasteful-brownie.glitch.me/lists`)
             .then(response => response.json())
             // .then(response => console.log('Results by id', response)

@@ -84,6 +84,11 @@ $(document).ready(() => {
         $('#searchResults').addClass('d-none');
         $('#listsPage').removeClass('d-none');
     })
+    $('#submitNewList').submit(function(e){
+        // e.preventDefault();
+        createNewList();
+        // console.log('lets post it');
+    })
 
     function searchById(searchType, id) {
         console.log(searchType);

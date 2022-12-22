@@ -84,10 +84,10 @@ $(document).ready(() => {
         $('#searchResults').addClass('d-none');
         $('#listsPage').removeClass('d-none');
     })
-    $('#submitNewList').submit(function(){
+    $('#submitNewList').submit(function () {
         createNewList();
     })
-    $('#createNewListButton').click(function(){
+    $('#createNewListButton').click(function () {
         $('#listCreateName').html('');
         $('#listCreateDesc').html('');
     })
@@ -247,7 +247,7 @@ $(document).ready(() => {
             .catch(error => console.error(error));
     }
 
-    function createNewList (){
+    function createNewList() {
         let date = new Date().toISOString().slice(0, 10)
         let newList = {
             list_name: $('#listCreateName').val(),

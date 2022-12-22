@@ -6,6 +6,12 @@
     font-size: .6em !important;
     width: 10%;
 }
+
 .smallCard h5 {
     font-size: 1.2em !important;
+}
+
+#navbarLogo {
+    height: 3em;
+    width: auto
 }

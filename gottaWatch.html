@@ -17,7 +17,7 @@
 <div class="row justify-content-center p-0 m-0" id="mainPageBody">
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">gotta Watch</a>
+            <img src="img/gotta-watch-logo-zip-file/png/logo-no-background.png" alt="gotta Watch logo" id="navbarLogo">
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01"
                     aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -29,10 +29,9 @@
                             <span class="visually-hidden">(current)</span>
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Features</a>
-                    </li>
-
+<!--                    <li class="nav-item">-->
+<!--                        <a class="nav-link" href="#">Features</a>-->
+<!--                    </li>-->
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                            aria-expanded="false">
@@ -45,9 +44,9 @@
                                 List</a></li>
                         </ul>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">About</a>
-                    </li>
+<!--                    <li class="nav-item">-->
+<!--                        <a class="nav-link" href="#">About</a>-->
+<!--                    </li>-->
                 </ul>
                 <form class="d-flex">
                     <button class="btn btn-secondary me-2 my-2 my-sm-0" id="profileButton"><i
@@ -85,7 +84,7 @@
                 </div>
             </div>
         </div>
-        <div class="row col-12 justify-content-center d-none" id="searchResults">
+        <div class="row justify-content-center d-none" id="searchResults">
             <div class="col-11 input-group m-3">
                 <input class="form-control form-control-lg" type="text"
                        placeholder="Search Movies, TV Shows, and People" id="movieSearchInput">
@@ -123,10 +122,18 @@
         </div>
         <div class="row col-12 justify-content-center d-none" id="listsPage">
             <div id="featuredLists">
-                <h1>Featured Lists</h1>
+                <h1 class="text-center">Featured Lists</h1>
+                <div id="featuredListsContainer">
+
+
+                </div>
             </div>
             <div id="popularLists">
-                <h1>Popular Lists</h1>
+                <h1 class="text-center">Popular Lists</h1>
+                <div id="popularListsContainer">
+
+
+                </div>
             </div>
         </div>
     </main>

@@ -32,8 +32,17 @@
                     <li class="nav-item">
                         <a class="nav-link" href="#">Features</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" id="listsButton">Lists</a>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                           aria-expanded="false">
+                            Lists
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#" id="listsButton">Lists Home</a></li>
+                            <li><a class="dropdown-item" data-bs-toggle="offcanvas" href="#offcanvasListCreate"
+                                   role="button" aria-controls="offcanvasListCreate">Create New List</a></li>
+                        </ul>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">About</a>
@@ -133,7 +142,8 @@
                         <h1 class="modal-title"><span id="moreInfoTitle"></span> <span class="text-muted h2"
                                                                                        id="moreInfoYear"></span>
                             <div class="btn-group">
-                                <button type="button" class="btn btn-lg btn-success dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" id="listAddBtn">
+                                <button type="button" class="btn btn-lg btn-success dropdown-toggle"
+                                        data-bs-toggle="dropdown" aria-expanded="false" id="listAddBtn">
                                     <i class="fa-solid fa-clapperboard"></i>
                                 </button>
                                 <ul class="dropdown-menu dropdown-menu-dark" id="addListList">
@@ -150,6 +160,37 @@
                 </div>
             </div>
         </div>
+    </div>
+</div>
+
+<!--off canvas create a list-->
+
+<div class="offcanvas offcanvas-start bg-danger" tabindex="-1" id="offcanvasListCreate">
+    <div class="offcanvas-header">
+        <h1 class="offcanvas-title text-center flex-grow-1" id="offcanvasListCreateTitle">Create List</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+        <form>
+            <div>
+                <div class="form-group">
+                    <div class="form-group">
+                        <label class="col-form-label col-form-label-lg mt-1" for="listCreateName">List Name</label>
+                        <input class="form-control form-control-lg" type="text" placeholder="" id="listCreateName"
+                               required>
+                    </div>
+                    <div class="form-group">
+                        <label for="listCreateDesc" class="col-form-label col-form-label-lg mt-1">List
+                            Description</label>
+                        <textarea class="form-control form-control-lg" id="listCreateDesc" rows="5"
+                                  style="height: 355px;" required></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="d-grid gap-2 mt-3">
+                <button class="btn btn-lg btn-warning" type="submit" id="submitNewList">Create List</button>
+            </div>
+        </form>
     </div>
 </div>
 

@@ -240,6 +240,27 @@ $(document).ready(() => {
             .catch(error => console.error(error));
     }
 
+    function createNewList (){
+        let date = new Date().toISOString().slice(0, 10)
+        let newList = {
+            list_name: $('#listCreateName').val(),
+            list_desc: $('#listCreateDesc').val(),
+            date_created: date,
+            content: []
+        }
+        const url = 'https://daffy-tasteful-brownie.glitch.me/lists/';
+        const options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(newList)
+        };
+        fetch(url, options)
+            .then(response => response.json()).then(data => console.log(data))
+            .catch(error => console.error(error));
+    }
+
     function generateSmallCards(showInfo, numberOfCards, container, showType) {
         for (let i = 0; i < numberOfCards; i++) {
             $(container).append(`

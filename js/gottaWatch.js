@@ -57,7 +57,7 @@ $(document).ready(() => {
         $(`#numberPeopleResults`).html(personCounter);
     }
 
-    $('.filterBtn').click(function (e) {
+    $('.filterBtn').click(function () {
         console.log($('input[name=filterRadio]:checked').val());
         allSearch($('#movieSearchInput').val())
     })
@@ -68,7 +68,7 @@ $(document).ready(() => {
         $('#listsPage').addClass('d-none');
         $('#searchResults').removeClass('d-none');
     })
-    $('#homeButton').click((e) => {
+    $('#homeButton').click(() => {
         $('#homePage').removeClass('d-none');
         $('#searchResults').addClass('d-none');
         $('#listsPage').addClass('d-none');
@@ -347,16 +347,15 @@ $(document).ready(() => {
 
     function generateFeaturedListsCards(list) {
         $('#featuredListsContainer').append(`
-            <div class="card mb-3" style="max-width: 540px;">
+            <div class="card mb-3 col-3" style="max-width: 540px;">
               <div class="row g-0">
                 <div class="col-md-4">
                   <img src="..." class="img-fluid rounded-start" alt="...">
                 </div>
                 <div class="col-md-8">
                   <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                    <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                    <h5 class="card-title">${list.list_name}</h5>
+                    <p class="card-text">${list.list_desc}</p>
                   </div>
                 </div>
               </div>
@@ -366,16 +365,15 @@ $(document).ready(() => {
 
     function generatePopularListsCards(list) {
         $('#popularListsContainer').append(`
-            <div class="card mb-3" style="max-width: 540px;">
+            <div class="card mb-3 col-5" style="max-width: 540px;">
               <div class="row g-0">
                 <div class="col-md-4">
                   <img src="..." class="img-fluid rounded-start" alt="...">
                 </div>
                 <div class="col-md-8">
                   <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                    <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                    <h5 class="card-title">${list.list_name}</h5>
+                    <p class="card-text">${list.list_desc}</p>
                   </div>
                 </div>
               </div>

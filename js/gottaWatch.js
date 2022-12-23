@@ -80,6 +80,7 @@ $(document).ready(() => {
     })
     $('#listsButton').click((e) => {
         e.preventDefault();
+        populateListsHome();
         $('#homePage').addClass('d-none');
         $('#searchResults').addClass('d-none');
         $('#listsPage').removeClass('d-none');
@@ -330,6 +331,58 @@ $(document).ready(() => {
             }
         }
     }
+
+    function populateListsHome() {
+        $('#featuredListsContainer').html('');
+        $('#popularListsContainer').html('');
+        fetch(`https://daffy-tasteful-brownie.glitch.me/lists`)
+            .then(response => response.json())
+            .then((data) => {
+                console.log(data);
+                data.forEach(function (list) {
+                    list.featured === "y" ? generateFeaturedListsCards(list) : generatePopularListsCards(list);
+                })
+            })
+    }
+
+    function generateFeaturedListsCards(list) {
+        $('#featuredListsContainer').append(`
+            <div class="card mb-3" style="max-width: 540px;">
+              <div class="row g-0">
+                <div class="col-md-4">
+                  <img src="..." class="img-fluid rounded-start" alt="...">
+                </div>
+                <div class="col-md-8">
+                  <div class="card-body">
+                    <h5 class="card-title">Card title</h5>
+                    <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                    <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+        `)
+    }
+
+    function generatePopularListsCards(list) {
+        $('#popularListsContainer').append(`
+            <div class="card mb-3" style="max-width: 540px;">
+              <div class="row g-0">
+                <div class="col-md-4">
+                  <img src="..." class="img-fluid rounded-start" alt="...">
+                </div>
+                <div class="col-md-8">
+                  <div class="card-body">
+                    <h5 class="card-title">Card title</h5>
+                    <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                    <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+        `)
+    }
+
 
     function toHoursAndMinutes(totalMinutes) {
         const hours = Math.floor(totalMinutes / 60);

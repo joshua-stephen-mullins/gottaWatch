@@ -436,3 +436,15 @@ $(document).ready(() => {
         }
     }
 })
+
+
+
+
+
+//TODOS:
+
+// remove unused or blank fields from showing in moreinfo modal
+//
+// like buttons
+//
+// login

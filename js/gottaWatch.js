@@ -355,11 +355,11 @@ $(document).ready(() => {
 
     function generateFeaturedListsCards(list) {
         $('#featuredListsContainer').append(`
-            <div class="card mb-3 col-4 border border-1" style="max-width: 540px;" id="listCard_${list.id}">
+            <div class="card mb-3 col-4 border border-1" id="listCard_${list.id}">
               <div class="row g-0">
-                <div class="col-6" id="listCardImages_${list.id}">
+                <div class="col-12 listCardFeatured" id="listCardImages_${list.id}">
                 </div>
-                <div class="col-6">
+                <div class="col-12">
                   <div class="card-body">
                     <h5 class="card-title">${list.list_name}</h5>
                     <p class="card-text">${list.list_desc}</p>
@@ -376,7 +376,7 @@ $(document).ready(() => {
                     .then((data) => {
                         // console.log(data);
                         $(`#listCardImages_${list.id}`).append(`
-                            <img src="https://image.tmdb.org/t/p/original/${data.poster_path}" class="border border-1" alt="Movie Poster" style="position: absolute; left: ${i * 30}px; height: 7em; z-index: ${500 + (5 * i)}">
+                            <img src="https://image.tmdb.org/t/p/original/${data.poster_path}" class="border border-1" alt="Movie Poster" style="position: absolute; left: ${i * 70}px; height: 10em; z-index: ${500 + (5 * i)}">
                         `)
                     })
             }
@@ -388,20 +388,16 @@ $(document).ready(() => {
                     .then((data) => {
                         console.log(data);
                         $(`#listCardImages_${list.id}`).append(`
-                            <img src="https://image.tmdb.org/t/p/original/${data.poster_path}" class="border border-1" alt="Movie Poster" style="position: absolute; left: ${i * 30}px; height: 7em; z-index: ${500 - (5 * i)}">
+                            <img src="https://image.tmdb.org/t/p/original/${data.poster_path}" class="border border-1" alt="Movie Poster" style="position: absolute; left: ${i * 70}px; height: 10em; z-index: ${500 - (5 * i)}">
                         `)
                     })
             }
         }
     }
 
-    //
-
-// <img src="..." className="img-fluid rounded-start" alt="...">
-
 function generatePopularListsCards(list) {
     $('#popularListsContainer').append(`
-            <div class="card mb-3 col-6 border border-1" style="max-width: 540px;">
+            <div class="card mb-3 col-6 border border-1">
               <div class="row g-0">
                 <div class="col-6">
                   <img src="..." class="img-fluid rounded-start" alt="...">

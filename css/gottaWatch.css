@@ -19,3 +19,7 @@
 #listCardImages {
     position: relative;
 }
+
+.listCardFeatured {
+    height: 10em;
+}

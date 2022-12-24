@@ -15,3 +15,7 @@
     height: 3em;
     width: auto
 }
+
+#listCardImages {
+    position: relative;
+}

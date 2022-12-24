@@ -355,9 +355,9 @@ $(document).ready(() => {
 
     function generateFeaturedListsCards(list) {
         $('#featuredListsContainer').append(`
-            <div class="card mb-3 col-4 border border-1" style="max-width: 540px;">
+            <div class="card mb-3 col-4 border border-1" style="max-width: 540px;" id="listCard_${list.id}">
               <div class="row g-0">
-                <div class="col-6" id="listCardImages">
+                <div class="col-6" id="listCardImages_${list.id}">
                 </div>
                 <div class="col-6">
                   <div class="card-body">
@@ -368,22 +368,28 @@ $(document).ready(() => {
               </div>
             </div>
         `)
-        if (list.content < 6) {
+        if (list.content < 5) {
             for (let i = 0; i < list.content.length; i++) {
                 console.log(list.content[i]);
                 fetch(`https://api.themoviedb.org/3/${list.content[i].type}/${list.content[i].id}?api_key=${apiKeyTMDP}&language=en-US`)
                     .then(response => response.json())
                     .then((data) => {
-                        console.log(data);
+                        // console.log(data);
+                        $(`#listCardImages_${list.id}`).append(`
+                            <img src="https://image.tmdb.org/t/p/original/${data.poster_path}" class="border border-1" alt="Movie Poster" style="position: absolute; left: ${i * 30}px; height: 7em; z-index: ${500 + (5 * i)}">
+                        `)
                     })
             }
         } else {
-            for (let i = 0; i < 6; i++) {
+            for (let i = 0; i < 5; i++) {
                 console.log(list.content[i]);
                 fetch(`https://api.themoviedb.org/3/${list.content[i].type}/${list.content[i].id}?api_key=${apiKeyTMDP}&language=en-US`)
                     .then(response => response.json())
                     .then((data) => {
                         console.log(data);
+                        $(`#listCardImages_${list.id}`).append(`
+                            <img src="https://image.tmdb.org/t/p/original/${data.poster_path}" class="border border-1" alt="Movie Poster" style="position: absolute; left: ${i * 30}px; height: 7em; z-index: ${500 - (5 * i)}">
+                        `)
                     })
             }
         }

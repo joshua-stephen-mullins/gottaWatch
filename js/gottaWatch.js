@@ -198,7 +198,6 @@ $(document).ready(() => {
             .then(response => response.json())
             // .then(response => console.log('Results by id', response)
             .then((data) => {
-                // console.log(data);
                 data.crew.forEach(function (person) {
                     if (person.job === "Director") {
                         $(`#moreInfoDirector`).append(person.name)
@@ -221,9 +220,15 @@ $(document).ready(() => {
                 console.log(data);
                 data.forEach(function (list) {
                     let content = list.content;
+                    console.log(list.content);
                     $('#addListList').append(`<li><button class="dropdown-item" id="listName_${list.id}" href="#" value="${list.id}">${list.list_name}</button></li>`);
                     $(`#listName_${list.id}`).click(function () {
-                        content.push($('#listAddBtn').val());
+                        let newContent = {
+                            id: ($('#listAddBtn').val()),
+                            type: searchType
+                        };
+                        // content.id = ;
+                        content.push(newContent);
                         addMovieToList(content, $(`#listName_${list.id}`).val());
                     })
                 })
@@ -254,7 +259,10 @@ $(document).ready(() => {
             list_name: $('#listCreateName').val(),
             list_desc: $('#listCreateDesc').val(),
             date_created: date,
-            content: []
+            last_edited: date,
+            content: [],
+            featured: 'n',
+            likes: '0'
         }
         const url = 'https://daffy-tasteful-brownie.glitch.me/lists/';
         const options = {
@@ -347,12 +355,11 @@ $(document).ready(() => {
 
     function generateFeaturedListsCards(list) {
         $('#featuredListsContainer').append(`
-            <div class="card mb-3 col-3" style="max-width: 540px;">
+            <div class="card mb-3 col-4 border border-1" style="max-width: 540px;">
               <div class="row g-0">
-                <div class="col-md-4">
-                  <img src="..." class="img-fluid rounded-start" alt="...">
+                <div class="col-6" id="listCardImages">
                 </div>
-                <div class="col-md-8">
+                <div class="col-6">
                   <div class="card-body">
                     <h5 class="card-title">${list.list_name}</h5>
                     <p class="card-text">${list.list_desc}</p>
@@ -361,16 +368,26 @@ $(document).ready(() => {
               </div>
             </div>
         `)
+        // for (let i = 0; i < 6; i++) {
+        //     console.log(list.content[i]);
+        //     fetch(`https://api.themoviedb.org/3/search/multi?api_key=${apiKeyTMDP}&language=en-US&query=${list.content[i]}&page=1&include_adult=false`)
+        //         .then(response => response.json())
+        //         .then((data) => {
+        //             console.log(data);
+        //         })
+        // }
     }
+
+    // <img src="..." className="img-fluid rounded-start" alt="...">
 
     function generatePopularListsCards(list) {
         $('#popularListsContainer').append(`
-            <div class="card mb-3 col-5" style="max-width: 540px;">
+            <div class="card mb-3 col-6 border border-1" style="max-width: 540px;">
               <div class="row g-0">
-                <div class="col-md-4">
+                <div class="col-6">
                   <img src="..." class="img-fluid rounded-start" alt="...">
                 </div>
-                <div class="col-md-8">
+                <div class="col-6">
                   <div class="card-body">
                     <h5 class="card-title">${list.list_name}</h5>
                     <p class="card-text">${list.list_desc}</p>
@@ -380,7 +397,6 @@ $(document).ready(() => {
             </div>
         `)
     }
-
 
     function toHoursAndMinutes(totalMinutes) {
         const hours = Math.floor(totalMinutes / 60);
@@ -436,9 +452,6 @@ $(document).ready(() => {
         }
     }
 })
-
-
-
 
 
 //TODOS:

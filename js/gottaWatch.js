@@ -356,7 +356,7 @@ $(document).ready(() => {
     function generateFeaturedListsCards(list) {
         console.log(list);
         $('#featuredListsContainer').append(`
-            <div class="card mb-3 col-4 border border-1" id="listCard_${list.id}">
+            <div class="card mb-3 col-4 border border-1" id="listCard_${list.id}" data-bs-toggle="modal" data-bs-target="#listModal">
               <div class="row g-0">
                 <div class="col-12 listCardFeatured" id="listCardImages_${list.id}">
                 </div>

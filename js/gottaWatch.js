@@ -354,6 +354,7 @@ $(document).ready(() => {
     }
 
     function generateFeaturedListsCards(list) {
+        console.log(list);
         $('#featuredListsContainer').append(`
             <div class="card mb-3 col-4 border border-1" id="listCard_${list.id}">
               <div class="row g-0">
@@ -368,7 +369,8 @@ $(document).ready(() => {
               </div>
             </div>
         `)
-        if (list.content < 5) {
+        if (list.content.length < 5) {
+            console.log(list.content);
             for (let i = 0; i < list.content.length; i++) {
                 console.log(list.content[i]);
                 fetch(`https://api.themoviedb.org/3/${list.content[i].type}/${list.content[i].id}?api_key=${apiKeyTMDP}&language=en-US`)
@@ -382,7 +384,7 @@ $(document).ready(() => {
             }
         } else {
             for (let i = 0; i < 5; i++) {
-                console.log(list.content[i]);
+                console.log(`${i}`, list.content[i]);
                 fetch(`https://api.themoviedb.org/3/${list.content[i].type}/${list.content[i].id}?api_key=${apiKeyTMDP}&language=en-US`)
                     .then(response => response.json())
                     .then((data) => {

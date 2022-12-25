@@ -354,9 +354,8 @@ $(document).ready(() => {
     }
 
     function generateFeaturedListsCards(list) {
-        console.log(list);
         $('#featuredListsContainer').append(`
-            <div class="card mb-3 col-4 border border-1" id="listCard_${list.id}" data-bs-toggle="modal" data-bs-target="#listModal">
+            <div class="card mb-3 col-4 border border-1 listCard" id="listCard_${list.id}" data-bs-toggle="modal" data-bs-target="#listModal" data-id="${list.id}">
               <div class="row g-0">
                 <div class="col-12 listCardFeatured" id="listCardImages_${list.id}">
                 </div>
@@ -369,10 +368,12 @@ $(document).ready(() => {
               </div>
             </div>
         `)
+        $('.listCard').click(function () {
+            populateListModal($(this).data("id"));
+        });
         if (list.content.length < 5) {
             console.log(list.content);
             for (let i = 0; i < list.content.length; i++) {
-                console.log(list.content[i]);
                 fetch(`https://api.themoviedb.org/3/${list.content[i].type}/${list.content[i].id}?api_key=${apiKeyTMDP}&language=en-US`)
                     .then(response => response.json())
                     .then((data) => {
@@ -384,11 +385,9 @@ $(document).ready(() => {
             }
         } else {
             for (let i = 0; i < 5; i++) {
-                console.log(`${i}`, list.content[i]);
                 fetch(`https://api.themoviedb.org/3/${list.content[i].type}/${list.content[i].id}?api_key=${apiKeyTMDP}&language=en-US`)
                     .then(response => response.json())
                     .then((data) => {
-                        console.log(data);
                         $(`#listCardImages_${list.id}`).append(`
                             <img src="https://image.tmdb.org/t/p/original/${data.poster_path}" class="border border-1" alt="Movie Poster" style="position: absolute; left: ${i * 65}px; height: 8em; z-index: ${500 - (5 * i)}">
                         `)
@@ -414,6 +413,17 @@ $(document).ready(() => {
             </div>
         `)
     }
+
+
+    function populateListModal(listId) {
+        fetch(`https://daffy-tasteful-brownie.glitch.me/lists/${listId}`)
+            .then(response => response.json())
+            // .then(response => console.log('Results by id', response)
+            .then((data) => {
+                console.log(data);
+            })
+    }
+
 
     function toHoursAndMinutes(totalMinutes) {
         const hours = Math.floor(totalMinutes / 60);

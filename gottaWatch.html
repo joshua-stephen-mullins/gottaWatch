@@ -138,7 +138,7 @@
 <!--more info modal-->
 <div>
     <div class="modal modal-xl fade" id="moreInfoModal">
-        <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-dialog modal-dialog-centered" id="moreInfoModalDialog" role="document">
             <div class="modal-content justify-content-around bg-dark">
                 <div class="modal-header">
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close">
@@ -177,13 +177,16 @@
 
 <!--list modal-->
 <div class="modal modal-xl fade" id="listModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="row modal-content">
-            <div class="col-6 modal-body" id="listModalMovies">
-            </div>
-            <div class="col-6 modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+    <div class="modal-dialog" id="listModalDialog">
+        <div class="row modal-content m-0 p-0">
+            <div class="col-12 modal-header">
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-0">
+                <h1 class="modal-title fs-5" id="listModalTitle"></h1>
+                <h3 id="listModalDescription"></h3>
+            </div>
+            <div class="p-0" id="listModalMovies">
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

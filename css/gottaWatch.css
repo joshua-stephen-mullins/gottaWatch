@@ -1,5 +1,17 @@
 #moreInfoModal {
-    /*width: 75% !important;*/
+    z-index: 2001 !important;
+}
+
+#moreInfoModalDialog {
+    z-index: 2002 !important;
+}
+
+#listModal {
+    z-index: 1999 !important;
+}
+
+#listModalDialog {
+    z-index: 2000;
 }
 
 .smallCard {

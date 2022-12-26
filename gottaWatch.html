@@ -15,7 +15,7 @@
 <body>
 <!--NAVBAR-->
 <div class="row justify-content-center p-0 m-0" id="mainPageBody">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
             <img src="img/gotta-watch-logo-zip-file/png/logo-no-background.png" alt="gotta Watch logo" id="navbarLogo">
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01"
@@ -136,46 +136,47 @@
 </div>
 
 <!--more info modal-->
-<div>
-    <div class="modal modal-xl fade" id="moreInfoModal">
-        <div class="modal-dialog modal-dialog-centered" id="moreInfoModalDialog" role="document">
-            <div class="modal-content justify-content-around bg-dark">
-                <div class="modal-header">
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true"></span>
-                    </button>
+
+<div class="modal modal-xl fade" id="moreInfoModal">
+    <div class="modal-dialog modal-dialog-centered" id="moreInfoModalDialog" role="document">
+        <div class="modal-content justify-content-around bg-dark">
+            <div class="modal-header">
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"></span>
+                </button>
+            </div>
+            <div class="modal-body row">
+                <div class="col-3">
+                    <img class="w-100 h-100" id="moreInfoPoster" src="" alt="Poster">
                 </div>
-                <div class="modal-body row">
-                    <div class="col-3">
-                        <img class="w-100 h-100" id="moreInfoPoster" src="" alt="Poster">
-                    </div>
-                    <div class="col-9">
-                        <h1 class="modal-title"><span id="moreInfoTitle"></span> <span class="text-muted h2"
-                                                                                       id="moreInfoYear"></span>
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-lg btn-success dropdown-toggle"
-                                        data-bs-toggle="dropdown" aria-expanded="false" id="listAddBtn">
-                                    <i class="fa-solid fa-clapperboard"></i>
-                                </button>
-                                <ul class="dropdown-menu dropdown-menu-dark" id="addListList">
-                                </ul>
-                            </div>
-                        </h1>
-                        <h5 class="text-muted"><span class="badge bg-danger" id="moreInfoRating"></span> <span
-                                id="moreInfoGenre"></span> | <span id="moreInfoRuntime"></span></h5>
-                        <h3><span id="moreInfoOverview"></span></h3>
-                        <h5 class="text-muted fw-bold">Director: <span class="fw-normal" id="moreInfoDirector"></span>
-                        </h5>
-                        <h5 class="text-muted fw-bold">Cast: <span class="fw-normal" id="moreInfoCast"></span></h5>
-                    </div>
+                <div class="col-9">
+                    <h1 class="modal-title"><span id="moreInfoTitle"></span> <span class="text-muted h2"
+                                                                                   id="moreInfoYear"></span>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-lg btn-success dropdown-toggle"
+                                    data-bs-toggle="dropdown" aria-expanded="false" id="listAddBtn">
+                                <i class="fa-solid fa-clapperboard"></i>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-dark" id="addListList">
+                            </ul>
+                        </div>
+                    </h1>
+                    <h5 class="text-muted"><span class="badge bg-danger" id="moreInfoRating"></span> <span
+                            id="moreInfoGenre"></span> | <span id="moreInfoRuntime"></span></h5>
+                    <h3><span id="moreInfoOverview"></span></h3>
+                    <h5 class="text-muted fw-bold">Director: <span class="fw-normal" id="moreInfoDirector"></span>
+                    </h5>
+                    <h5 class="text-muted fw-bold">Cast: <span class="fw-normal" id="moreInfoCast"></span></h5>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
+
 <!--list modal-->
-<div class="modal modal-xl fade" id="listModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal modal-xl fade" id="listModal" data-bs-backdrop="static" tabindex="-1"
+     aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" id="listModalDialog">
         <div class="row modal-content m-0 p-0">
             <div class="col-12 modal-header">

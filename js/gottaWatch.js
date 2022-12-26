@@ -111,8 +111,8 @@ $(document).ready(() => {
         for (let i = 0; i < data.length; i++) {
             $('#resultsContainer').append(`
                 <div class="card col-12 searchResultCard rounded border-1 border-primary bg-primary m-3 row flex-row" id="searchResult_${data[i].id}" data-bs-toggle="modal" data-bs-target="#moreInfoModal">
-                    <div class="col-2 p-0">
-                        <img class="col-12" src="" id="searchResult_${i}" alt="Search Result>
+                    <div class="row col-2 m-0 p-0">
+                        <img class="col-12" src="" id="searchResult_${i}" alt="Search Result">
                     </div>
                     <div class="col-10">
                         <h3 class="searchResultTitle_${data[i].id}"></h3>
@@ -432,7 +432,7 @@ $(document).ready(() => {
                             $(`#listModalMovies`).append(`
                             <img src="https://image.tmdb.org/t/p/original/${data.poster_path}" class="border border-1" alt="Movie Poster" id="listContent_${content.id}" style="height: 10em" data-bs-toggle="modal" data-bs-target="#moreInfoModal">
                         `)
-                            $(`#listContent_${content.id}`).click(function(){
+                            $(`#listContent_${content.id}`).click(function () {
                                 searchById(content.type, content.id);
                             })
                         })
@@ -494,6 +494,23 @@ $(document).ready(() => {
             }
         }
     }
+
+    Array.from(document.getElementsByClassName('showmodal')).forEach((e) => {
+        e.addEventListener('click', function (element) {
+            element.preventDefault();
+            if (e.hasAttribute('data-show-modal')) {
+                showModal(e.getAttribute('data-show-modal'));
+            }
+        });
+    });
+
+// Show modal dialog
+    function showModal(modal) {
+        const mid = document.getElementById(modal);
+        let myModal = new bootstrap.Modal(mid);
+        myModal.show();
+    }
+
 })
 
 

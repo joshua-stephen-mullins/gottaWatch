@@ -369,19 +369,16 @@ $(document).ready(() => {
             </div>
         `)
         $(`#listCard_${list.id}`).click(function () {
-            console.log($(this).data("id"));
-            console.log('click');
             populateListModal($(this).data("id"));
         });
         if (list.content.length < 5) {
-            console.log(list.content);
             for (let i = 0; i < list.content.length; i++) {
                 fetch(`https://api.themoviedb.org/3/${list.content[i].type}/${list.content[i].id}?api_key=${apiKeyTMDP}&language=en-US`)
                     .then(response => response.json())
                     .then((data) => {
                         // console.log(data);
                         $(`#listCardImages_${list.id}`).append(`
-                            <img src="https://image.tmdb.org/t/p/original/${data.poster_path}" class="border border-1" alt="Movie Poster" style="position: absolute; left: ${i * 65}px; height: 8em; z-index: ${500 - (5 * i)}">
+                            <img src="https://image.tmdb.org/t/p/original/${data.poster_path}" class="border border-1" alt="Movie Poster" style="position: absolute; left: ${i * 17}%; height: 8em; z-index: ${500 - (5 * i)}">
                         `)
                     })
             }
@@ -391,7 +388,7 @@ $(document).ready(() => {
                     .then(response => response.json())
                     .then((data) => {
                         $(`#listCardImages_${list.id}`).append(`
-                            <img src="https://image.tmdb.org/t/p/original/${data.poster_path}" class="border border-1" alt="Movie Poster" style="position: absolute; left: ${i * 65}px; height: 8em; z-index: ${500 - (5 * i)}">
+                            <img src="https://image.tmdb.org/t/p/original/${data.poster_path}" class="border border-1" alt="Movie Poster" style="position: absolute; left: ${i * 17}%; height: 8em; z-index: ${500 - (5 * i)}">
                         `)
                     })
             }
@@ -400,10 +397,9 @@ $(document).ready(() => {
 
     function generatePopularListsCards(list) {
         $('#popularListsContainer').append(`
-            <div class="card mb-3 col-6 border border-1">
+            <div class="card mb-3 col-6 border border-1" id="listCard_${list.id}" data-bs-toggle="modal" data-bs-target="#listModal" data-id="${list.id}"">
               <div class="row g-0">
-                <div class="col-6">
-                  <img src="..." class="img-fluid rounded-start" alt="...">
+                <div class="col-6 listCardFeatured" id="listCardImages_${list.id}"">
                 </div>
                 <div class="col-6">
                   <div class="card-body">
@@ -414,6 +410,31 @@ $(document).ready(() => {
               </div>
             </div>
         `)
+        $(`#listCard_${list.id}`).click(function () {
+            populateListModal($(this).data("id"));
+        });
+        if (list.content.length < 5) {
+            for (let i = 0; i < list.content.length; i++) {
+                fetch(`https://api.themoviedb.org/3/${list.content[i].type}/${list.content[i].id}?api_key=${apiKeyTMDP}&language=en-US`)
+                    .then(response => response.json())
+                    .then((data) => {
+                        // console.log(data);
+                        $(`#listCardImages_${list.id}`).append(`
+                            <img src="https://image.tmdb.org/t/p/original/${data.poster_path}" class="border border-1" alt="Movie Poster" style="position: absolute; left: ${i * 9}%; height: 8em; z-index: ${500 - (5 * i)}">
+                        `)
+                    })
+            }
+        } else {
+            for (let i = 0; i < 5; i++) {
+                fetch(`https://api.themoviedb.org/3/${list.content[i].type}/${list.content[i].id}?api_key=${apiKeyTMDP}&language=en-US`)
+                    .then(response => response.json())
+                    .then((data) => {
+                        $(`#listCardImages_${list.id}`).append(`
+                            <img src="https://image.tmdb.org/t/p/original/${data.poster_path}" class="border border-1" alt="Movie Poster" style="position: absolute; left: ${i * 9}%; height: 8em; z-index: ${500 - (5 * i)}">
+                        `)
+                    })
+            }
+        }
     }
 
     function populateListModal(listId) {
@@ -430,7 +451,7 @@ $(document).ready(() => {
                         .then(response => response.json())
                         .then((data) => {
                             $(`#listModalMovies`).append(`
-                            <img src="https://image.tmdb.org/t/p/original/${data.poster_path}" class="border border-1" alt="Movie Poster" id="listContent_${content.id}" style="height: 10em" data-bs-toggle="modal" data-bs-target="#moreInfoModal">
+                            <img src="https://image.tmdb.org/t/p/original/${data.poster_path}" class="m-1" alt="Movie Poster" id="listContent_${content.id}" style="height: 10em" data-bs-toggle="modal" data-bs-target="#moreInfoModal">
                         `)
                             $(`#listContent_${content.id}`).click(function () {
                                 searchById(content.type, content.id);
@@ -494,23 +515,6 @@ $(document).ready(() => {
             }
         }
     }
-
-    Array.from(document.getElementsByClassName('showmodal')).forEach((e) => {
-        e.addEventListener('click', function (element) {
-            element.preventDefault();
-            if (e.hasAttribute('data-show-modal')) {
-                showModal(e.getAttribute('data-show-modal'));
-            }
-        });
-    });
-
-// Show modal dialog
-    function showModal(modal) {
-        const mid = document.getElementById(modal);
-        let myModal = new bootstrap.Modal(mid);
-        myModal.show();
-    }
-
 })
 
 

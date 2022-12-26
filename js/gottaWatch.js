@@ -67,11 +67,13 @@ $(document).ready(() => {
         $('#homePage').addClass('d-none');
         $('#listsPage').addClass('d-none');
         $('#searchResults').removeClass('d-none');
+        $('#profilePage').addClass('d-none');
     })
     $('#homeButton').click(() => {
         $('#homePage').removeClass('d-none');
         $('#searchResults').addClass('d-none');
         $('#listsPage').addClass('d-none');
+        $('#profilePage').addClass('d-none');
     })
     $('#movieSearchInputButton').click(function (e) {
         e.preventDefault();
@@ -84,6 +86,14 @@ $(document).ready(() => {
         $('#homePage').addClass('d-none');
         $('#searchResults').addClass('d-none');
         $('#listsPage').removeClass('d-none');
+        $('#profilePage').addClass('d-none');
+    })
+    $('#profileButton').click((e) => {
+        e.preventDefault();
+        $('#homePage').addClass('d-none');
+        $('#searchResults').addClass('d-none');
+        $('#listsPage').addClass('d-none');
+        $('#profilePage').removeClass('d-none');
     })
     $('#submitNewList').submit(function () {
         createNewList();

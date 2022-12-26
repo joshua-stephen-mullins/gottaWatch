@@ -29,9 +29,6 @@
                             <span class="visually-hidden">(current)</span>
                         </a>
                     </li>
-                    <!--                    <li class="nav-item">-->
-                    <!--                        <a class="nav-link" href="#">Features</a>-->
-                    <!--                    </li>-->
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                            aria-expanded="false">
@@ -44,16 +41,19 @@
                                 List</a></li>
                         </ul>
                     </li>
-                    <!--                    <li class="nav-item">-->
-                    <!--                        <a class="nav-link" href="#">About</a>-->
-                    <!--                    </li>-->
                 </ul>
-                <form class="d-flex">
-                    <button class="btn btn-secondary me-2 my-2 my-sm-0" id="profileButton"><i
+                <div class="d-flex dropdown">
+                    <button class="btn btn-secondary me-2 my-2 my-sm-0 dropdown-toggle" data-bs-toggle="dropdown" id="profileButton"><i
                             class="fa-solid fa-user"></i></button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#" id="listsButton">Lists Home</a></li>
+                        <li><a class="dropdown-item" data-bs-toggle="offcanvas" href="#offcanvasListCreate"
+                               role="button" aria-controls="offcanvasListCreate" id="createNewListButton">Create New
+                            List</a></li>
+                    </ul>
                     <button class="btn btn-secondary my-2 my-sm-0" id="movieSearchButton"><i
                             class="fa-solid fa-magnifying-glass"></i></button>
-                </form>
+                </div>
             </div>
         </div>
     </nav>
@@ -129,6 +129,16 @@
             <div id="popularLists">
                 <h1 class="text-center">Popular Lists</h1>
                 <div class="row m-0 p-0 justify-content-around" id="popularListsContainer">
+                </div>
+            </div>
+        </div>
+        <div class="row col-12 justify-content-center d-none" id="profilePage">
+            <div class="card text-white bg-success mb-3" style="max-width: 20rem;">
+                <div class="card-header">Header</div>
+                <div class="card-body">
+                    <h4 class="card-title">Success card title</h4>
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+                        card's content.</p>
                 </div>
             </div>
         </div>

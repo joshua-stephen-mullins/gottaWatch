@@ -369,8 +369,8 @@ $(document).ready(() => {
             </div>
         `)
         $(`#listCard_${list.id}`).click(function () {
-            console.log('click');
             console.log($(this).data("id"));
+            console.log('click');
             populateListModal($(this).data("id"));
         });
         if (list.content.length < 5) {
@@ -381,7 +381,7 @@ $(document).ready(() => {
                     .then((data) => {
                         // console.log(data);
                         $(`#listCardImages_${list.id}`).append(`
-                            <img src="https://image.tmdb.org/t/p/original/${data.poster_path}" class="border border-1" alt="Movie Poster" style="position: absolute; left: ${i * 65}px; height: 8em; z-index: ${500 - (5 * i)}" data-bs-toggle="modal" data-bs-target="#moreInfoModal">
+                            <img src="https://image.tmdb.org/t/p/original/${data.poster_path}" class="border border-1" alt="Movie Poster" style="position: absolute; left: ${i * 65}px; height: 8em; z-index: ${500 - (5 * i)}">
                         `)
                     })
             }
@@ -430,7 +430,7 @@ $(document).ready(() => {
                         .then(response => response.json())
                         .then((data) => {
                             $(`#listModalMovies`).append(`
-                            <img src="https://image.tmdb.org/t/p/original/${data.poster_path}" class="border border-1" alt="Movie Poster" id="listContent_${content.id}" style="height: 10em">
+                            <img src="https://image.tmdb.org/t/p/original/${data.poster_path}" class="border border-1" alt="Movie Poster" id="listContent_${content.id}" style="height: 10em" data-bs-toggle="modal" data-bs-target="#moreInfoModal">
                         `)
                             $(`#listContent_${content.id}`).click(function(){
                                 searchById(content.type, content.id);

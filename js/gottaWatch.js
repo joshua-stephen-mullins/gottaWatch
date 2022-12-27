@@ -224,16 +224,20 @@ $(document).ready(() => {
             // .then(response => console.log('Results by id', response)
             .then((data) => {
                 data.forEach(function (list) {
-                    let content = list.content;
-                    $('#addListList').append(`<li><button class="dropdown-item" id="listName_${list.id}" href="#" value="${list.id}">${list.list_name}</button></li>`);
-                    $(`#listName_${list.id}`).click(function () {
-                        let newContent = {
-                            id: ($('#listAddBtn').val()),
-                            type: searchType
-                        };
-                        content.push(newContent);
-                        addMovieToList(content, $(`#listName_${list.id}`).val());
-                    })
+                        console.log(user.createdLists);
+                    console.log(list.id);
+                    if (user.createdLists.includes(list.id)) {
+                        let content = list.content;
+                        $('#addListList').append(`<li><button class="dropdown-item" id="listName_${list.id}" href="#" value="${list.id}">${list.list_name}</button></li>`);
+                        $(`#listName_${list.id}`).click(function () {
+                            let newContent = {
+                                id: ($('#listAddBtn').val()),
+                                type: searchType
+                            };
+                            content.push(newContent);
+                            addMovieToList(content, $(`#listName_${list.id}`).val());
+                        })
+                    }
                 })
             })
     }
@@ -536,9 +540,10 @@ $(document).ready(() => {
                 if (password === userInfo.password){
                     user = userInfo;
                 }
-                $(`#userName`).html(`&nbsp;${user.id}`);
+                $(`#userName`).html(`&nbsp;${userInfo.id}`);
                 $(`#loginSection`).addClass('d-none');
                 $(`#myProfileButton`).removeClass('d-none');
+                console.log(user)
             })
             .catch(err => console.error(err))
     }

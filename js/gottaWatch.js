@@ -12,7 +12,7 @@ $(document).ready(() => {
         fetch(`https://api.themoviedb.org/3/${showType}/popular?api_key=${apiKeyTMDP}&language=en-US&page=1`)
             .then(response => response.json())
             .then((response) => {
-                console.log(`Results ${showType}`, response);
+                // console.log(`Results ${showType}`, response);
                 generateSmallCards(response, 5, location, showType);
             })
             .catch(err => console.error(err));
@@ -23,14 +23,13 @@ $(document).ready(() => {
             .then(response => response.json())
             // .then(response => console.log('Search Results', response))
             .then(response => {
-                console.log('Search Results', response);
+                // console.log('Search Results', response);
                 filterSearchData(response);
             })
             .catch(err => console.error(err));
     }
 
     function filterSearchData(data) {
-        console.log(data);
         let filteredData = [];
         let movieCounter = 0;
         let tvCounter = 0;
@@ -88,13 +87,13 @@ $(document).ready(() => {
         $('#listsPage').removeClass('d-none');
         $('#profilePage').addClass('d-none');
     })
-    $('#profileButton').click((e) => {
-        e.preventDefault();
-        $('#homePage').addClass('d-none');
-        $('#searchResults').addClass('d-none');
-        $('#listsPage').addClass('d-none');
-        $('#profilePage').removeClass('d-none');
-    })
+    // $('#profileButton').click((e) => {
+    //     e.preventDefault();
+    //     $('#homePage').addClass('d-none');
+    //     $('#searchResults').addClass('d-none');
+    //     $('#listsPage').addClass('d-none');
+    //     $('#profilePage').removeClass('d-none');
+    // })
     $('#submitNewList').submit(function () {
         createNewList();
     })
@@ -104,19 +103,16 @@ $(document).ready(() => {
     })
 
     function searchById(searchType, id) {
-        console.log(searchType);
         fetch(`https://api.themoviedb.org/3/${searchType}/${id}?api_key=${apiKeyTMDP}&language=en-US`)
             .then(response => response.json())
             // .then(response => console.log('Results by id', response)
             .then((data) => {
-                console.log(data);
                 moreInfo(data, searchType, id);
             })
             .catch(err => console.error(err));
     }
 
     function generateSearchResults(data) {
-        console.log(data);
         $(`#resultsContainer`).html('');
         for (let i = 0; i < data.length; i++) {
             $('#resultsContainer').append(`
@@ -227,17 +223,14 @@ $(document).ready(() => {
             .then(response => response.json())
             // .then(response => console.log('Results by id', response)
             .then((data) => {
-                console.log(data);
                 data.forEach(function (list) {
                     let content = list.content;
-                    console.log(list.content);
                     $('#addListList').append(`<li><button class="dropdown-item" id="listName_${list.id}" href="#" value="${list.id}">${list.list_name}</button></li>`);
                     $(`#listName_${list.id}`).click(function () {
                         let newContent = {
                             id: ($('#listAddBtn').val()),
                             type: searchType
                         };
-                        // content.id = ;
                         content.push(newContent);
                         addMovieToList(content, $(`#listName_${list.id}`).val());
                     })
@@ -524,6 +517,30 @@ $(document).ready(() => {
                 return genres[i].name;
             }
         }
+    }
+
+    $(`#loginSubmit`).click(function(e){
+        e.preventDefault();
+        login($('#usernameInput').val(), $('#passwordInput').val());
+    })
+
+
+    let user;
+
+    function login(username, password) {
+        fetch(`https://wave-kaput-giant.glitch.me/users/${username}`)
+            .then(response => response.json())
+            // .then(response => console.log('Results by id', response)
+            .then((userInfo) => {
+                console.log(userInfo);
+                if (password === userInfo.password){
+                    user = userInfo;
+                }
+                $(`#userName`).html(`&nbsp;${user.id}`);
+                $(`#loginSection`).addClass('d-none');
+                $(`#myProfileButton`).removeClass('d-none');
+            })
+            .catch(err => console.error(err))
     }
 })
 

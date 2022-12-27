@@ -268,6 +268,7 @@ $(document).ready(() => {
             date_created: date,
             last_edited: date,
             content: [],
+            creator: user.id,
             featured: 'n',
             likes: '0'
         }
@@ -369,6 +370,7 @@ $(document).ready(() => {
                 <div class="col-12">
                   <div class="card-body">
                     <h5 class="card-title">${list.list_name}</h5>
+                    <p>Created by: ${list.creator}</p>
                     <p class="card-text">${list.list_desc}</p>
                   </div>
                 </div>
@@ -452,6 +454,7 @@ $(document).ready(() => {
             .then((list) => {
                 console.log(list);
                 $(`#listModalTitle`).html(list.list_name);
+                $(`#listModalCreator`).html(list.creator);
                 $(`#listModalDescription`).html(list.list_desc);
                 list.content.forEach((content) => {
                     fetch(`https://api.themoviedb.org/3/${content.type}/${content.id}?api_key=${apiKeyTMDP}&language=en-US`)
@@ -543,6 +546,8 @@ $(document).ready(() => {
                 $(`#userName`).html(`&nbsp;${userInfo.id}`);
                 $(`#loginSection`).addClass('d-none');
                 $(`#myProfileButton`).removeClass('d-none');
+                $(`#createNewListButton`).removeClass('disabled');
+
                 console.log(user)
             })
             .catch(err => console.error(err))

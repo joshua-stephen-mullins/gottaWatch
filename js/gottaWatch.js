@@ -2,9 +2,6 @@
 
 $(document).ready(() => {
 
-    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
-    const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
-
     onLoad();
 
     function onLoad() {
@@ -465,11 +462,15 @@ $(document).ready(() => {
                         .then((data) => {
                                 if (content.type === 'movie') {
                                     $(`#listModalMovies`).append(`
-                            <img src="https://image.tmdb.org/t/p/original/${data.poster_path}" class="m-1" alt="Movie Poster" id="listContent_${content.id}" style="height: 10em" data-bs-toggle="modal tooltip" data-bs-target="#moreInfoModal" data-bs-placement="top" data-bs-title="${data.title}">
+                            <span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="${data.title}">
+                                <img src="https://image.tmdb.org/t/p/original/${data.poster_path}" class="m-1" alt="Movie Poster" id="listContent_${content.id}" style="height: 10em" data-bs-toggle="modal" data-bs-target="#moreInfoModal">
+                            </span>
                             `)
                                 } else {
                                     $(`#listModalMovies`).append(`
-                            <img src="https://image.tmdb.org/t/p/original/${data.poster_path}" class="m-1" alt="Movie Poster" id="listContent_${content.id}" style="height: 10em" data-bs-toggle="modal tooltip" data-bs-target="#moreInfoModal" data-bs-placement="top" data-bs-title="${data.name}">
+                            <span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="${data.title}">
+                                <img src="https://image.tmdb.org/t/p/original/${data.poster_path}" class="m-1" alt="Movie Poster" id="listContent_${content.id}" style="height: 10em" data-bs-toggle="modal" data-bs-target="#moreInfoModal">
+                            </span>
                             `)
                                 }
                                 $(`#listContent_${content.id}`).click(function () {

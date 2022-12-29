@@ -155,7 +155,7 @@
         </div>
         <div class="row col-12 justify-content-center d-none" id="listsPage">
             <div id="featuredLists">
-                <h1 class="text-center titleFont">FEATURED LISTS</h1>
+                <h1 class="text-center fw-bold titleFont">FEATURED LISTS</h1>
                 <div class="row m-0 p-0 justify-content-around" id="featuredListsContainer">
                 </div>
             </div>
@@ -184,9 +184,8 @@
     <div class="modal-dialog modal-dialog-centered" id="moreInfoModalDialog" role="document">
         <div class="modal-content justify-content-around bg-dark">
             <div class="modal-header">
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true"></span>
-                </button>
+                <button type="button" class="" id="backToListButton" data-bs-toggle="modal" data-bs-target="#listModal"></button>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body row">
                 <div class="col-3">
@@ -217,7 +216,7 @@
 </div>
 
 <!--list modal-->
-<div class="modal modal-xl fade" id="listModal" data-bs-backdrop="static" tabindex="-1"
+<div class="modal modal-xl fade" id="listModal" tabindex="-1"
      aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" id="listModalDialog">
         <div class="row modal-content m-0 p-0">
@@ -225,16 +224,18 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body p-0">
-                <h1 class="modal-title" id="listModalTitle"></h1>
-                <h2 class="text-muted listLiked">Created by: <span id="listModalCreator"></span> |
+                <h1 class="modal-title ps-5 pe-5 ms-2 me-2" id="listModalTitle"></h1>
+                <h2 class="ps-5 pe-5 ms-2 me-2 text-muted listLiked">Created by: <span id="listModalCreator"></span> |
                     <input type="checkbox" class="loginRequired disabled" id="listLikeButton" disabled>
                     <label for="listLikeButton"><i class="fa-solid fa-heart"></i></label>
                     <span id="listLike"></span> Likes
                 </h2>
-                <h3 id="listModalDescription"></h3>
+                <h3 class="ps-5 pe-5ms-2 me-2 " id="listModalDescription"></h3>
             </div>
-            <div class="p-0 d-flex flex-wrap justify-content-evenly" id="listModalMovies">
+            <div class="p-5 d-flex flex-wrap justify-content-evenly" id="listModalMovies">
             </div>
+            <hr>
+            <h2>Comments</h2>
         </div>
     </div>
 </div>

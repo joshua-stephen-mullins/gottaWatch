@@ -488,6 +488,14 @@ $(document).ready(() => {
         }
     }
 
+
+    function showBackToListButton(){
+        $(`#backToListButton`).removeClass('d-none');
+    }
+    function hideBackToListButton(){
+        $(`#backToListButton`).addClass('d-none');
+    }
+
     function populateListModal(listId) {
         $('#listModalMovies').html('');
         fetch(`https://daffy-tasteful-brownie.glitch.me/lists/${listId}`)
@@ -508,19 +516,16 @@ $(document).ready(() => {
                         .then((data) => {
                                 if (content.type === 'movie') {
                                     $(`#listModalMovies`).append(`
-                            <span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="${data.title}">
-                                <img src="https://image.tmdb.org/t/p/original/${data.poster_path}" class="m-1" alt="Movie Poster" id="listContent_${content.id}" style="height: 10em" data-bs-toggle="modal" data-bs-target="#moreInfoModal">
-                            </span>
+                                <img src="https://image.tmdb.org/t/p/original/${data.poster_path}" class="m-2 rounded-1" alt="Movie Poster" id="listContent_${content.id}" style="height: 20em" data-bs-toggle="modal" data-bs-target="#moreInfoModal">
                             `)
                                 } else {
                                     $(`#listModalMovies`).append(`
-                            <span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="${data.title}">
-                                <img src="https://image.tmdb.org/t/p/original/${data.poster_path}" class="m-1" alt="Movie Poster" id="listContent_${content.id}" style="height: 10em" data-bs-toggle="modal" data-bs-target="#moreInfoModal">
-                            </span>
+                                <img src="https://image.tmdb.org/t/p/original/${data.poster_path}" class="m-2 rounded-1" alt="Movie Poster" id="listContent_${content.id}" style="height: 20em" data-bs-toggle="modal" data-bs-target="#moreInfoModal">
                             `)
                                 }
                                 $(`#listContent_${content.id}`).click(function () {
                                     searchById(content.type, content.id);
+                                    showBackToListButton();
                                 })
                                 $(`#listContent_${content.id}`).hover(
                                     function () {

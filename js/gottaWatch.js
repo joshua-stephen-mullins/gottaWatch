@@ -456,6 +456,7 @@ $(document).ready(() => {
                 $(`#listModalTitle`).html(list.list_name);
                 $(`#listModalCreator`).html(list.creator);
                 $(`#listModalDescription`).html(list.list_desc);
+                $(`#listLike`).html(`&nbsp;${list.likes}`);
                 list.content.forEach((content) => {
                     fetch(`https://api.themoviedb.org/3/${content.type}/${content.id}?api_key=${apiKeyTMDP}&language=en-US`)
                         .then(response => response.json())

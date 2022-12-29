@@ -68,12 +68,22 @@ $(document).ready(() => {
         $('#listsPage').addClass('d-none');
         $('#searchResults').removeClass('d-none');
         $('#profilePage').addClass('d-none');
+        $('#discoverPage').addClass('d-none');
     })
     $('#homeButton').click(() => {
         $('#homePage').removeClass('d-none');
         $('#searchResults').addClass('d-none');
         $('#listsPage').addClass('d-none');
         $('#profilePage').addClass('d-none');
+        $('#discoverPage').addClass('d-none');
+    })
+    $('#discoverButton').click((e) => {
+        e.preventDefault();
+        $('#homePage').addClass('d-none');
+        $('#searchResults').addClass('d-none');
+        $('#listsPage').addClass('d-none');
+        $('#profilePage').addClass('d-none');
+        $('#discoverPage').removeClass('d-none');
     })
     $('#movieSearchInputButton').click(function (e) {
         e.preventDefault();
@@ -87,6 +97,7 @@ $(document).ready(() => {
         $('#searchResults').addClass('d-none');
         $('#listsPage').removeClass('d-none');
         $('#profilePage').addClass('d-none');
+        $('#discoverPage').addClass('d-none');
     })
     // $('#profileButton').click((e) => {
     //     e.preventDefault();
@@ -480,9 +491,9 @@ $(document).ready(() => {
                 $(`#listModalCreator`).html(list.creator);
                 $(`#listModalDescription`).html(list.list_desc);
                 $(`#listLike`).html(`${list.likes}`);
-                // if (user.id !== undefined) {
-                //     $(`#listLikeButton`).removeClass('disabled');
-                // }
+                if (user.hasOwnProperty('id')) {
+                    $(`#listLikeButton`).removeClass('disabled').removeAttr('disabled');
+                }
                 list.content.forEach((content) => {
                     fetch(`https://api.themoviedb.org/3/${content.type}/${content.id}?api_key=${apiKeyTMDP}&language=en-US`)
                         .then(response => response.json())
@@ -578,7 +589,7 @@ $(document).ready(() => {
     })
 
 
-    let user;
+    let user = {};
 
     function login(username, password) {
         fetch(`https://wave-kaput-giant.glitch.me/users/${username}`)
@@ -603,6 +614,8 @@ $(document).ready(() => {
 
 // remove unused or blank fields from showing in moreinfo modal
 //
-// like buttons
+// like button functionality
 //
-// login
+// create new user
+//
+// discover tab and create home

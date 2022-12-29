@@ -1,3 +1,11 @@
+.titleFont {
+    font-family: 'Audiowide', cursive;
+}
+
+.titleFont2 {
+    font-family: 'Lekton', sans-serif;
+}
+
 #moreInfoModal {
     z-index: 2001 !important;
 }

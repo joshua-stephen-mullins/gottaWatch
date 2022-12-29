@@ -11,38 +11,43 @@
     <link rel="stylesheet" href="css/gottaWatch.css">
     <!--    font awesome icons-->
     <script src="https://kit.fontawesome.com/2a42ed463e.js" crossorigin="anonymous"></script>
+    <!--    google fonts-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Lekton:ital,wght@0,400;0,700;1,400&display=swap"
+          rel="stylesheet">
 </head>
 <body>
 <!--NAVBAR-->
 <div class="row justify-content-center p-0 m-0" id="mainPageBody">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
-            <img src="img/gotta-watch-logo-zip-file/png/logo-no-background.png" alt="gotta Watch logo" id="navbarLogo">
+            <img src="img/logo-no-background.png" alt="gotta Watch logo" id="navbarLogo">
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01"
                     aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarColor01">
-                <ul class="navbar-nav me-auto">
+                <ul class="navbar-nav me-auto titleFont2">
                     <li class="nav-item">
-                        <a class="nav-link active" href="#" id="homeButton">Home
+                        <a class="nav-link active" href="#" id="homeButton">HOME
                             <span class="visually-hidden">(current)</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#" id="discoverButton">Discover</a>
+                        <a class="nav-link" href="#" id="discoverButton">DISCOVER</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                            aria-expanded="false">
-                            Lists
+                            LISTS
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#" id="listsButton">Lists Home</a></li>
+                            <li><a class="dropdown-item" href="#" id="listsButton">LISTS HOME</a></li>
                             <li><a class="dropdown-item loginRequired disabled" data-bs-toggle="offcanvas"
                                    href="#offcanvasListCreate"
-                                   role="button" aria-controls="offcanvasListCreate" id="createNewListButton">Create New
-                                List</a></li>
+                                   role="button" aria-controls="offcanvasListCreate" id="createNewListButton">CREATE NEW
+                                LIST</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -63,6 +68,11 @@
                                     <div class="d-flex justify-content-center">
                                         <button type="button" class="btn btn-danger" id="loginSubmit">Login</button>
                                     </div>
+                                    <div class="d-flex justify-content-center">
+                                        <button type="button" class="btn btn-info" id="createAccountButton">Create
+                                            Account
+                                        </button>
+                                    </div>
                                 </div>
                             </form>
                         </li>
@@ -76,7 +86,13 @@
         </div>
     </nav>
     <main class="row justify-content-center col-10 m-0 p-0">
-        <div id="homePage">
+        <div class="row justify-content-center p-0 m-0" id="homePage">
+            <div class="bg-danger col-12 border border-5 border-warning m-5 rounded-5">
+                <h1 class="titleFont">GOTTA WATCH</h1>
+                <h2>create curated lists of movies/shows to share with the world</h2>
+            </div>
+        </div>
+        <div class="d-none" id="discoverPage">
             <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
                 <li class="nav-item" role="presentation">
                     <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill"
@@ -140,12 +156,12 @@
         </div>
         <div class="row col-12 justify-content-center d-none" id="listsPage">
             <div id="featuredLists">
-                <h1 class="text-center">Featured Lists</h1>
+                <h1 class="text-center titleFont">Featured Lists</h1>
                 <div class="row m-0 p-0 justify-content-around" id="featuredListsContainer">
                 </div>
             </div>
             <div id="popularLists">
-                <h1 class="text-center">Popular Lists</h1>
+                <h1 class="text-center fw-bold titleFont2">Popular Lists</h1>
                 <div class="row m-0 p-0 justify-content-around" id="popularListsContainer">
                 </div>
             </div>
@@ -212,8 +228,8 @@
             <div class="modal-body p-0">
                 <h1 class="modal-title" id="listModalTitle"></h1>
                 <h2 class="text-muted listLiked">Created by: <span id="listModalCreator"></span> |
-                        <input type="checkbox" class="loginRequired disabled" id="listLikeButton" disabled>
-                        <label for="listLikeButton"><i class="fa-solid fa-heart"></i></label>
+                    <input type="checkbox" class="loginRequired disabled" id="listLikeButton" disabled>
+                    <label for="listLikeButton"><i class="fa-solid fa-heart"></i></label>
                     <span id="listLike"></span> Likes
                 </h2>
                 <h3 id="listModalDescription"></h3>

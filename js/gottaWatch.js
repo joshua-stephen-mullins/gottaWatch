@@ -402,7 +402,7 @@ $(document).ready(() => {
                 </div>
                 <div class="col-12">
                   <div class="">
-                    <h5 class="">${list.list_name}</h5>
+                    <h5>${list.list_name}</h5>
                     <p>Created by: ${list.creator} | <i class="fa-solid fa-heart"></i> ${list.likes}</p>
                   </div>
                 </div>
@@ -438,23 +438,31 @@ $(document).ready(() => {
 
     function generatePopularListsCards(list) {
         $('#popularListsContainer').append(`
-            <div class="card mb-3 col-6 border-0" id="listCard_${list.id}" data-bs-toggle="modal" data-bs-target="#listModal" data-id="${list.id}"">
+            <div class="card col-9 m-1 border-0" id="listCard_${list.id}" data-bs-toggle="modal" data-bs-target="#listModal" data-id="${list.id}">
               <div class="row g-0">
-                <div class="col-6 listCardFeatured" id="listCardImages_${list.id}">
+                <div class="col-7 listCardPopular" id="listCardImages_${list.id}">
                 </div>
-                <div class="col-6">
-                  <div class="">
-                    <h5 class="">${list.list_name}</h5>
+                <div class="col-5">
+                  <div>
+                    <h5>${list.list_name}</h5>
                     <p>Created by: ${list.creator}  |  <i class="fa-solid fa-heart"></i> ${list.likes}</p>
                     <p class="" id="listCard_desc${list.id}"></p>
                   </div>
                 </div>
               </div>
             </div>
+            <div class="col-9">
+            <hr>
+            </div>
         `)
         $(`#listCard_${list.id}`).click(function () {
             populateListModal($(this).data("id"));
-        });
+        }).hover(function () {
+                $(`#listCard_${list.id}`).addClass('bg-danger');
+            },
+            function () {
+                $(`#listCard_${list.id}`).removeClass('bg-danger');
+            });
         (list.list_desc.length > 100) ? $(`#listCard_desc${list.id}`).html(list.list_desc.slice(0, 100) + "...") : $(`#listCard_desc${list.id}`).html(list.list_desc);
         if (list.content.length < 5) {
             for (let i = 0; i < list.content.length; i++) {

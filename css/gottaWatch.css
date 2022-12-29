@@ -2,9 +2,9 @@
     font-family: 'Audiowide', cursive;
 }
 
-.titleFont2 {
-    font-family: 'Lekton', sans-serif;
-}
+/*body {*/
+/*    font-family: 'Lekton', sans-serif;*/
+/*}*/
 
 #moreInfoModal {
     z-index: 2001 !important;
@@ -24,7 +24,7 @@
 
 .smallCard {
     font-size: .6em !important;
-    width: 10%;
+    width: 15%;
 }
 
 .smallCard h5 {

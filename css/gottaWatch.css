@@ -35,3 +35,38 @@
 .listCardFeatured {
     height: 8em;
 }
+
+.listLiked input[type="checkbox"][id^="listLikeButton"] {
+    display: none;
+}
+
+.listLiked label {
+    position: relative;
+    cursor: pointer;
+}
+
+.listLiked label:before {
+    background-color: white;
+    color: white;
+    content: " ";
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    width: 25px;
+    height: 25px;
+    text-align: center;
+    line-height: 28px;
+    transition-duration: 0.4s;
+    transform: scale(0);
+}
+
+.listLiked label i {
+    transition-duration: 0.2s;
+    transform-origin: 50% 50%;
+}
+
+.listLiked :checked + label i {
+    transform: scale(1.1);
+    color: #3bf282;
+    z-index: -1;
+}

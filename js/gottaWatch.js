@@ -242,8 +242,10 @@ $(document).ready(() => {
     }
 
     function addMovieToList(data, listId) {
+        let date = new Date().toISOString().slice(0, 10)
         let updateContent = {
-            content: data
+            content: data,
+            last_edited: date
         }
         const url = 'https://daffy-tasteful-brownie.glitch.me/lists/' + listId;
         const options = {
@@ -280,8 +282,29 @@ $(document).ready(() => {
             body: JSON.stringify(newList)
         };
         fetch(url, options)
-            .then(response => response.json()).then(data => console.log(data))
+            .then(response => response.json()).then(data => {
+            console.log(data);
+            console.log(user);
+            let userUpdate = {
+                createdLists: user.createdLists
+            }
+            userUpdate.createdLists.push(data.id);
+            const url2 = `https://wave-kaput-giant.glitch.me/users/${user.id}`;
+            const options2 = {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(userUpdate)
+            };
+            fetch(url2, options2)
+                .then(response => response.json()).then(data => {
+                console.log(data);
+            })
+                .catch(error => console.error(error));
+        })
             .catch(error => console.error(error));
+        populateListsHome();
     }
 
     function generateSmallCards(showInfo, numberOfCards, container, showType) {
@@ -362,7 +385,7 @@ $(document).ready(() => {
 
     function generateFeaturedListsCards(list) {
         $('#featuredListsContainer').append(`
-            <div class="card mb-3 col-4 border border-1 listCard" id="listCard_${list.id}" data-bs-toggle="modal" data-bs-target="#listModal" data-id="${list.id}">
+            <div class="card mb-3 col-4 listCard border-0" id="listCard_${list.id}" data-bs-toggle="modal" data-bs-target="#listModal" data-id="${list.id}">
               <div class="row g-0">
                 <div class="col-12 listCardFeatured" id="listCardImages_${list.id}">
                 </div>
@@ -370,7 +393,6 @@ $(document).ready(() => {
                   <div class="">
                     <h5 class="">${list.list_name}</h5>
                     <p>Created by: ${list.creator} | <i class="fa-solid fa-heart"></i> ${list.likes}</p>
-                    <p class="">${list.list_desc}</p>
                   </div>
                 </div>
               </div>
@@ -405,15 +427,15 @@ $(document).ready(() => {
 
     function generatePopularListsCards(list) {
         $('#popularListsContainer').append(`
-            <div class="card mb-3 col-6 border border-1" id="listCard_${list.id}" data-bs-toggle="modal" data-bs-target="#listModal" data-id="${list.id}"">
+            <div class="card mb-3 col-6 border-0" id="listCard_${list.id}" data-bs-toggle="modal" data-bs-target="#listModal" data-id="${list.id}"">
               <div class="row g-0">
-                <div class="col-6 listCardFeatured" id="listCardImages_${list.id}"">
+                <div class="col-6 listCardFeatured" id="listCardImages_${list.id}">
                 </div>
                 <div class="col-6">
-                  <div class="card-body">
-                    <h5 class="card-title">${list.list_name}</h5>
-                    <p>Created by: ${list.creator} | <i class="fa-solid fa-heart"></i> ${list.likes}</p>
-                    <p class="card-text">${list.list_desc}</p>
+                  <div class="">
+                    <h5 class="">${list.list_name}</h5>
+                    <p>Created by: ${list.creator}  |  <i class="fa-solid fa-heart"></i> ${list.likes}</p>
+                    <p class="" id="listCard_desc${list.id}"></p>
                   </div>
                 </div>
               </div>
@@ -422,6 +444,7 @@ $(document).ready(() => {
         $(`#listCard_${list.id}`).click(function () {
             populateListModal($(this).data("id"));
         });
+        (list.list_desc.length > 100) ? $(`#listCard_desc${list.id}`).html(list.list_desc.slice(0, 100) + "...") : $(`#listCard_desc${list.id}`).html(list.list_desc);
         if (list.content.length < 5) {
             for (let i = 0; i < list.content.length; i++) {
                 fetch(`https://api.themoviedb.org/3/${list.content[i].type}/${list.content[i].id}?api_key=${apiKeyTMDP}&language=en-US`)
@@ -457,6 +480,9 @@ $(document).ready(() => {
                 $(`#listModalCreator`).html(list.creator);
                 $(`#listModalDescription`).html(list.list_desc);
                 $(`#listLike`).html(`${list.likes}`);
+                // if (user.id !== undefined) {
+                //     $(`#listLikeButton`).removeClass('disabled');
+                // }
                 list.content.forEach((content) => {
                     fetch(`https://api.themoviedb.org/3/${content.type}/${content.id}?api_key=${apiKeyTMDP}&language=en-US`)
                         .then(response => response.json())
@@ -567,9 +593,6 @@ $(document).ready(() => {
                 $(`#loginSection`).addClass('d-none');
                 $(`#myProfileButton`).removeClass('d-none');
                 $(`#createNewListButton`).removeClass('disabled');
-                $(`#listLikeButton`).removeClass('disabled');
-
-                console.log(user)
             })
             .catch(err => console.error(err))
     }

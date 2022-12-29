@@ -367,10 +367,10 @@ $(document).ready(() => {
                 <div class="col-12 listCardFeatured" id="listCardImages_${list.id}">
                 </div>
                 <div class="col-12">
-                  <div class="card-body">
-                    <h5 class="card-title">${list.list_name}</h5>
-                    <p>Created by: ${list.creator}</p>
-                    <p class="card-text">${list.list_desc}</p>
+                  <div class="">
+                    <h5 class="">${list.list_name}</h5>
+                    <p>Created by: ${list.creator} | <i class="fa-solid fa-heart"></i> ${list.likes}</p>
+                    <p class="">${list.list_desc}</p>
                   </div>
                 </div>
               </div>
@@ -412,7 +412,7 @@ $(document).ready(() => {
                 <div class="col-6">
                   <div class="card-body">
                     <h5 class="card-title">${list.list_name}</h5>
-                    <p>Created by: ${list.creator}</p>
+                    <p>Created by: ${list.creator} | <i class="fa-solid fa-heart"></i> ${list.likes}</p>
                     <p class="card-text">${list.list_desc}</p>
                   </div>
                 </div>

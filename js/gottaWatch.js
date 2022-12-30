@@ -497,6 +497,7 @@ $(document).ready(() => {
 
     function populateListModal(listId) {
         $('#listModalMovies').html('');
+        $(`#listModalComments`).html('');
         fetch(`https://daffy-tasteful-brownie.glitch.me/lists/${listId}`)
             .then(response => response.json())
             // .then(response => console.log('Results by id', response)
@@ -506,9 +507,24 @@ $(document).ready(() => {
                 $(`#listModalCreator`).html(list.creator);
                 $(`#listModalDescription`).html(list.list_desc);
                 $(`#listLike`).html(`${list.likes}`);
+                $(`#listCommentCounter`).html(`${list.comments.length}`);
                 if (user.hasOwnProperty('id')) {
                     $(`#listLikeButton`).removeClass('disabled').removeAttr('disabled');
                 }
+                list.comments.forEach(function (comment) {
+                    $(`#listModalComments`).append(`
+                        <div class="row p-0 m-0">
+                            <div class="col-3">
+                                <p>${comment.user}</p>
+                                <p>${comment.date}</p>
+                            </div>
+                            <div class="col-8">
+                                <p>${comment.comment}</p>
+                            </div>
+                        </div>
+                        <hr>
+                    `)
+                })
                 list.content.forEach((content) => {
                     fetch(`https://api.themoviedb.org/3/${content.type}/${content.id}?api_key=${apiKeyTMDP}&language=en-US`)
                         .then(response => response.json())

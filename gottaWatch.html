@@ -60,7 +60,8 @@
                             <form>
                                 <div class="form-group m-1">
                                     <label for="usernameInput" class="form-label mt-1">Username</label>
-                                    <input type="text" class="form-control" id="usernameInput" placeholder="Enter Username" required>
+                                    <input type="text" class="form-control" id="usernameInput"
+                                           placeholder="Enter Username" required>
                                     <label for="passwordInput" class="form-label mt-1">Password</label>
                                     <input type="password" class="form-control" id="passwordInput"
                                            placeholder="Password">
@@ -79,7 +80,8 @@
                             Profile</a></li>
                     </ul>
                     <button class="btn btn-secondary my-2 my-sm-0" id="movieSearchButton"><i
-                            class="fa-solid fa-magnifying-glass"></i> SEARCH</button>
+                            class="fa-solid fa-magnifying-glass"></i> SEARCH
+                    </button>
                 </div>
             </div>
         </div>
@@ -184,8 +186,11 @@
     <div class="modal-dialog modal-dialog-centered" id="moreInfoModalDialog" role="document">
         <div class="modal-content justify-content-around bg-dark">
             <div class="modal-header">
-                <button type="button" class="" id="backToListButton" data-bs-toggle="modal" data-bs-target="#listModal"><i class="fa-solid fa-left-long"></i> BACK TO LIST</button>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="" id="backToListButton" data-bs-toggle="modal" data-bs-target="#listModal">
+                    <i class="fa-solid fa-left-long"></i> BACK TO LIST
+                </button>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
             </div>
             <div class="modal-body row">
                 <div class="col-3">
@@ -228,14 +233,17 @@
                 <h2 class="ps-5 pe-5 ms-2 me-2 text-muted listLiked">Created by: <span id="listModalCreator"></span> |
                     <input type="checkbox" class="loginRequired disabled" id="listLikeButton" disabled>
                     <label for="listLikeButton"><i class="fa-solid fa-heart"></i></label>
-                    <span id="listLike"></span> Likes
+                    <span id="listLike"></span> Likes | <i class="fa-solid fa-comment"></i> <span
+                            id="listCommentCounter"></span> Comments
                 </h2>
-                <h3 class="ps-5 pe-5ms-2 me-2 " id="listModalDescription"></h3>
+                <h3 class="ps-5 pe-5 ms-2 me-2" id="listModalDescription"></h3>
             </div>
             <div class="p-5 d-flex flex-wrap justify-content-evenly" id="listModalMovies">
             </div>
             <hr>
-            <h2>Comments</h2>
+            <h1 class="text-center">COMMENTS</h1>
+            <div class="row m-0 p-0" id="listModalComments">
+            </div>
         </div>
     </div>
 </div>

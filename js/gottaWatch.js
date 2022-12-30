@@ -490,13 +490,18 @@ $(document).ready(() => {
     function showBackToListButton() {
         $(`#backToListButton`).removeClass('d-none');
     }
+
     function hideBackToListButton() {
         $(`#backToListButton`).addClass('d-none');
     }
 
+
+    let listModalComments;
+
     function populateListModal(listId) {
         $('#listModalMovies').html('');
         $(`#listModalComments`).html('');
+        $(``)
         fetch(`https://daffy-tasteful-brownie.glitch.me/lists/${listId}`)
             .then(response => response.json())
             // .then(response => console.log('Results by id', response)
@@ -509,6 +514,7 @@ $(document).ready(() => {
                 if (user.hasOwnProperty('id')) {
                     $(`#listLikeButton`).removeClass('disabled').removeAttr('disabled');
                 }
+                listModalComments = list.comments;
                 list.comments.forEach(function (comment) {
                     $(`#listModalComments`).append(`
                         <div class="row col-7 p-0 m-0">
@@ -555,6 +561,28 @@ $(document).ready(() => {
                 })
             })
 
+    }
+
+    function submitComment() {
+        let date = new Date().toISOString().slice(0, 10)
+        let newComment = {
+            user: user.id,
+            comment: $(`#commentSubmission`).val(),
+            date: date
+        }
+        listModalComments.push(newComment);
+        const url = 'https://daffy-tasteful-brownie.glitch.me/lists/';
+        const options = {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(listModalComments)
+        };
+        fetch(url, options)
+            .then(response => response.json()).then(data => {
+            console.log(data);
+        })
     }
 
     function toHoursAndMinutes(totalMinutes) {
@@ -647,3 +675,5 @@ $(document).ready(() => {
 // create new user
 //
 // discover tab and create home
+
+// remove anchor styling from comments list modal

@@ -490,7 +490,6 @@ $(document).ready(() => {
     function showBackToListButton() {
         $(`#backToListButton`).removeClass('d-none');
     }
-
     function hideBackToListButton() {
         $(`#backToListButton`).addClass('d-none');
     }
@@ -502,7 +501,6 @@ $(document).ready(() => {
             .then(response => response.json())
             // .then(response => console.log('Results by id', response)
             .then((list) => {
-                console.log(list);
                 $(`#listModalTitle`).html(list.list_name);
                 $(`#listModalCreator`).html(list.creator);
                 $(`#listModalDescription`).html(list.list_desc);
@@ -513,7 +511,7 @@ $(document).ready(() => {
                 }
                 list.comments.forEach(function (comment) {
                     $(`#listModalComments`).append(`
-                        <div class="row p-0 m-0">
+                        <div class="row col-7 p-0 m-0">
                             <div class="col-3">
                                 <p>${comment.user}</p>
                                 <p>${comment.date}</p>
@@ -522,7 +520,9 @@ $(document).ready(() => {
                                 <p>${comment.comment}</p>
                             </div>
                         </div>
+                        <div class="col-6">
                         <hr>
+                        </div>
                     `)
                 })
                 list.content.forEach((content) => {

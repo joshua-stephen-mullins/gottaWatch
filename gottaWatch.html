@@ -224,25 +224,24 @@
 <div class="modal modal-xl fade" id="listModal" tabindex="-1"
      aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" id="listModalDialog">
-        <div class="row modal-content m-0 p-0">
+        <div class="row modal-content m-0 p-0 bg-dark">
             <div class="col-12 modal-header">
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body p-0">
                 <h1 class="modal-title ps-5 pe-5 ms-2 me-2" id="listModalTitle"></h1>
                 <h2 class="ps-5 pe-5 ms-2 me-2 text-muted listLiked">Created by: <span id="listModalCreator"></span> |
                     <input type="checkbox" class="loginRequired disabled" id="listLikeButton" disabled>
                     <label for="listLikeButton"><i class="fa-solid fa-heart"></i></label>
-                    <span id="listLike"></span> Likes | <i class="fa-solid fa-comment"></i> <span
-                            id="listCommentCounter"></span> Comments
+                    <span id="listLike"></span> Likes | <a href="#listModalComments"><i class="fa-solid fa-comment"></i> <span
+                            id="listCommentCounter"></span> Comments</a>
                 </h2>
                 <h3 class="ps-5 pe-5 ms-2 me-2" id="listModalDescription"></h3>
             </div>
             <div class="p-5 d-flex flex-wrap justify-content-evenly" id="listModalMovies">
             </div>
-            <hr>
             <h1 class="text-center">COMMENTS</h1>
-            <div class="row m-0 p-0" id="listModalComments">
+            <div class="row m-0 p-0 justify-content-center" id="listModalComments">
             </div>
         </div>
     </div>

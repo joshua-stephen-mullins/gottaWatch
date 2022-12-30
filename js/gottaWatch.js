@@ -496,7 +496,7 @@ $(document).ready(() => {
     }
 
 
-    let comments;
+    let commentsUpdate;
 
     function populateListModal(listId) {
         $('#listModalMovies').html('');
@@ -514,7 +514,9 @@ $(document).ready(() => {
                 if (user.hasOwnProperty('id')) {
                     $(`#listLikeButton`).removeClass('disabled').removeAttr('disabled');
                 }
-                comments = list.comments;
+                commentsUpdate = {
+                    comments: list.comments
+                };
                 list.comments.forEach(function (comment) {
                     $(`#listModalComments`).append(`
                         <div class="row col-7 p-0 m-0">
@@ -565,7 +567,10 @@ $(document).ready(() => {
 
     $(`#addCommentSection`).submit(function(){
         submitComment();
-        populateListModal($(`#listModal`).data('data-list-id'));
+        setTimeout(function(){
+            populateListsHome();
+            populateListModal($(`#listModal`).data('data-list-id'));
+        },1000)
     })
 
     function submitComment() {
@@ -575,15 +580,14 @@ $(document).ready(() => {
             comment: $(`#commentSubmission`).val(),
             date: date
         }
-        comments.push(newComment);
-        console.log(comments);
+        commentsUpdate.comments.push(newComment);
         const url = `https://daffy-tasteful-brownie.glitch.me/lists/${$(`#listModal`).data('data-list-id')}`;
         const options = {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(comments)
+            body: JSON.stringify(commentsUpdate)
         };
         fetch(url, options)
             .then(response => response.json()).then(data => {

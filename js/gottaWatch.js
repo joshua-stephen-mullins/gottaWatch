@@ -496,12 +496,12 @@ $(document).ready(() => {
     }
 
 
-    let listModalComments;
+    let comments;
 
     function populateListModal(listId) {
         $('#listModalMovies').html('');
         $(`#listModalComments`).html('');
-        $(``)
+        $(`#listModal`).data('data-list-id', listId);
         fetch(`https://daffy-tasteful-brownie.glitch.me/lists/${listId}`)
             .then(response => response.json())
             // .then(response => console.log('Results by id', response)
@@ -514,7 +514,7 @@ $(document).ready(() => {
                 if (user.hasOwnProperty('id')) {
                     $(`#listLikeButton`).removeClass('disabled').removeAttr('disabled');
                 }
-                listModalComments = list.comments;
+                comments = list.comments;
                 list.comments.forEach(function (comment) {
                     $(`#listModalComments`).append(`
                         <div class="row col-7 p-0 m-0">
@@ -563,6 +563,11 @@ $(document).ready(() => {
 
     }
 
+    $(`#addCommentSection`).submit(function(){
+        submitComment();
+        populateListModal($(`#listModal`).data('data-list-id'));
+    })
+
     function submitComment() {
         let date = new Date().toISOString().slice(0, 10)
         let newComment = {
@@ -570,14 +575,15 @@ $(document).ready(() => {
             comment: $(`#commentSubmission`).val(),
             date: date
         }
-        listModalComments.push(newComment);
-        const url = 'https://daffy-tasteful-brownie.glitch.me/lists/';
+        comments.push(newComment);
+        console.log(comments);
+        const url = `https://daffy-tasteful-brownie.glitch.me/lists/${$(`#listModal`).data('data-list-id')}`;
         const options = {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(listModalComments)
+            body: JSON.stringify(comments)
         };
         fetch(url, options)
             .then(response => response.json()).then(data => {

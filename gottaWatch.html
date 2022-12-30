@@ -229,7 +229,7 @@
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
                         aria-label="Close"></button>
             </div>
-            <div class="modal-body p-0" data-list-id="">
+            <div class="modal-body p-0">
                 <h1 class="modal-title ps-5 pe-5 ms-2 me-2" id="listModalTitle"></h1>
                 <h2 class="ps-5 pe-5 ms-2 me-2 text-muted listLiked">Created by: <span id="listModalCreator"></span> |
                     <input type="checkbox" class="loginRequired disabled" id="listLikeButton" disabled>
@@ -244,16 +244,16 @@
             </div>
             <div class="row justify-content-center" id="commentSection">
                 <h1 class="text-center">COMMENTS <button type="button" class="btn btn-success btn-sm" id="showAddCommentSection"><i class="fa-solid fa-pen-to-square"></i></button></h1>
-                <div class="row justify-content-center col-7" id="addCommentSection">
+                <form class="row justify-content-center col-7" id="addCommentSection">
                     <h2 class="text-center">ADD A COMMENT</h2>
                     <div class="form-group">
                         <textarea class="form-control rounded-1" id="commentSubmission" rows="3"></textarea>
                     </div>
                     <div class="row justify-content-end">
                         <button type="button" class="btn btn-danger col-2" id="commentCancelButton">Cancel</button>
-                        <button type="button" class="btn btn-success col-2" id="commentSubmitButton">Comment</button>
+                        <button type="submit" class="btn btn-success col-2" id="commentSubmitButton">Comment</button>
                     </div>
-                </div>
+                </form>
                 <div class="row m-0 p-0 justify-content-center" id="listModalComments">
                 </div>
             </div>

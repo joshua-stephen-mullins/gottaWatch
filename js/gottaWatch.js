@@ -156,7 +156,10 @@ $(document).ready(() => {
             if (data[i].hasOwnProperty('biography')) {
                 (data[i].biography.length > 310) ? $(`.searchResultOverview_${data[i].id}`).html(data[i].biography.slice(0, 310) + "...") : $(`.searchResultOverview_${data[i].id}`).html(data[i].biography);
             }
-            $(`#searchResult_${data[i].id}`).click(() => searchById(data[i].media_type, data[i].id));
+            $(`#searchResult_${data[i].id}`).click(() => {
+                searchById(data[i].media_type, data[i].id);
+                hideBackToListButton();
+            });
         }
     }
 
@@ -166,7 +169,6 @@ $(document).ready(() => {
         $('#moreInfoCast').html('');
         $('#moreInfoDirector').html('');
         $('#addListList').html("");
-
         (data.hasOwnProperty('title')) ? $(`#moreInfoTitle`).html(data.title) : $(`#moreInfoTitle`).html(data.name);
         if (data.hasOwnProperty('poster_path')) {
             $('#moreInfoPoster').attr('src', `https://image.tmdb.org/t/p/original/${data.poster_path}`);
@@ -338,6 +340,7 @@ $(document).ready(() => {
             }
             $(`#showCard_${showInfo.results[i].id}`).click(() => {
                 searchById(showType, showInfo.results[i].id);
+                hideBackToListButton();
             })
             if (showInfo.results[i].hasOwnProperty('release_date')) {
                 $(`#resultDate_${showInfo.results[i].id}`).html("(" + showInfo.results[i].release_date.slice(0, 4) + ")")
@@ -403,7 +406,7 @@ $(document).ready(() => {
                 <div class="col-12">
                   <div class="">
                     <h5>${list.list_name}</h5>
-                    <p>Created by: ${list.creator} | <i class="fa-solid fa-heart"></i> ${list.likes}</p>
+                    <p>Created by: ${list.creator}  |  <i class="fa-solid fa-heart"></i> ${list.likes}  |  <i class="fa-solid fa-comment"></i> ${list.comments.length} </p>
                   </div>
                 </div>
               </div>
@@ -438,31 +441,26 @@ $(document).ready(() => {
 
     function generatePopularListsCards(list) {
         $('#popularListsContainer').append(`
-            <div class="card col-9 m-1 border-0" id="listCard_${list.id}" data-bs-toggle="modal" data-bs-target="#listModal" data-id="${list.id}">
-              <div class="row g-0">
-                <div class="col-7 listCardPopular" id="listCardImages_${list.id}">
-                </div>
-                <div class="col-5">
-                  <div>
-                    <h5>${list.list_name}</h5>
-                    <p>Created by: ${list.creator}  |  <i class="fa-solid fa-heart"></i> ${list.likes}</p>
-                    <p class="" id="listCard_desc${list.id}"></p>
+                <div class="card col-9 m-1 border-0" id="listCard_${list.id}" data-bs-toggle="modal" data-bs-target="#listModal" data-id="${list.id}">
+                  <div class="row g-0">
+                    <div class="col-7 listCardPopular" id="listCardImages_${list.id}">
+                    </div>
+                    <div class="col-5">
+                      <div>
+                        <h5>${list.list_name}</h5>
+                        <p>Created by: ${list.creator}  |  <i class="fa-solid fa-heart"></i> ${list.likes}  |  <i class="fa-solid fa-comment"></i> ${list.comments.length}</p>
+                        <p class="" id="listCard_desc${list.id}"></p>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </div>
             <div class="col-9">
             <hr>
             </div>
         `)
         $(`#listCard_${list.id}`).click(function () {
             populateListModal($(this).data("id"));
-        }).hover(function () {
-                $(`#listCard_${list.id}`).addClass('bg-danger');
-            },
-            function () {
-                $(`#listCard_${list.id}`).removeClass('bg-danger');
-            });
+        });
         (list.list_desc.length > 100) ? $(`#listCard_desc${list.id}`).html(list.list_desc.slice(0, 100) + "...") : $(`#listCard_desc${list.id}`).html(list.list_desc);
         if (list.content.length < 5) {
             for (let i = 0; i < list.content.length; i++) {
@@ -489,10 +487,11 @@ $(document).ready(() => {
     }
 
 
-    function showBackToListButton(){
+    function showBackToListButton() {
         $(`#backToListButton`).removeClass('d-none');
     }
-    function hideBackToListButton(){
+
+    function hideBackToListButton() {
         $(`#backToListButton`).addClass('d-none');
     }
 

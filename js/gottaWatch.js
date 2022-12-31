@@ -7,6 +7,7 @@ $(document).ready(() => {
     function onLoad() {
         loadPopular('movie', '#popularMovieResults');
         loadPopular('tv', '#popularTVResults');
+        populateListsHome();
     }
 
     function loadPopular(showType, location) {
@@ -92,7 +93,6 @@ $(document).ready(() => {
     })
     $('#listsButton').click((e) => {
         e.preventDefault();
-        populateListsHome();
         $('#homePage').addClass('d-none');
         $('#searchResults').addClass('d-none');
         $('#listsPage').removeClass('d-none');
@@ -272,6 +272,7 @@ $(document).ready(() => {
         fetch(url, options)
             .then(response => response.json()).then(data => console.log(data))
             .catch(error => console.error(error));
+        populateListsHome();
     }
 
     function createNewList() {
@@ -513,6 +514,7 @@ $(document).ready(() => {
                 $(`#listCommentCounter`).html(`${list.comments.length}`);
                 if (user.hasOwnProperty('id')) {
                     $(`#listLikeButton`).removeClass('disabled').removeAttr('disabled');
+                    $(`#showAddCommentSection`).removeClass('disabled').removeAttr('disabled');
                 }
                 commentsUpdate = {
                     comments: list.comments
@@ -572,6 +574,7 @@ $(document).ready(() => {
             populateListModal($(`#listModal`).data('data-list-id'));
         },1000)
     })
+    $(`#showAddCommentSection`).click(() => $('#addCommentSection').toggleClass('d-none'));
 
     function submitComment() {
         let date = new Date().toISOString().slice(0, 10)

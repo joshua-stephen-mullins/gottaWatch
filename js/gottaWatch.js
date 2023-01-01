@@ -521,6 +521,16 @@ $(document).ready(() => {
                 commentsUpdate = {
                     comments: list.comments
                 };
+                if (list.comments.length === 0){
+                    $(`#listModalComments`).append(`
+                        <div class="row col-7 p-0 m-0 justify-content-center">
+                            <h1 class="text-center">Leave a Comment!</h1>
+                        </div>
+                        <div class="col-6">
+                            <hr>
+                        </div>
+                    `)
+                } else {
                 list.comments.forEach(function (comment) {
                     $(`#listModalComments`).append(`
                         <div class="row col-7 p-0 m-0">
@@ -537,6 +547,7 @@ $(document).ready(() => {
                         </div>
                     `)
                 })
+                }
                 list.content.forEach((content) => {
                     fetch(`https://api.themoviedb.org/3/${content.type}/${content.id}?api_key=${apiKeyTMDP}&language=en-US`)
                         .then(response => response.json())

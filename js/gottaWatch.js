@@ -14,8 +14,21 @@ $(document).ready(() => {
         fetch(`https://api.themoviedb.org/3/${showType}/popular?api_key=${apiKeyTMDP}&language=en-US&page=1`)
             .then(response => response.json())
             .then((response) => {
-                // console.log(`Results ${showType}`, response);
+                console.log(`Results ${showType}`, response);
+                if (showType === 'tv'){
+                    let filteredResponse = {
+                        results: []
+                    }
+                    response.results.forEach((result) => {
+                        if (result.origin_country[0] === 'US') {
+                            filteredResponse.results.push(result);
+                        }
+                    })
+                    console.log(filteredResponse);
+                    generateSmallCards(filteredResponse, 5, location, showType);
+                } else {
                 generateSmallCards(response, 5, location, showType);
+                }
             })
             .catch(err => console.error(err));
     }
@@ -756,8 +769,6 @@ $(document).ready(() => {
 // remove unused or blank fields from showing in moreinfo modal
 //
 // like button functionality
-//
-// create new user
 //
 // discover tab and create home
 

@@ -69,15 +69,21 @@
                                         <button type="button" class="btn btn-danger" id="loginSubmit">Login</button>
                                     </div>
                                     <div class="d-flex justify-content-center">
-                                        <button type="button" class="btn btn-info" id="createAccountButton">Create
+                                        <button type="button" class="btn btn-info" id="createAccountButton"
+                                                data-bs-toggle="offcanvas"
+                                                href="#offcanvasAccountCreate"
+                                                role="button" aria-controls="offcanvasAccountCreate">Create
                                             Account
                                         </button>
                                     </div>
                                 </div>
                             </form>
                         </li>
-                        <li class=""><a class="dropdown-item text-light d-none" href="#" id="myProfileButton">My
+                        <li class="loggedInDropdown d-none"><a class="dropdown-item text-light" href="#"
+                                                               id="myProfileButton">My
                             Profile</a></li>
+                        <li class="loggedInDropdown d-none"><a class="dropdown-item text-light" href="#"
+                                                               id="logoutButton">Logout</a></li>
                     </ul>
                     <button class="btn btn-secondary my-2 my-sm-0" id="movieSearchButton"><i
                             class="fa-solid fa-magnifying-glass"></i> SEARCH
@@ -243,7 +249,10 @@
             <div class="p-5 d-flex flex-wrap justify-content-evenly" id="listModalMovies">
             </div>
             <div class="row justify-content-center" id="commentSection">
-                <h1 class="text-center">COMMENTS <button type="button" class="btn btn-success btn-sm disabled" id="showAddCommentSection" disabled><i class="fa-solid fa-pen-to-square"></i></button></h1>
+                <h1 class="text-center">COMMENTS
+                    <button type="button" class="btn btn-success btn-sm disabled" id="showAddCommentSection" disabled><i
+                            class="fa-solid fa-pen-to-square"></i></button>
+                </h1>
                 <form class="row justify-content-center col-7 d-none" id="addCommentSection">
                     <h2 class="text-center">ADD A COMMENT</h2>
                     <div class="form-group">
@@ -265,7 +274,7 @@
 
 <div class="offcanvas offcanvas-start bg-danger" tabindex="-1" id="offcanvasListCreate">
     <div class="offcanvas-header">
-        <h1 class="offcanvas-title text-center flex-grow-1" id="offcanvasListCreateTitle">Create List</h1>
+        <h1 class="offcanvas-title text-center flex-grow-1" id="offcanvasListCreateTitle">Create New List</h1>
         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     <div class="offcanvas-body">
@@ -287,6 +296,45 @@
             </div>
             <div class="d-grid gap-2 mt-3">
                 <button class="btn btn-lg btn-warning" type="submit" data-bs-dismiss="offcanvas">Create List</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!--off canvas create an account-->
+
+<div class="offcanvas offcanvas-start bg-danger" tabindex="-1" id="offcanvasAccountCreate">
+    <button type="button" class="btn-close align-self-end" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    <div class="offcanvas-header pb-0">
+        <h1 class="offcanvas-title text-center flex-grow-1" id="offcanvasAccountCreateTitle">Create New Account</h1>
+    </div>
+    <div class="offcanvas-body">
+        <form id="submitNewAccount">
+            <div>
+                <div class="form-group">
+                    <div class="form-group">
+                        <label class="col-form-label col-form-label-lg mt-1"
+                               for="accountCreateUsername">Username</label>
+                        <input class="form-control form-control-lg" type="text" placeholder=""
+                               id="accountCreateUsername"
+                               required>
+                        <small class="text-warning d-none" id="userNameTaken">Username taken! Please enter a new username.</small>
+                        <label class="col-form-label col-form-label-lg mt-1"
+                               for="accountCreatePassword">Password</label>
+                        <input class="form-control form-control-lg" type="password" placeholder=""
+                               id="accountCreatePassword"
+                               required>
+                    </div>
+                    <div class="form-group">
+                        <label for="accountUserDesc" class="col-form-label col-form-label-lg mt-1">Tell everyone a
+                            little about yourself!</label>
+                        <textarea class="form-control form-control-lg" id="accountUserDesc" rows="3"
+                                  style="height: 300px;" required></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="d-grid gap-2 mt-3">
+                <button class="btn btn-lg btn-warning" type="submit" id="createNewAccountButton">Create Account</button>
             </div>
         </form>
     </div>

@@ -99,13 +99,15 @@ $(document).ready(() => {
         $('#profilePage').addClass('d-none');
         $('#discoverPage').addClass('d-none');
     })
-    // $('#profileButton').click((e) => {
-    //     e.preventDefault();
-    //     $('#homePage').addClass('d-none');
-    //     $('#searchResults').addClass('d-none');
-    //     $('#listsPage').addClass('d-none');
-    //     $('#profilePage').removeClass('d-none');
-    // })
+    $('#profileButton').click((e) => {
+        //     e.preventDefault();
+        //     $('#homePage').addClass('d-none');
+        //     $('#searchResults').addClass('d-none');
+        //     $('#listsPage').addClass('d-none');
+        //     $('#profilePage').removeClass('d-none');
+        $(`#usernameInput`).val('');
+        $(`#passwordInput`).val('');
+    })
     $('#submitNewList').submit(function () {
         createNewList();
     })
@@ -567,12 +569,12 @@ $(document).ready(() => {
 
     }
 
-    $(`#addCommentSection`).submit(function(){
+    $(`#addCommentSection`).submit(function () {
         submitComment();
-        setTimeout(function(){
+        setTimeout(function () {
             populateListsHome();
             populateListModal($(`#listModal`).data('data-list-id'));
-        },1000)
+        }, 1000)
     })
     $(`#showAddCommentSection`).click(() => $('#addCommentSection').toggleClass('d-none'));
 
@@ -595,6 +597,7 @@ $(document).ready(() => {
         fetch(url, options)
             .then(response => response.json()).then(data => {
             console.log(data);
+            $(`#commentSubmission`).val('');
         })
     }
 
@@ -671,10 +674,68 @@ $(document).ready(() => {
                 }
                 $(`#userName`).html(`&nbsp;${userInfo.id}`);
                 $(`#loginSection`).addClass('d-none');
-                $(`#myProfileButton`).removeClass('d-none');
+                $(`.loggedInDropdown`).removeClass('d-none');
                 $(`#createNewListButton`).removeClass('disabled');
             })
             .catch(err => console.error(err))
+    }
+
+    $(`#logoutButton`).click(() => logout());
+
+    function logout() {
+        user = {};
+        $(`#userName`).html(``);
+        $(`.loggedInDropdown`).addClass('d-none');
+        $(`#loginSection`).removeClass('d-none');
+        $(`#createNewListButton`).addClass('disabled');
+    }
+
+    $(`#submitNewAccount`).submit((e) => {
+        e.preventDefault();
+        fetch(`https://wave-kaput-giant.glitch.me/users/`)
+            .then(response => response.json())
+            // .then(response => console.log('Results by id', response)
+            .then((userInfo) => {
+                console.log(userInfo);
+                let users = [];
+                userInfo.forEach(function (user) {
+                    users.push(user.id.toLowerCase());
+                })
+                console.log(users);
+                if (users.includes($('#accountCreateUsername').val())) {
+                    $('#userNameTaken').removeClass('d-none');
+                } else {
+                    createAccount();
+                    $(`#offcanvasAccountCreate`).offcanvas('hide');
+                    setTimeout(()=> {
+                        login($('#accountCreateUsername').val(), $('#accountCreatePassword').val());
+                        $(`#submitNewAccount`)[0].reset();
+                    }, 1000);
+                }
+            })
+    })
+
+    function createAccount() {
+        let newUser = {
+            id: $('#accountCreateUsername').val(),
+            password: $('#accountCreatePassword').val(),
+            description: $('#accountUserDesc').val(),
+            admin: "n",
+            createdLists: [],
+            likedLists: []
+        }
+        const url = 'https://wave-kaput-giant.glitch.me/users/';
+        const options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(newUser)
+        };
+        fetch(url, options)
+            .then(response => response.json()).then(data => {
+            console.log(data);
+        })
     }
 })
 

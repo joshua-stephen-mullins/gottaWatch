@@ -97,7 +97,6 @@ $(document).ready(() => {
     }
 
     $('.filterBtn').click(function () {
-        console.log($('input[name=filterRadio]:checked').val());
         allSearch($('#movieSearchInput').val())
     })
 

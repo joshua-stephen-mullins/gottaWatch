@@ -7,6 +7,8 @@ $(document).ready(() => {
     function onLoad() {
         loadPopular('movie', '#popularMovieResults');
         loadPopular('tv', '#popularTVResults');
+        loadTopRated('tv');
+        loadTopRated('movie');
         populateListsHome();
     }
 
@@ -29,6 +31,29 @@ $(document).ready(() => {
                 } else {
                 generateSmallCards(response, 5, location, showType);
                 }
+            })
+            .catch(err => console.error(err));
+    }
+
+    function loadTopRated(showType, location) {
+        fetch(`https://api.themoviedb.org/3/${showType}/top_rated?api_key=${apiKeyTMDP}&language=en-US`)
+            .then(response => response.json())
+            .then((response) => {
+                console.log(`Top Rated Results ${showType}`, response);
+                // if (showType === 'tv'){
+                //     let filteredResponse = {
+                //         results: []
+                //     }
+                //     response.results.forEach((result) => {
+                //         if (result.origin_country[0] === 'US') {
+                //             filteredResponse.results.push(result);
+                //         }
+                //     })
+                //     console.log(filteredResponse);
+                //     generateSmallCards(filteredResponse, 5, location, showType);
+                // } else {
+                //     generateSmallCards(response, 5, location, showType);
+                // }
             })
             .catch(err => console.error(err));
     }

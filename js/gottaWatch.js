@@ -7,8 +7,8 @@ $(document).ready(() => {
     function onLoad() {
         loadPopular('movie', '#popularMovieResults');
         loadPopular('tv', '#popularTVResults');
-        loadTopRated('tv');
-        loadTopRated('movie');
+        loadTopRated('tv', '#topRatedTVResults');
+        loadTopRated('movie', '#topRatedMovieResults');
         populateListsHome();
     }
 
@@ -52,7 +52,7 @@ $(document).ready(() => {
                 //     console.log(filteredResponse);
                 //     generateSmallCards(filteredResponse, 5, location, showType);
                 // } else {
-                //     generateSmallCards(response, 5, location, showType);
+                    generateSmallCards(response, 10, location, showType);
                 // }
             })
             .catch(err => console.error(err));

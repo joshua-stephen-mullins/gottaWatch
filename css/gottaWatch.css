@@ -44,6 +44,9 @@
     height: 8em;
 }
 
+
+
+
 .listLiked input[type="checkbox"][id^="listLikeButton"] {
     display: none;
 }
@@ -76,5 +79,42 @@
 .listLiked :checked + label i {
     transform: scale(1.1);
     color: #3bf282;
+    z-index: -1;
+}
+
+.topRatedFilter input[type="checkbox"] {
+    display: none;
+}
+
+.topRatedFilter label {
+    position: relative;
+    cursor: pointer;
+}
+
+.topRatedFilter label:before {
+    background-color: white;
+    color: white;
+    content: " ";
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    width: 25px;
+    height: 25px;
+    text-align: center;
+    line-height: 28px;
+    transition-duration: 0.4s;
+    transform: scale(0);
+}
+
+.topRatedFilter label span {
+    transition-duration: 0.2s;
+    transform-origin: 50% 50%;
+}
+
+.topRatedFilter :checked + label span {
+    transform: scale(1.2);
+    /*color: black;*/
+    /*border: 1px solid black;*/
+    background-color: #de4e5d !important;
     z-index: -1;
 }

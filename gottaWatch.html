@@ -146,76 +146,87 @@
                     </li>
                 </ul>
                 <div class="tab-content" id="pills-tabContent">
-                    <div class="tab-pane fade show active" id="topRatedMovieResultsTab" role="tabpanel"
+                    <div class="row d-flex tab-pane fade show active" id="topRatedMovieResultsTab" role="tabpanel"
                          aria-labelledby="pills-home-tab"
                          tabindex="0">
-                        <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
-                            <input type="checkbox" class="btn-check" id="topRatedMovieFilterAction" value="28"
-                                   autocomplete="off">
-                            <label class="btn btn-primary btn-sm rounded-1" for="topRatedMovieFilterAction">Action</label>
-                            <input type="checkbox" class="btn-check" id="topRatedMovieFilterAdventure" value="12"
-                                   autocomplete="off">
-                            <label class="btn btn-primary btn-sm" for="topRatedMovieFilterAdventure">Adventure</label>
-                            <input type="checkbox" class="btn-check" id="topRatedMovieFilterAnimation" value="16"
-                                   autocomplete="off">
-                            <label class="btn btn-primary btn-sm" for="topRatedMovieFilterAnimation">Animation</label>
-                            <input type="checkbox" class="btn-check" id="topRatedMovieFilterComedy" value="35"
-                                   autocomplete="off">
-                            <label class="btn btn-primary btn-sm" for="topRatedMovieFilterComedy">Comedy</label>
-                            <input type="checkbox" class="btn-check" id="topRatedMovieFilterCrime" value="80"
-                                   autocomplete="off">
-                            <label class="btn btn-primary btn-sm" for="topRatedMovieFilterCrime">Crime</label>
-                            <input type="checkbox" class="btn-check" id="topRatedMovieFilterDocumentary" value="99"
-                                   autocomplete="off">
-                            <label class="btn btn-primary btn-sm" for="topRatedMovieFilterDocumentary">Documentary</label>
-                            <input type="checkbox" class="btn-check" id="topRatedMovieFilterDrama" value="18"
-                                   autocomplete="off">
-                            <label class="btn btn-primary btn-sm" for="topRatedMovieFilterDrama">Drama</label>
-                            <input type="checkbox" class="btn-check" id="topRatedMovieFilterFamily" value="10751"
-                                   autocomplete="off">
-                            <label class="btn btn-primary btn-sm" for="topRatedMovieFilterFamily">Family</label>
-                            <input type="checkbox" class="btn-check" id="topRatedMovieFilterFantasy" value="10751"
-                                   autocomplete="off">
-                            <label class="btn btn-primary btn-sm" for="topRatedMovieFilterFantasy">Fantasy</label>
-                            <input type="checkbox" class="btn-check" id="topRatedMovieFilterHistory" value="14"
-                                   autocomplete="off">
-                            <label class="btn btn-primary btn-sm" for="topRatedMovieFilterHistory">History</label>
-                            <input type="checkbox" class="btn-check" id="topRatedMovieFilterHorror" value="27"
-                                   autocomplete="off">
-                            <label class="btn btn-primary btn-sm" for="topRatedMovieFilterHorror">Horror</label>
-                            <input type="checkbox" class="btn-check" id="topRatedMovieFilterMusic" value="10402"
-                                   autocomplete="off">
-                            <label class="btn btn-primary btn-sm" for="topRatedMovieFilterMusic">Music</label>
-                            <input type="checkbox" class="btn-check" id="topRatedMovieFilterMystery" value="9648"
-                                   autocomplete="off">
-                            <label class="btn btn-primary btn-sm" for="topRatedMovieFilterMystery">Mystery</label>
-                            <input type="checkbox" class="btn-check" id="topRatedMovieFilterRomance" value="10749"
-                                   autocomplete="off">
-                            <label class="btn btn-primary btn-sm" for="topRatedMovieFilterRomance">Romance</label>
-                            <input type="checkbox" class="btn-check" id="topRatedMovieFilterScienceFiction" value="10749"
-                                   autocomplete="off">
-                            <label class="btn btn-primary btn-sm" for="topRatedMovieFilterScienceFiction">Science Fiction</label>
+                        <div class="col-1 flex-column btn-group topRatedFilter" role="group">
+                            <input type="checkbox" id="topRatedMovieFilterAction" value="28">
+                            <label class="col-1 m-1" for="topRatedMovieFilterAction"><span
+                                    class="badge rounded-pill bg-warning">Action</span></label>
+
+                            <input type="checkbox" id="topRatedMovieFilterAdventure" value="12">
+                            <label class="col-1 m-1" for="topRatedMovieFilterAdventure"><span
+                                    class="badge rounded-pill bg-warning">Adventure</span></label>
+
+                            <input type="checkbox" id="topRatedMovieFilterAnimation" value="16">
+                            <label class="col-1 m-1" for="topRatedMovieFilterAnimation"><span
+                                    class="badge rounded-pill bg-warning">Animation</span></label>
+
+                            <input type="checkbox" id="topRatedMovieFilterComedy" value="35">
+                            <label class="col-1 m-1" for="topRatedMovieFilterComedy"><span
+                                    class="badge rounded-pill bg-warning">Comedy</span></label>
+
+                            <input type="checkbox" id="topRatedMovieFilterCrime" value="80">
+                            <label class="col-1 m-1" for="topRatedMovieFilterCrime"><span
+                                    class="badge rounded-pill bg-warning">Crime</span></label>
+
+                            <input type="checkbox" id="topRatedMovieFilterDocumentary" value="99">
+                            <label class="col-1 m-1" for="topRatedMovieFilterDocumentary"><span
+                                    class="badge rounded-pill bg-warning">Documentary</span></label>
+
+                            <input type="checkbox" id="topRatedMovieFilterDrama" value="18">
+                            <label class="col-1 m-1" for="topRatedMovieFilterDrama"><span
+                                    class="badge rounded-pill bg-warning">Drama</span></label>
+
+                            <input type="checkbox" id="topRatedMovieFilterFamily" value="10751">
+                            <label class="col-1 m-1" for="topRatedMovieFilterFamily"><span
+                                    class="badge rounded-pill bg-warning">Family</span></label>
+
+                            <input type="checkbox" id="topRatedMovieFilterFantasy" value="10751">
+                            <label class="col-1 m-1" for="topRatedMovieFilterFantasy"><span
+                                    class="badge rounded-pill bg-warning">Fantasy</span></label>
+
+                            <input type="checkbox" id="topRatedMovieFilterHistory" value="14">
+                            <label class="col-1 m-1" for="topRatedMovieFilterHistory"><span
+                                    class="badge rounded-pill bg-warning">History</span></label>
+
+                            <input type="checkbox" id="topRatedMovieFilterHorror" value="27">
+                            <label class="col-1 m-1" for="topRatedMovieFilterHorror"><span
+                                    class="badge rounded-pill bg-warning">Horror</span></label>
+
+                            <input type="checkbox" id="topRatedMovieFilterMusic" value="10402">
+                            <label class="col-1 m-1" for="topRatedMovieFilterMusic"><span
+                                    class="badge rounded-pill bg-warning">Music</span></label>
+
+                            <input type="checkbox" id="topRatedMovieFilterMystery" value="9648">
+                            <label class="col-1 m-1" for="topRatedMovieFilterMystery"><span
+                                    class="badge rounded-pill bg-warning">Mystery</span></label>
+
+                            <input type="checkbox" id="topRatedMovieFilterRomance" value="10749">
+                            <label class="col-1 m-1" for="topRatedMovieFilterRomance"><span
+                                    class="badge rounded-pill bg-warning">Romance</span></label>
+
+                            <input type="checkbox" id="topRatedMovieFilterScienceFiction" value="10749">
+                            <label class="col-1 m-1" for="topRatedMovieFilterScienceFiction"><span
+                                    class="badge rounded-pill bg-warning">Science Fiction</span></label>
+
+                            <input type="checkbox" id="topRatedMovieFilterTVMovie" value="10770">
+                            <label class="col-1 m-1" for="topRatedMovieFilterTVMovie"><span
+                                    class="badge rounded-pill bg-warning">TV Movie</span></label>
+
+                            <input type="checkbox" id="topRatedMovieFilterThriller" value="53">
+                            <label class="col-1 m-1" for="topRatedMovieFilterThriller"><span
+                                    class="badge rounded-pill bg-warning">Thriller</span></label>
+
+                            <input type="checkbox" id="topRatedMovieFilterWar" value="10752">
+                            <label class="col-1 m-1" for="topRatedMovieFilterWar"><span
+                                    class="badge rounded-pill bg-warning">War</span></label>
+
+                            <input type="checkbox" id="topRatedMovieFilterWestern" value="37">
+                            <label class="col-1 m-1" for="topRatedMovieFilterWestern"><span
+                                    class="badge rounded-pill bg-warning">Western</span></label>
                         </div>
-                        <!--                {id: 28, name: 'Action'},-->
-                        <!--                {id: 12, name: 'Adventure'},-->
-                        <!--                {id: 16, name: 'Animation'},-->
-                        <!--                {id: 35, name: 'Comedy'},-->
-                        <!--                {id: 80, name: 'Crime'},-->
-                        <!--                {id: 99, name: 'Documentary'},-->
-                        <!--                {id: 18, name: 'Drama'},-->
-                        <!--                {id: 10751, name: 'Family'},-->
-                        <!--                {id: 14, name: 'Fantasy'},-->
-                        <!--                {id: 36, name: 'History'},-->
-                        <!--                {id: 27, name: 'Horror'},-->
-                        <!--                {id: 10402, name: 'Music'},-->
-                        <!--                {id: 9648, name: 'Mystery'},-->
-                        <!--                {id: 10749, name: 'Romance'},-->
-                        <!--                {id: 878, name: 'Science Fiction'},-->
-                        <!--                {id: 10770, name: 'TV Movie'},-->
-                        <!--                {id: 53, name: 'Thriller'},-->
-                        <!--                {id: 10752, name: 'War'},-->
-                        <!--                {id: 37, name: 'Western'},-->
-                        <div class="d-flex justify-content-center flex-wrap" id="topRatedMovieResults"></div>
+                        <div class="d-flex col-11 justify-content-center flex-wrap" id="topRatedMovieResults"></div>
                     </div>
                     <div class="tab-pane fade" id="topRatedTVResultsTab" role="tabpanel"
                          aria-labelledby="pills-profile-tab"

@@ -26,7 +26,6 @@ $(document).ready(() => {
                             filteredResponse.results.push(result);
                         }
                     })
-                    console.log(filteredResponse);
                     generateSmallCards(filteredResponse, 5, location, showType);
                 } else {
                     generateSmallCards(response, 5, location, showType);
@@ -35,64 +34,51 @@ $(document).ready(() => {
             .catch(err => console.error(err));
     }
 
-
-    // function loadTopRated(showType, location) {
-    //     let filteredTopRated = {
-    //         results: []
-    //     };
-    //     fetch(`https://api.themoviedb.org/3/${showType}/top_rated?api_key=${apiKeyTMDP}&language=en-US`)
-    //         .then(response => response.json())
-    //         .then((response) => {
-    //             console.log(`Top Rated Results ${showType}`, response);
-    //             response.results.forEach((result) => {
-    //                 if (result.genre_ids.includes(80) && result.genre_ids.includes(18)) {
-    //                     filteredTopRated.results.push(result);
-    //                 }
-    //             })
-    //             console.log(filteredTopRated);
-    //             generateSmallCards(filteredTopRated, 10, location, showType);
-    //         })
-    //         .catch(err => console.error(err));
-    // }
-
-    // let filteredMovies = [];
-
-    $('.topRatedFilterButton').click(function () {
-        let movieFilters = [];
-        let filteredMovies = allTopRatedMovies;
-        $.each($('input[class="topRatedFilterButton"]:checked'), function () {
-            movieFilters.push($(this).val());
-            // console.log('movie filters', movieFilters);
-            // filterTopRated('movie');
-            //     console.log(parseInt($(this).val()));
-            for (let i = 0; i < movieFilters.length; i++) {
-
-                filteredMovies = filteredMovies.filter(function (item) {
-                    return item.genre_ids.includes(parseInt(movieFilters[i]));
-                })
-            }
-            console.log(filteredMovies);
-            let itemsToPopulate = {
-                results: filteredMovies
-            }
-            $('#topRatedMovieResults').html('');
-            generateSmallCards(itemsToPopulate, 10, '#topRatedMovieResults', 'movie');
-        })
+    $('.topRatedFilterButton').click(() => {
+        filterTopRated();
+        console.log($(".topRatedFilterButton").is(':checked'));
     })
 
-    let allTopRatedMovies = []
+
+    function filterTopRated() {
+        let movieFilters = [];
+        let itemsToPopulate = {
+            results: allTopRatedMovies
+        }
+        if ($(".topRatedFilterButton").is(':checked')){
+            $.each($('input[class="topRatedFilterButton"]:checked'), function () {
+                movieFilters.push($(this).val());
+                for (let i = 0; i < movieFilters.length; i++) {
+                    itemsToPopulate.results = itemsToPopulate.results.filter(function (item) {
+                        return item.genre_ids.includes(parseInt(movieFilters[i]));
+                    })
+                }
+                console.log(itemsToPopulate.results);
+            })
+            $('#topRatedMovieResults').html('');
+            generateSmallCards(itemsToPopulate, 10, '#topRatedMovieResults', 'movie');
+        } else {
+            $('#topRatedMovieResults').html('');
+            generateSmallCards(defaultMovies, 10, '#topRatedMovieResults', 'movie')
+        }
+    }
+
+    let allTopRatedMovies = [];
+    let defaultMovies = {};
     loadTopRatedMovies('movie');
 
     function loadTopRatedMovies(showType) {
-        for (let i = 1; i < 10; i++) {
+        for (let i = 1; i < 50; i++) {
             fetch(`https://api.themoviedb.org/3/${showType}/top_rated?api_key=${apiKeyTMDP}&language=en-US&page=${i}`)
                 .then(response => response.json())
                 .then((response) => {
-                    console.log(response);
                     response.results.forEach((result) => {
                         allTopRatedMovies.push(result);
-                        console.log(allTopRatedMovies);
-                    })
+                    });
+                    if (i === 1){
+                        defaultMovies = response;
+                        generateSmallCards(defaultMovies, 10, '#topRatedMovieResults', 'movie');
+                    }
                 })
         }
     }
@@ -175,12 +161,7 @@ $(document).ready(() => {
         $('#profilePage').addClass('d-none');
         $('#discoverPage').addClass('d-none');
     })
-    $('#profileButton').click((e) => {
-        //     e.preventDefault();
-        //     $('#homePage').addClass('d-none');
-        //     $('#searchResults').addClass('d-none');
-        //     $('#listsPage').addClass('d-none');
-        //     $('#profilePage').removeClass('d-none');
+    $('#profileButton').click(() => {
         $(`#usernameInput`).val('');
         $(`#passwordInput`).val('');
     })
@@ -269,7 +250,6 @@ $(document).ready(() => {
                 .then(response => response.json())
                 // .then(response => console.log('Results by id', response)
                 .then((data) => {
-                    console.log(data);
                     data.results.forEach(function (country) {
                         if (country.iso_3166_1 === "US") {
                             country.release_dates.forEach(function (result) {

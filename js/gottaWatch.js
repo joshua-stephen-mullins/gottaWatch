@@ -55,40 +55,64 @@ $(document).ready(() => {
     //         .catch(err => console.error(err));
     // }
 
-    let movieFilters = [];
+    // let filteredMovies = [];
 
     $('.topRatedFilterButton').click(function () {
-        movieFilters = [];
+        // filteredMovies = [];
         $.each($('input[class="topRatedFilterButton"]:checked'), function () {
-            movieFilters.push($(this).val());
-            console.log('movie filters', movieFilters);
-            filterTopRated('movie');
+            // movieFilters.push($(this).val());
+            // console.log('movie filters', movieFilters);
+            // filterTopRated('movie');
+            //     console.log(parseInt($(this).val()));
+                let filter = parseInt($(this).val());
+            let filteredMovies = allTopRatedMovies.filter(function (item) {
+                return item.genre_ids.includes(filter);
+            })
+            console.log(filteredMovies);
         })
     })
 
-    function filterTopRated(showType) {
-        fetch(`https://api.themoviedb.org/3/${showType}/top_rated?api_key=${apiKeyTMDP}&language=en-US`)
-            .then(response => response.json())
-            .then((response) => {
-                // console.log(`Top Rated Results ${showType}`, response);
-                // let filteredResponse = response.results;
-                for (let i = 0; i < movieFilters.length; i++) {
-                    $('#topRatedMovieResults').html('');
+    let allTopRatedMovies = []
+    loadTopRatedMovies('movie');
+
+    function loadTopRatedMovies(showType) {
+        for (let i = 1; i < 10; i++) {
+            fetch(`https://api.themoviedb.org/3/${showType}/top_rated?api_key=${apiKeyTMDP}&language=en-US&page=${i}`)
+                .then(response => response.json())
+                .then((response) => {
                     console.log(response);
-                    response.results = response.results.filter(function (item) {
-                        console.log('item ids', item.genre_ids);
-                        console.log('current movie filter', parseInt(movieFilters[i]));
-                        console.log('does it include?', item.genre_ids.includes(parseInt(movieFilters[i])));
-                        return item.genre_ids.includes(parseInt(movieFilters[i]));
+                    response.results.forEach((result) => {
+                        allTopRatedMovies.push(result);
+                        console.log(allTopRatedMovies);
                     })
-                    console.log(response.results);
-                    let filterResponse = {
-                        results: response.results
-                    }
-                    generateSmallCards(filterResponse, 10, '#topRatedMovieResults', showType);
-                }
-            })
+                })
+        }
     }
+
+
+    // function filterTopRated(showType) {
+    //     fetch(`https://api.themoviedb.org/3/${showType}/top_rated?api_key=${apiKeyTMDP}&language=en-US`)
+    //         .then(response => response.json())
+    //         .then((response) => {
+    //             // console.log(`Top Rated Results ${showType}`, response);
+    //             // let filteredResponse = response.results;
+    //             for (let i = 0; i < movieFilters.length; i++) {
+    //                 $('#topRatedMovieResults').html('');
+    //                 console.log(response);
+    //                 response.results = response.results.filter(function (item) {
+    //                     console.log('item ids', item.genre_ids);
+    //                     console.log('current movie filter', parseInt(movieFilters[i]));
+    //                     console.log('does it include?', item.genre_ids.includes(parseInt(movieFilters[i])));
+    //                     return item.genre_ids.includes(parseInt(movieFilters[i]));
+    //                 })
+    //                 console.log(response.results);
+    //                 let filterResponse = {
+    //                     results: response.results
+    //                 }
+    //                 generateSmallCards(filterResponse, 10, '#topRatedMovieResults', showType);
+    //             }
+    //         })
+    // }
 
 
     // let filteredTopRated = {

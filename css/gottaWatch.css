@@ -112,9 +112,7 @@
 }
 
 .topRatedFilter :checked + label span {
-    transform: scale(1.2);
-    /*color: black;*/
-    /*border: 1px solid black;*/
+    transform: scale(1.1);
     background-color: #de4e5d !important;
     z-index: -1;
 }

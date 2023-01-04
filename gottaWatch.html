@@ -3,8 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <title>gotta Watch</title>
-
-
     <!--    bootswatch-->
     <link rel="stylesheet" href="css/vapor-bootstrap.css">
     <!--  custom CSS-->
@@ -94,9 +92,10 @@
     </nav>
     <main class="row justify-content-center col-10 m-0 p-0">
         <div class="row justify-content-center p-0 m-0" id="homePage">
-            <div class="bg-danger col-12 border border-5 border-warning m-5 rounded-5">
-                <h1 class="titleFont">GOTTA WATCH</h1>
-                <h2>create curated lists of movies/shows to share with the world</h2>
+            <div class="col-12 text-center vh-100 m-5">
+                <h1 class="titleFont">DISCOVER NEW SHOWS.</h1>
+                <h1 class="titleFont">BUILD YOUR LIST.</h1>
+                <h1 class="titleFont">SHOW YOUR FRIENDS.</h1>
             </div>
         </div>
         <div class="d-none" id="discoverPage">
@@ -146,92 +145,203 @@
                     </li>
                 </ul>
                 <div class="tab-content" id="pills-tabContent">
-                    <div class="row d-flex tab-pane fade show active" id="topRatedMovieResultsTab" role="tabpanel"
+                    <div class="row tab-pane fade show active" id="topRatedMovieResultsTab" role="tabpanel"
                          aria-labelledby="pills-home-tab"
                          tabindex="0">
-                        <div class="flex-wrap col-1 flex-column btn-group topRatedFilter" role="group">
-                            <input class="topRatedFilterButton" type="checkbox" id="topRatedMovieFilterAction" value="28">
-                            <label class="m-1 w-auto" for="topRatedMovieFilterAction"><span
-                                    class="badge rounded-pill bg-warning">Action</span></label>
+                        <div class="row d-flex">
+                            <div class="mt-3 flex-wrap col-1 flex-column btn-group topRatedFilter" role="group">
+                                <input class="topRatedFilterButtonMovie" type="checkbox" id="topRatedMovieFilterAction"
+                                       value="28">
+                                <label class="m-1 w-auto" for="topRatedMovieFilterAction"><span
+                                        class="btn btn-warning rounded-1 w-100 btn-sm btn-sm">Action</span></label>
 
-                            <input class="topRatedFilterButton" type="checkbox" id="topRatedMovieFilterAdventure" value="12">
-                            <label class="m-1 w-auto" for="topRatedMovieFilterAdventure"><span
-                                    class="badge rounded-pill bg-warning">Adventure</span></label>
+                                <input class="topRatedFilterButtonMovie" type="checkbox"
+                                       id="topRatedMovieFilterAdventure"
+                                       value="12">
+                                <label class="m-1 w-auto" for="topRatedMovieFilterAdventure"><span
+                                        class="btn btn-warning rounded-1 w-100 btn-sm">Adventure</span></label>
 
-                            <input class="topRatedFilterButton" type="checkbox" id="topRatedMovieFilterAnimation" value="16">
-                            <label class="m-1" for="topRatedMovieFilterAnimation"><span
-                                    class="badge rounded-pill bg-warning">Animation</span></label>
+                                <input class="topRatedFilterButtonMovie" type="checkbox"
+                                       id="topRatedMovieFilterAnimation"
+                                       value="16">
+                                <label class="m-1" for="topRatedMovieFilterAnimation"><span
+                                        class="btn btn-warning rounded-1 w-100 btn-sm">Animation</span></label>
 
-                            <input class="topRatedFilterButton" type="checkbox" id="topRatedMovieFilterComedy" value="35">
-                            <label class="m-1" for="topRatedMovieFilterComedy"><span
-                                    class="badge rounded-pill bg-warning">Comedy</span></label>
+                                <input class="topRatedFilterButtonMovie" type="checkbox" id="topRatedMovieFilterComedy"
+                                       value="35">
+                                <label class="m-1" for="topRatedMovieFilterComedy"><span
+                                        class="btn btn-warning rounded-1 w-100 btn-sm">Comedy</span></label>
 
-                            <input class="topRatedFilterButton" type="checkbox" id="topRatedMovieFilterCrime" value="80">
-                            <label class="m-1" for="topRatedMovieFilterCrime"><span
-                                    class="badge rounded-pill bg-warning">Crime</span></label>
+                                <input class="topRatedFilterButtonMovie" type="checkbox" id="topRatedMovieFilterCrime"
+                                       value="80">
+                                <label class="m-1" for="topRatedMovieFilterCrime"><span
+                                        class="btn btn-warning rounded-1 w-100 btn-sm">Crime</span></label>
 
-                            <input class="topRatedFilterButton" type="checkbox" id="topRatedMovieFilterDocumentary" value="99">
-                            <label class="m-1" for="topRatedMovieFilterDocumentary"><span
-                                    class="badge rounded-pill bg-warning">Documentary</span></label>
+                                <input class="topRatedFilterButtonMovie" type="checkbox"
+                                       id="topRatedMovieFilterDocumentary"
+                                       value="99">
+                                <label class="m-1" for="topRatedMovieFilterDocumentary"><span
+                                        class="btn btn-warning rounded-1 w-100 btn-sm">Documentary</span></label>
 
-                            <input class="topRatedFilterButton" type="checkbox" id="topRatedMovieFilterDrama" value="18">
-                            <label class="m-1" for="topRatedMovieFilterDrama"><span
-                                    class="badge rounded-pill bg-warning">Drama</span></label>
+                                <input class="topRatedFilterButtonMovie" type="checkbox" id="topRatedMovieFilterDrama"
+                                       value="18">
+                                <label class="m-1" for="topRatedMovieFilterDrama"><span
+                                        class="btn btn-warning rounded-1 w-100 btn-sm">Drama</span></label>
 
-                            <input class="topRatedFilterButton" type="checkbox" id="topRatedMovieFilterFamily" value="10751">
-                            <label class="m-1" for="topRatedMovieFilterFamily"><span
-                                    class="badge rounded-pill bg-warning">Family</span></label>
+                                <input class="topRatedFilterButtonMovie" type="checkbox" id="topRatedMovieFilterFamily"
+                                       value="10751">
+                                <label class="m-1" for="topRatedMovieFilterFamily"><span
+                                        class="btn btn-warning rounded-1 w-100 btn-sm">Family</span></label>
 
-                            <input class="topRatedFilterButton" type="checkbox" id="topRatedMovieFilterFantasy" value="14">
-                            <label class="m-1" for="topRatedMovieFilterFantasy"><span
-                                    class="badge rounded-pill bg-warning">Fantasy</span></label>
+                                <input class="topRatedFilterButtonMovie" type="checkbox" id="topRatedMovieFilterFantasy"
+                                       value="14">
+                                <label class="m-1" for="topRatedMovieFilterFantasy"><span
+                                        class="btn btn-warning rounded-1 w-100 btn-sm">Fantasy</span></label>
 
-                            <input class="topRatedFilterButton" type="checkbox" id="topRatedMovieFilterHistory" value="36">
-                            <label class="m-1" for="topRatedMovieFilterHistory"><span
-                                    class="badge rounded-pill bg-warning">History</span></label>
+                                <input class="topRatedFilterButtonMovie" type="checkbox" id="topRatedMovieFilterHistory"
+                                       value="36">
+                                <label class="m-1" for="topRatedMovieFilterHistory"><span
+                                        class="btn btn-warning rounded-1 w-100 btn-sm">History</span></label>
 
-                            <input class="topRatedFilterButton" type="checkbox" id="topRatedMovieFilterHorror" value="27">
-                            <label class="m-1" for="topRatedMovieFilterHorror"><span
-                                    class="badge rounded-pill bg-warning">Horror</span></label>
+                                <input class="topRatedFilterButtonMovie" type="checkbox" id="topRatedMovieFilterHorror"
+                                       value="27">
+                                <label class="m-1" for="topRatedMovieFilterHorror"><span
+                                        class="btn btn-warning rounded-1 w-100 btn-sm">Horror</span></label>
 
-                            <input class="topRatedFilterButton" type="checkbox" id="topRatedMovieFilterMusic" value="10402">
-                            <label class="m-1" for="topRatedMovieFilterMusic"><span
-                                    class="badge rounded-pill bg-warning">Music</span></label>
+                                <input class="topRatedFilterButtonMovie" type="checkbox" id="topRatedMovieFilterMusic"
+                                       value="10402">
+                                <label class="m-1" for="topRatedMovieFilterMusic"><span
+                                        class="btn btn-warning rounded-1 w-100 btn-sm">Music</span></label>
 
-                            <input class="topRatedFilterButton" type="checkbox" id="topRatedMovieFilterMystery" value="9648">
-                            <label class="m-1" for="topRatedMovieFilterMystery"><span
-                                    class="badge rounded-pill bg-warning">Mystery</span></label>
+                                <input class="topRatedFilterButtonMovie" type="checkbox" id="topRatedMovieFilterMystery"
+                                       value="9648">
+                                <label class="m-1" for="topRatedMovieFilterMystery"><span
+                                        class="btn btn-warning rounded-1 w-100 btn-sm">Mystery</span></label>
 
-                            <input class="topRatedFilterButton" type="checkbox" id="topRatedMovieFilterRomance" value="10749">
-                            <label class="m-1" for="topRatedMovieFilterRomance"><span
-                                    class="badge rounded-pill bg-warning">Romance</span></label>
+                                <input class="topRatedFilterButtonMovie" type="checkbox" id="topRatedMovieFilterRomance"
+                                       value="10749">
+                                <label class="m-1" for="topRatedMovieFilterRomance"><span
+                                        class="btn btn-warning rounded-1 w-100 btn-sm">Romance</span></label>
 
-                            <input class="topRatedFilterButton" type="checkbox" id="topRatedMovieFilterScienceFiction" value="878">
-                            <label class="m-1" for="topRatedMovieFilterScienceFiction"><span
-                                    class="badge rounded-pill bg-warning">Science Fiction</span></label>
+                                <input class="topRatedFilterButtonMovie" type="checkbox"
+                                       id="topRatedMovieFilterScienceFiction" value="878">
+                                <label class="m-1" for="topRatedMovieFilterScienceFiction"><span
+                                        class="btn btn-warning rounded-1 w-100 btn-sm">Science Fiction</span></label>
 
-                            <input class="topRatedFilterButton" type="checkbox" id="topRatedMovieFilterTVMovie" value="10770">
-                            <label class="m-1" for="topRatedMovieFilterTVMovie"><span
-                                    class="badge rounded-pill bg-warning">TV Movie</span></label>
+                                <input class="topRatedFilterButtonMovie" type="checkbox" id="topRatedMovieFilterTVMovie"
+                                       value="10770">
+                                <label class="m-1" for="topRatedMovieFilterTVMovie"><span
+                                        class="btn btn-warning rounded-1 w-100 btn-sm">TV Movie</span></label>
 
-                            <input class="topRatedFilterButton" type="checkbox" id="topRatedMovieFilterThriller" value="53">
-                            <label class="m-1" for="topRatedMovieFilterThriller"><span
-                                    class="badge rounded-pill bg-warning">Thriller</span></label>
+                                <input class="topRatedFilterButtonMovie" type="checkbox"
+                                       id="topRatedMovieFilterThriller"
+                                       value="53">
+                                <label class="m-1" for="topRatedMovieFilterThriller"><span
+                                        class="btn btn-warning rounded-1 w-100 btn-sm">Thriller</span></label>
 
-                            <input class="topRatedFilterButton" type="checkbox" id="topRatedMovieFilterWar" value="10752">
-                            <label class="m-1" for="topRatedMovieFilterWar"><span
-                                    class="badge rounded-pill bg-warning">War</span></label>
+                                <input class="topRatedFilterButtonMovie" type="checkbox" id="topRatedMovieFilterWar"
+                                       value="10752">
+                                <label class="m-1" for="topRatedMovieFilterWar"><span
+                                        class="btn btn-warning rounded-1 w-100 btn-sm">War</span></label>
 
-                            <input class="topRatedFilterButton" type="checkbox" id="topRatedMovieFilterWestern" value="37">
-                            <label class="m-1" for="topRatedMovieFilterWestern"><span
-                                    class="badge rounded-pill bg-warning">Western</span></label>
+                                <input class="topRatedFilterButtonMovie" type="checkbox" id="topRatedMovieFilterWestern"
+                                       value="37">
+                                <label class="m-1" for="topRatedMovieFilterWestern"><span
+                                        class="btn btn-warning rounded-1 w-100 btn-sm">Western</span></label>
+                            </div>
+                            <div class="d-flex col-10 justify-content-center flex-wrap" id="topRatedMovieResults">
+                            </div>
                         </div>
-                        <div class="d-flex col-10 justify-content-center flex-wrap" id="topRatedMovieResults"></div>
                     </div>
-                    <div class="tab-pane fade" id="topRatedTVResultsTab" role="tabpanel"
-                         aria-labelledby="pills-profile-tab"
+                    <div class="row tab-pane fade show" id="topRatedTVResultsTab" role="tabpanel"
+                         aria-labelledby="pills-home-tab"
                          tabindex="0">
-                        <div class="d-flex justify-content-center flex-wrap" id="topRatedTVResults"></div>
+                        <div class="row d-flex">
+                            <div class="mt-3 flex-wrap col-1 flex-column btn-group topRatedFilter" role="group">
+                                <input class="topRatedFilterButtonTV" type="checkbox"
+                                       id="topRatedTVFilterActionAdventure"
+                                       value="10759">
+                                <label class="m-1 w-auto" for="topRatedTVFilterActionAdventure"><span
+                                        class="btn btn-warning rounded-1 w-100 btn-sm">Action & Adventure</span></label>
+
+                                <input class="topRatedFilterButtonTV" type="checkbox" id="topRatedTVFilterAnimation"
+                                       value="16">
+                                <label class="m-1" for="topRatedTVFilterAnimation"><span
+                                        class="btn btn-warning rounded-1 w-100 btn-sm">Animation</span></label>
+
+                                <input class="topRatedFilterButtonTV" type="checkbox" id="topRatedTVFilterComedy"
+                                       value="35">
+                                <label class="m-1" for="topRatedTVFilterComedy"><span
+                                        class="btn btn-warning rounded-1 w-100 btn-sm">Comedy</span></label>
+
+                                <input class="topRatedFilterButtonTV" type="checkbox" id="topRatedTVFilterCrime"
+                                       value="80">
+                                <label class="m-1" for="topRatedTVFilterCrime"><span
+                                        class="btn btn-warning rounded-1 w-100 btn-sm">Crime</span></label>
+
+                                <input class="topRatedFilterButtonTV" type="checkbox" id="topRatedTVFilterDocumentary"
+                                       value="99">
+                                <label class="m-1" for="topRatedTVFilterDocumentary"><span
+                                        class="btn btn-warning rounded-1 w-100 btn-sm">Documentary</span></label>
+
+                                <input class="topRatedFilterButtonTV" type="checkbox" id="topRatedTVFilterDrama"
+                                       value="18">
+                                <label class="m-1" for="topRatedTVFilterDrama"><span
+                                        class="btn btn-warning rounded-1 w-100 btn-sm">Drama</span></label>
+
+                                <input class="topRatedFilterButtonTV" type="checkbox" id="topRatedTVFilterFamily"
+                                       value="10751">
+                                <label class="m-1" for="topRatedTVFilterFamily"><span
+                                        class="btn btn-warning rounded-1 w-100 btn-sm">Family</span></label>
+
+                                <input class="topRatedFilterButtonTV" type="checkbox" id="topRatedTVFilterKids"
+                                       value="10762">
+                                <label class="m-1" for="topRatedTVFilterKids"><span
+                                        class="btn btn-warning rounded-1 w-100 btn-sm">Kids</span></label>
+
+                                <input class="topRatedFilterButtonTV" type="checkbox" id="topRatedTVFilterMystery"
+                                       value="9648">
+                                <label class="m-1" for="topRatedTVFilterMystery"><span
+                                        class="btn btn-warning rounded-1 w-100 btn-sm">Mystery</span></label>
+
+                                <input class="topRatedFilterButtonTV" type="checkbox" id="topRatedTVFilterNews"
+                                       value="10763">
+                                <label class="m-1" for="topRatedTVFilterNews"><span
+                                        class="btn btn-warning rounded-1 w-100 btn-sm">News</span></label>
+
+                                <input class="topRatedFilterButtonTV" type="checkbox" id="topRatedTVFilterReality"
+                                       value="10764">
+                                <label class="m-1" for="topRatedTVFilterReality"><span
+                                        class="btn btn-warning rounded-1 w-100 btn-sm">Reality</span></label>
+
+                                <input class="topRatedFilterButtonTV" type="checkbox" id="topRatedTVFilterSciFiFantasy"
+                                       value="10765">
+                                <label class="m-1" for="topRatedTVFilterSciFiFantasy"><span
+                                        class="btn btn-warning rounded-1 w-100 btn-sm">Sci-Fi & Fantasy</span></label>
+
+                                <input class="topRatedFilterButtonTV" type="checkbox" id="topRatedTVFilterSoap"
+                                       value="10766">
+                                <label class="m-1" for="topRatedTVFilterSoap"><span
+                                        class="btn btn-warning rounded-1 w-100 btn-sm">Soap</span></label>
+
+                                <input class="topRatedFilterButtonTV" type="checkbox" id="topRatedTVFilterTalk"
+                                       value="10767">
+                                <label class="m-1" for="topRatedTVFilterTalk"><span
+                                        class="btn btn-warning rounded-1 w-100 btn-sm">Talk</span></label>
+
+                                <input class="topRatedFilterButtonTV" type="checkbox" id="topRatedTVFilterWarPolitics"
+                                       value="10768">
+                                <label class="m-1" for="topRatedTVFilterWarPolitics"><span
+                                        class="btn btn-warning rounded-1 w-100 btn-sm">War & Politics</span></label>
+
+                                <input class="topRatedFilterButtonTV" type="checkbox" id="topRatedTVFilterWestern"
+                                       value="37">
+                                <label class="m-1" for="topRatedTVFilterWestern"><span
+                                        class="btn btn-warning rounded-1 w-100 btn-sm">Western</span></label>
+                            </div>
+                            <div class="d-flex col-10 justify-content-center flex-wrap" id="topRatedTVResults">
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -328,9 +438,9 @@
                     <h5 class="text-muted"><span class="badge bg-danger" id="moreInfoRating"></span> <span
                             id="moreInfoGenre"></span> | <span id="moreInfoRuntime"></span></h5>
                     <h3><span id="moreInfoOverview"></span></h3>
-                    <h5 class="text-muted fw-bold">Director: <span class="fw-normal" id="moreInfoDirector"></span>
-                    </h5>
-                    <h5 class="text-muted fw-bold">Cast: <span class="fw-normal" id="moreInfoCast"></span></h5>
+<!--                    <h5 class="text-muted fw-bold">Director: <span class="fw-normal" id="moreInfoDirector"></span>-->
+                    <h5 class="text-muted fw-bold" id="moreInfoDirector">Director: <span class="fw-normal"></span></h5>
+                    <h5 class="text-muted fw-bold" id="moreInfoCastElement">Cast: <span class="fw-normal" id="moreInfoCast"></span></h5>
                 </div>
             </div>
         </div>

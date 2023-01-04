@@ -7,8 +7,8 @@ $(document).ready(() => {
     function onLoad() {
         loadPopular('movie', '#popularMovieResults');
         loadPopular('tv', '#popularTVResults');
-        // loadTopRated('tv', '#topRatedTVResults');
-        // loadTopRated('movie', '#topRatedMovieResults');
+        loadTopRatedTV('tv');
+        loadTopRatedMovies('movie');
         populateListsHome();
     }
 
@@ -18,35 +18,29 @@ $(document).ready(() => {
             .then((response) => {
                 console.log(`Results ${showType}`, response);
                 if (showType === 'tv') {
-                    let filteredResponse = {
-                        results: []
-                    }
+                    let filteredResponse = {results: []};
                     response.results.forEach((result) => {
                         if (result.origin_country[0] === 'US') {
                             filteredResponse.results.push(result);
                         }
                     })
-                    generateSmallCards(filteredResponse, 5, location, showType);
+                    generateSmallCards(filteredResponse, 5, location, showType, 'popular');
                 } else {
-                    generateSmallCards(response, 5, location, showType);
+                    generateSmallCards(response, 5, location, showType, 'popular');
                 }
             })
             .catch(err => console.error(err));
     }
 
-    $('.topRatedFilterButton').click(() => {
-        filterTopRated();
-        console.log($(".topRatedFilterButton").is(':checked'));
+    $('.topRatedFilterButtonMovie').click(() => {
+        filterTopRatedMovie();
     })
 
-
-    function filterTopRated() {
+    function filterTopRatedMovie() {
         let movieFilters = [];
-        let itemsToPopulate = {
-            results: allTopRatedMovies
-        }
-        if ($(".topRatedFilterButton").is(':checked')){
-            $.each($('input[class="topRatedFilterButton"]:checked'), function () {
+        let itemsToPopulate = {results: allTopRatedMovies};
+        if ($(".topRatedFilterButtonMovie").is(':checked')) {
+            $.each($('input[class="topRatedFilterButtonMovie"]:checked'), function () {
                 movieFilters.push($(this).val());
                 for (let i = 0; i < movieFilters.length; i++) {
                     itemsToPopulate.results = itemsToPopulate.results.filter(function (item) {
@@ -56,28 +50,79 @@ $(document).ready(() => {
                 console.log(itemsToPopulate.results);
             })
             $('#topRatedMovieResults').html('');
-            generateSmallCards(itemsToPopulate, 10, '#topRatedMovieResults', 'movie');
+            if (itemsToPopulate.results.length === 0) {
+                $('#topRatedMovieResults').append(`<h1 class="m-1">No Results Found</h1>`);
+            } else {
+                generateSmallCards(itemsToPopulate, 10, '#topRatedMovieResults', 'movie', 'topRatedMovie');
+            }
         } else {
             $('#topRatedMovieResults').html('');
-            generateSmallCards(defaultMovies, 10, '#topRatedMovieResults', 'movie')
+            generateSmallCards(defaultMovies, 10, '#topRatedMovieResults', 'movie', 'topRatedMovie')
         }
     }
 
     let allTopRatedMovies = [];
     let defaultMovies = {};
-    loadTopRatedMovies('movie');
 
     function loadTopRatedMovies(showType) {
-        for (let i = 1; i < 50; i++) {
+        for (let i = 1; i < 100; i++) {
             fetch(`https://api.themoviedb.org/3/${showType}/top_rated?api_key=${apiKeyTMDP}&language=en-US&page=${i}`)
                 .then(response => response.json())
                 .then((response) => {
                     response.results.forEach((result) => {
                         allTopRatedMovies.push(result);
                     });
-                    if (i === 1){
+                    if (i === 1) {
                         defaultMovies = response;
-                        generateSmallCards(defaultMovies, 10, '#topRatedMovieResults', 'movie');
+                        generateSmallCards(defaultMovies, 10, '#topRatedMovieResults', 'movie', 'topRatedMovie');
+                    }
+                })
+        }
+    }
+
+    $('.topRatedFilterButtonTV').click(() => {
+        filterTopRatedTV();
+    })
+
+    function filterTopRatedTV() {
+        let tvFilters = [];
+        let itemsToPopulate = {results: allTopRatedTV};
+        if ($(".topRatedFilterButtonTV").is(':checked')) {
+            $.each($('input[class="topRatedFilterButtonTV"]:checked'), function () {
+                tvFilters.push($(this).val());
+                for (let i = 0; i < tvFilters.length; i++) {
+                    itemsToPopulate.results = itemsToPopulate.results.filter(function (item) {
+                        return item.genre_ids.includes(parseInt(tvFilters[i]));
+                    })
+                }
+                console.log(itemsToPopulate.results);
+            })
+            $('#topRatedTVResults').html('');
+            if (itemsToPopulate.results.length === 0) {
+                $('#topRatedTVResults').append(`<h1 class="m-1">No Results Found</h1>`);
+            } else {
+                generateSmallCards(itemsToPopulate, 10, '#topRatedTVResults', 'tv', 'topRatedTV');
+            }
+        } else {
+            $('#topRatedTVResults').html('');
+            generateSmallCards(defaultTV, 10, '#topRatedTVResults', 'tv', 'topRatedTV')
+        }
+    }
+
+    let allTopRatedTV = [];
+    let defaultTV = {};
+
+    function loadTopRatedTV(showType) {
+        for (let i = 1; i < 100; i++) {
+            fetch(`https://api.themoviedb.org/3/${showType}/top_rated?api_key=${apiKeyTMDP}&language=en-US&page=${i}`)
+                .then(response => response.json())
+                .then((response) => {
+                    response.results.forEach((result) => {
+                        allTopRatedTV.push(result);
+                    });
+                    if (i === 1) {
+                        defaultTV = response;
+                        generateSmallCards(defaultTV, 10, '#topRatedTVResults', 'tv', 'topRatedTV');
                     }
                 })
         }
@@ -86,9 +131,8 @@ $(document).ready(() => {
     function allSearch(input) {
         fetch(`https://api.themoviedb.org/3/search/multi?api_key=${apiKeyTMDP}&language=en-US&query=${input}&include_adult=false`)
             .then(response => response.json())
-            // .then(response => console.log('Search Results', response))
             .then(response => {
-                // console.log('Search Results', response);
+                console.log('Search Results', response);
                 filterSearchData(response);
             })
             .catch(err => console.error(err));
@@ -178,6 +222,7 @@ $(document).ready(() => {
             .then(response => response.json())
             // .then(response => console.log('Results by id', response)
             .then((data) => {
+                console.log('Results by id', data);
                 moreInfo(data, searchType, id);
             })
             .catch(err => console.error(err));
@@ -191,13 +236,40 @@ $(document).ready(() => {
                     <div class="row col-2 m-0 p-0">
                         <img class="col-12" src="" id="searchResult_${i}" alt="Search Result">
                     </div>
-                    <div class="col-10">
-                        <h3 class="searchResultTitle_${data[i].id}"></h3>
-                        <h5><span class="searchResultDate_${data[i].id}"></span></h5>
-                        <p><span class="searchResultOverview_${data[i].id}"></span></p>
+                    <div class="col-10" id="searchResultBody_${data[i].id}">
                     </div>
                 </div>
             `)
+            if (data[i].media_type === 'person') {
+                $(`#searchResultBody_${data[i].id}`).append(`
+                <h3 class=searchResultTitle_${data[i].id}></h3>
+                <h5>${data[i].known_for_department} | <span id="featuredIn_${data[i].id}"></span></h5>
+                <p><span class=searchResultOverview_${data[i].id}></span></p>
+                `)
+                if (data[i].hasOwnProperty('known_for')) {
+                    for (let j = 0; j < (returnSmallest(3, data[i].known_for.length)); j++) {
+                        if (data[i].known_for[j].media_type === 'tv'){
+                            if (j !== (returnSmallest(3, data[i].known_for.length) - 1)) {
+                                $(`#featuredIn_${data[i].id}`).append(`${data[i].known_for[j].name}, `)
+                            } else {
+                                $(`#featuredIn_${data[i].id}`).append(`${data[i].known_for[j].name}`)
+                            }
+                        } else {
+                            if (j !== (returnSmallest(3, data[i].known_for.length) - 1)) {
+                                $(`#featuredIn_${data[i].id}`).append(`${data[i].known_for[j].title}, `)
+                            } else {
+                                $(`#featuredIn_${data[i].id}`).append(`${data[i].known_for[j].title}`)
+                            }
+                        }
+                    }
+                }
+            } else {
+                $(`#searchResultBody_${data[i].id}`).append(`
+                <h3 class ="searchResultTitle_${data[i].id}"></h3>
+                <h5><span class="searchResultDate_${data[i].id}"></span></h5>
+                <p><span class="searchResultOverview_${data[i].id}"></span></p>
+            `)
+            }
             if (data[i].hasOwnProperty('title')) {
                 $(`.searchResultTitle_${data[i].id}`).html(data[i].title)
             } else {
@@ -278,15 +350,19 @@ $(document).ready(() => {
             .then((data) => {
                 data.crew.forEach(function (person) {
                     if (person.job === "Director") {
-                        $(`#moreInfoDirector`).append(person.name)
+                        $(`#moreInfoDirector`).append(`Director: <span class="fw-normal">${person.name}</span>`)
                     }
                 })
                 if (data.cast.length > 5) {
                     for (let i = 0; i < 5; i++) {
+                        $(`#moreInfoCastElement`).removeClass('d-none');
                         (data.cast[i] === data.cast[4]) ? $(`#moreInfoCast`).append(data.cast[i].name) : $(`#moreInfoCast`).append(`${data.cast[i].name}, &nbsp;`);
                     }
+                } else if (data.cast.length === 0) {
+                    $(`#moreInfoCastElement`).addClass('d-none');
                 } else {
                     for (let i = 0; i < data.cast.length; i++) {
+                        $(`#moreInfoCastElement`).removeClass('d-none');
                         (data.cast.indexOf(data.cast[i]) === data.cast.length - 1) ? $(`#moreInfoCast`).append(data.cast[i].name) : $(`#moreInfoCast`).append(`${data.cast[i].name}, &nbsp;`);
                     }
                 }
@@ -379,38 +455,38 @@ $(document).ready(() => {
         populateListsHome();
     }
 
-    function generateSmallCards(showInfo, numberOfCards, container, showType) {
+    function generateSmallCards(showInfo, numberOfCards, container, showType, cardType) {
         for (let i = 0; i < numberOfCards; i++) {
             $(container).append(`
-                <div class="card border-1 border-light p-0 text-white bg-primary m-3 mb-3 smallCard" id="showCard_${showInfo.results[i].id}" data-type="${showType}" data-showId="${showInfo.results[i].id}">
+                <div class="card border-1 border-light p-0 text-white bg-primary m-3 mb-3 smallCard" id="showCard_${showInfo.results[i].id}_${cardType}" data-type="${showType}" data-showId="${showInfo.results[i].id}">
                     <div class="">
                         <img class="w-100 h-100" src="https://image.tmdb.org/t/p/original/${showInfo.results[i].poster_path}" alt="Poster" data-bs-toggle="modal" data-bs-target="#moreInfoModal">
                     </div>
                     <div class="card-footer">
-                        <h5><span id="resultTitle_${showInfo.results[i].id}"></span> <span class="text-muted" id="resultDate_${showInfo.results[i].id}"></span></h5>
-                        <p><span class="badge bg-danger" id="smallCardRating_${showInfo.results[i].id}"></span> <span id="previewGenre_${showInfo.results[i].id}"></span></p>
+                        <h5><span id="resultTitle_${showInfo.results[i].id}_${cardType}"></span> <span class="text-muted" id="resultDate_${showInfo.results[i].id}_${cardType}"></span></h5>
+                        <p><span class="badge bg-danger" id="smallCardRating_${showInfo.results[i].id}_${cardType}"></span> <span id="previewGenre_${showInfo.results[i].id}_${cardType}"></span></p>
                     </div>
                 </div>
             `);
             if (showInfo.results[i].hasOwnProperty('title')) {
-                $(`#resultTitle_${showInfo.results[i].id}`).html(showInfo.results[i].title)
+                $(`#resultTitle_${showInfo.results[i].id}_${cardType}`).html(showInfo.results[i].title)
             } else {
-                $(`#resultTitle_${showInfo.results[i].id}`).html(showInfo.results[i].name)
+                $(`#resultTitle_${showInfo.results[i].id}_${cardType}`).html(showInfo.results[i].name)
             }
-            $(`#showCard_${showInfo.results[i].id}`).click(() => {
+            $(`#showCard_${showInfo.results[i].id}_${cardType}`).click(() => {
                 searchById(showType, showInfo.results[i].id);
                 hideBackToListButton();
             })
             if (showInfo.results[i].hasOwnProperty('release_date')) {
-                $(`#resultDate_${showInfo.results[i].id}`).html("(" + showInfo.results[i].release_date.slice(0, 4) + ")")
+                $(`#resultDate_${showInfo.results[i].id}_${cardType}`).html("(" + showInfo.results[i].release_date.slice(0, 4) + ")")
             } else {
-                $(`#resultDate_${showInfo.results[i].id}`).html("(" + showInfo.results[i].first_air_date.slice(0, 4) + ")")
+                $(`#resultDate_${showInfo.results[i].id}_${cardType}`).html("(" + showInfo.results[i].first_air_date.slice(0, 4) + ")")
             }
             for (let j = 0; j < showInfo.results[i].genre_ids.length; j++) {
                 if (j === (showInfo.results[i].genre_ids.length - 1)) {
-                    $(`#previewGenre_${showInfo.results[i].id}`).append(genreIdToText(showInfo.results[i].genre_ids[j]))
+                    $(`#previewGenre_${showInfo.results[i].id}_${cardType}`).append(genreIdToText(showInfo.results[i].genre_ids[j]))
                 } else {
-                    $(`#previewGenre_${showInfo.results[i].id}`).append(genreIdToText(showInfo.results[i].genre_ids[j]) + ', &nbsp;')
+                    $(`#previewGenre_${showInfo.results[i].id}_${cardType}`).append(genreIdToText(showInfo.results[i].genre_ids[j]) + ', &nbsp;')
                 }
             }
             if (showInfo.results[i].hasOwnProperty('title')) {
@@ -422,7 +498,7 @@ $(document).ready(() => {
                             if (country.iso_3166_1 === "US") {
                                 country.release_dates.forEach(function (result) {
                                     if (result.certification !== '') {
-                                        $(`#smallCardRating_${showInfo.results[i].id}`).html(result.certification);
+                                        $(`#smallCardRating_${showInfo.results[i].id}_${cardType}`).html(result.certification);
                                     }
                                 })
                             }
@@ -435,7 +511,7 @@ $(document).ready(() => {
                     .then((data) => {
                         data.results.forEach(function (country) {
                             if (country.iso_3166_1 === "US") {
-                                $(`#smallCardRating_${showInfo.results[i].id}`).html(country.rating);
+                                $(`#smallCardRating_${showInfo.results[i].id}_${cardType}`).html(country.rating);
                             }
                         })
                     })
@@ -545,7 +621,6 @@ $(document).ready(() => {
         }
     }
 
-
     function showBackToListButton() {
         $(`#backToListButton`).removeClass('d-none');
     }
@@ -553,7 +628,6 @@ $(document).ready(() => {
     function hideBackToListButton() {
         $(`#backToListButton`).addClass('d-none');
     }
-
 
     let commentsUpdate;
 
@@ -727,7 +801,6 @@ $(document).ready(() => {
         login($('#usernameInput').val(), $('#passwordInput').val());
     })
 
-
     let user = {};
 
     function login(username, password) {
@@ -803,6 +876,14 @@ $(document).ready(() => {
             .then(response => response.json()).then(data => {
             console.log(data);
         })
+    }
+
+    function returnSmallest(a, b){
+        if (a < b){
+            return a;
+        } else {
+            return b;
+        }
     }
 })
 

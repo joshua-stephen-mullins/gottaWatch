@@ -2,9 +2,14 @@
     font-family: 'Audiowide', cursive;
 }
 
-/*body {*/
-/*    font-family: 'Lekton', sans-serif;*/
-/*}*/
+.homeScreenText {
+    font-size: 4em;
+    text-shadow: black 1px 0 10px;
+}
+
+body {
+    font-family: 'Lekton', sans-serif;
+}
 
 #moreInfoModal {
     z-index: 2001 !important;
@@ -43,9 +48,6 @@
 .listCardFeatured {
     height: 8em;
 }
-
-
-
 
 .listLiked input[type="checkbox"][id^="listLikeButton"] {
     display: none;

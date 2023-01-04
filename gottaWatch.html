@@ -40,7 +40,7 @@
                            aria-expanded="false">
                             LISTS
                         </a>
-                        <ul class="dropdown-menu">
+                        <ul class="dropdown-menu bg-light">
                             <li><a class="dropdown-item" href="#" id="listsButton">LISTS HOME</a></li>
                             <li><a class="dropdown-item loginRequired disabled" data-bs-toggle="offcanvas"
                                    href="#offcanvasListCreate"
@@ -52,19 +52,24 @@
                 <div class="d-flex dropdown">
                     <button class="btn btn-secondary me-2 my-2 my-sm-0 dropdown-toggle" data-bs-toggle="dropdown"
                             id="profileButton"><i
-                            class="fa-solid fa-user"></i><span id="userName"></span></button>
-                    <ul class="dropdown-menu bg-secondary">
+                            class="fa-solid fa-user"></i><span id="userName"> LOGIN</span></button>
+                    <ul class="dropdown-menu bg-secondary loginDropdown">
                         <li id="loginSection">
-                            <form>
-                                <div class="form-group m-1">
+                            <form id="loginSubmit">
+                                <div class="d-flex justify-content-center flex-column form-group m-1">
                                     <label for="usernameInput" class="form-label mt-1">Username</label>
                                     <input type="text" class="form-control" id="usernameInput"
                                            placeholder="Enter Username" required>
+                                    <small class="text-warning d-none text-center" id="invalidUserName">Invalid
+                                        Username</small>
                                     <label for="passwordInput" class="form-label mt-1">Password</label>
                                     <input type="password" class="form-control" id="passwordInput"
                                            placeholder="Password">
+                                    <small class="text-warning d-none text-center" id="incorrectPassword">Incorrect
+                                        Password</small>
                                     <div class="d-flex justify-content-center">
-                                        <button type="button" class="btn btn-danger" id="loginSubmit">Login</button>
+                                        <button type="submit" class="btn btn-danger" id="loginSubmitButton">Login
+                                        </button>
                                     </div>
                                     <div class="d-flex justify-content-center">
                                         <button type="button" class="btn btn-info" id="createAccountButton"
@@ -92,10 +97,11 @@
     </nav>
     <main class="row justify-content-center col-10 m-0 p-0">
         <div class="row justify-content-center p-0 m-0" id="homePage">
-            <div class="col-12 text-center vh-100 m-5">
-                <h1 class="titleFont">DISCOVER NEW SHOWS.</h1>
-                <h1 class="titleFont">BUILD YOUR LIST.</h1>
-                <h1 class="titleFont">SHOW YOUR FRIENDS.</h1>
+            <div class="d-flex flex-column justify-content-center col-12 text-center vh-100">
+                <h1 class="titleFont homeScreenText m-1">DISCOVER NEW SHOWS.</h1>
+                <h1 class="titleFont homeScreenText m-1">BUILD YOUR LIST.</h1>
+                <h1 class="titleFont homeScreenText m-1">SHOW YOUR FRIENDS.</h1>
+                <button type="button" class="btn btn-danger btn-lg w-auto">CREATE AN ACCOUNT TO GET STARTED</button>
             </div>
         </div>
         <div class="d-none" id="discoverPage">
@@ -438,9 +444,9 @@
                     <h5 class="text-muted"><span class="badge bg-danger" id="moreInfoRating"></span> <span
                             id="moreInfoGenre"></span> | <span id="moreInfoRuntime"></span></h5>
                     <h3><span id="moreInfoOverview"></span></h3>
-<!--                    <h5 class="text-muted fw-bold">Director: <span class="fw-normal" id="moreInfoDirector"></span>-->
                     <h5 class="text-muted fw-bold" id="moreInfoDirector">Director: <span class="fw-normal"></span></h5>
-                    <h5 class="text-muted fw-bold" id="moreInfoCastElement">Cast: <span class="fw-normal" id="moreInfoCast"></span></h5>
+                    <h5 class="text-muted fw-bold" id="moreInfoCastElement">Cast: <span class="fw-normal"
+                                                                                        id="moreInfoCast"></span></h5>
                 </div>
             </div>
         </div>
@@ -462,8 +468,7 @@
                     <input type="checkbox" class="loginRequired disabled" id="listLikeButton" disabled>
                     <label for="listLikeButton"><i class="fa-solid fa-heart"></i></label>
                     <span id="listLike"></span> Likes | <a href="#listModalComments"><i class="fa-solid fa-comment"></i>
-                        <span
-                                id="listCommentCounter"></span> Comments</a>
+                        <span id="listCommentCounter"></span> Comments</a>
                 </h2>
                 <h3 class="ps-5 pe-5 ms-2 me-2" id="listModalDescription"></h3>
             </div>
@@ -503,19 +508,17 @@
     </div>
     <div class="offcanvas-body">
         <form id="submitNewList">
-            <div>
+            <div class="form-group">
                 <div class="form-group">
-                    <div class="form-group">
-                        <label class="col-form-label col-form-label-lg mt-1" for="listCreateName">List Name</label>
-                        <input class="form-control form-control-lg" type="text" placeholder="" id="listCreateName"
-                               required>
-                    </div>
-                    <div class="form-group">
-                        <label for="listCreateDesc" class="col-form-label col-form-label-lg mt-1">List
-                            Description</label>
-                        <textarea class="form-control form-control-lg" id="listCreateDesc" rows="5"
-                                  style="height: 355px;" required></textarea>
-                    </div>
+                    <label class="col-form-label col-form-label-lg mt-1" for="listCreateName">List Name</label>
+                    <input class="form-control form-control-lg" type="text" placeholder="" id="listCreateName"
+                           required>
+                </div>
+                <div class="form-group">
+                    <label for="listCreateDesc" class="col-form-label col-form-label-lg mt-1">List
+                        Description</label>
+                    <textarea class="form-control form-control-lg" id="listCreateDesc" rows="5"
+                              style="height: 355px;" required></textarea>
                 </div>
             </div>
             <div class="d-grid gap-2 mt-3">

@@ -248,7 +248,7 @@ $(document).ready(() => {
                 `)
                 if (data[i].hasOwnProperty('known_for')) {
                     for (let j = 0; j < (returnSmallest(3, data[i].known_for.length)); j++) {
-                        if (data[i].known_for[j].media_type === 'tv'){
+                        if (data[i].known_for[j].media_type === 'tv') {
                             if (j !== (returnSmallest(3, data[i].known_for.length) - 1)) {
                                 $(`#featuredIn_${data[i].id}`).append(`${data[i].known_for[j].name}, `)
                             } else {
@@ -275,10 +275,12 @@ $(document).ready(() => {
             } else {
                 $(`.searchResultTitle_${data[i].id}`).html(data[i].name)
             }
-            if (data[i].hasOwnProperty('poster_path')) {
+            if (data[i].hasOwnProperty('poster_path') && (typeof data[i].poster_path === 'string')) {
                 $(`#searchResult_${i}`).attr('src', `https://image.tmdb.org/t/p/original/${data[i].poster_path}`);
-            } else if (data[i].hasOwnProperty('profile_path')) {
+            } else if (data[i].hasOwnProperty('profile_path') && (typeof data[i].profile_path === 'string')) {
                 $(`#searchResult_${i}`).attr('src', `https://image.tmdb.org/t/p/original/${data[i].profile_path}`);
+            } else {
+                $(`#searchResult_${i}`).attr('src', `img/noImage.jpg`)
             }
             (data[i].hasOwnProperty('release_date')) ? $(`.searchResultDate_${data[i].id}`).html(data[i].release_date) : $(`.searchResultDate_${data[i].id}`).html(data[i].first_air_date);
             if (data[i].hasOwnProperty('overview')) {
@@ -316,8 +318,15 @@ $(document).ready(() => {
         for (let i = 0; i < data.genres.length; i++) {
             (i === (data.genres.length - 1)) ? $('#moreInfoGenre').append(`${data.genres[i].name}`) : $('#moreInfoGenre').append(data.genres[i].name + ', &nbsp;');
         }
-        (data.hasOwnProperty('runtime')) ? $('#moreInfoRuntime').html(toHoursAndMinutes(data.runtime)) : $('#moreInfoRuntime').html(toHoursAndMinutes(data.last_episode_to_air.runtime));
+        if ((data.hasOwnProperty('runtime') && (toHoursAndMinutes(data.runtime) !== '0m'))) {
+            $('#moreInfoRuntime').html(toHoursAndMinutes(data.runtime))
+        } else if (data.hasOwnProperty('episode_run_time') && (typeof data.episode_run_time[0] === 'number')) {
+            $('#moreInfoRuntime').html(toHoursAndMinutes(data.episode_run_time[0]));
+        } else if ((data.hasOwnProperty('last_episode_to_air') && (toHoursAndMinutes(data.last_episode_to_air.runtime) !== '0m'))) {
+            $('#moreInfoRuntime').html(toHoursAndMinutes(data.last_episode_to_air.runtime));
+        }
         if (searchType === 'movie') {
+            $('#moreInfoRating').html('');
             fetch(`https://api.themoviedb.org/3/movie/${id}/release_dates?api_key=${apiKeyTMDP}`)
                 .then(response => response.json())
                 // .then(response => console.log('Results by id', response)
@@ -333,10 +342,12 @@ $(document).ready(() => {
                     })
                 })
         } else {
+            $('#moreInfoRating').html('');
             fetch(`https://api.themoviedb.org/3/tv/${id}/content_ratings?api_key=${apiKeyTMDP}&language=en-US`)
                 .then(response => response.json())
                 // .then(response => console.log('Results by id', response)
                 .then((data) => {
+                    console.log('Content Rating: ', data)
                     data.results.forEach(function (country) {
                         if (country.iso_3166_1 === "US") {
                             $('#moreInfoRating').html(country.rating);
@@ -367,25 +378,29 @@ $(document).ready(() => {
                     }
                 }
             })
-        fetch(`https://daffy-tasteful-brownie.glitch.me/lists`)
-            .then(response => response.json())
-            // .then(response => console.log('Results by id', response)
-            .then((data) => {
-                data.forEach(function (list) {
-                    if (user.createdLists.includes(list.id)) {
-                        let content = list.content;
-                        $('#addListList').append(`<li><button class="dropdown-item" id="listName_${list.id}" href="#" value="${list.id}">${list.list_name}</button></li>`);
-                        $(`#listName_${list.id}`).click(function () {
-                            let newContent = {
-                                id: ($('#listAddBtn').val()),
-                                type: searchType
-                            };
-                            content.push(newContent);
-                            addMovieToList(content, $(`#listName_${list.id}`).val());
-                        })
-                    }
+        if (user.hasOwnProperty('id')) {
+            fetch(`https://daffy-tasteful-brownie.glitch.me/lists`)
+                .then(response => response.json())
+                // .then(response => console.log('Results by id', response)
+                .then((data) => {
+                    data.forEach(function (list) {
+                        if (user.createdLists.includes(list.id)) {
+                            let content = list.content;
+                            $('#addListList').append(`<li><button class="dropdown-item" id="listName_${list.id}" href="#" value="${list.id}">${list.list_name}</button></li>`);
+                            $(`#listName_${list.id}`).click(function () {
+                                let newContent = {
+                                    id: ($('#listAddBtn').val()),
+                                    type: searchType
+                                };
+                                content.push(newContent);
+                                addMovieToList(content, $(`#listName_${list.id}`).val());
+                            })
+                        }
+                    })
                 })
-            })
+        } else {
+            $('#addListList').append(`<li class="dropdown-item">Login or create an account to begin adding items to lists!</li>`);
+        }
     }
 
     function addMovieToList(data, listId) {
@@ -490,6 +505,7 @@ $(document).ready(() => {
                 }
             }
             if (showInfo.results[i].hasOwnProperty('title')) {
+                $(`#smallCardRating_${showInfo.results[i].id}_${cardType}`).html('');
                 fetch(`https://api.themoviedb.org/3/movie/${showInfo.results[i].id}/release_dates?api_key=${apiKeyTMDP}`)
                     .then(response => response.json())
                     // .then(response => console.log('Results by id', response)
@@ -505,6 +521,7 @@ $(document).ready(() => {
                         })
                     })
             } else {
+                $(`#smallCardRating_${showInfo.results[i].id}_${cardType}`).html('');
                 fetch(`https://api.themoviedb.org/3/tv/${showInfo.results[i].id}/content_ratings?api_key=${apiKeyTMDP}&language=en-US`)
                     .then(response => response.json())
                     // .then(response => console.log('Results by id', response)
@@ -643,6 +660,13 @@ $(document).ready(() => {
                 $(`#listModalCreator`).html(list.creator);
                 $(`#listModalDescription`).html(list.list_desc);
                 $(`#listLike`).html(`${list.likes}`);
+                if (user.hasOwnProperty('likedLists')) {
+                    if (user.likedLists.includes(listId)) {
+                        $(`#listLikeButton`).attr('checked', 'checked');
+                    } else {
+                        $(`#listLikeButton`).prop('checked', false);
+                    }
+                }
                 $(`#listCommentCounter`).html(`${list.comments.length}`);
                 if (user.hasOwnProperty('id')) {
                     $(`#listLikeButton`).removeClass('disabled').removeAttr('disabled');
@@ -708,6 +732,97 @@ $(document).ready(() => {
                 })
             })
 
+    }
+
+    $(`#listLikeButton`).click(function(){
+        if ($('#listLikeButton').is(':checked')){
+            console.log('checked');
+            likeButton();
+        } else {
+            console.log('un-checked');
+            likeButton();
+        }
+    })
+
+    function likeButton() {
+        if ($('#listLikeButton').is(':checked')){
+            console.log('checked');
+            let updatedLikedList = {
+                likedLists: user.likedLists
+            }
+            updatedLikedList.likedLists.push($(`#listModal`).data('data-list-id'));
+            console.log(updatedLikedList);
+            const url = `https://wave-kaput-giant.glitch.me/users/${user.id}`;
+            const options = {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(updatedLikedList)
+            };
+            fetch(url, options)
+                .then(response => response.json()).then(data => {
+                console.log(data);
+                user.likedLists = updatedLikedList.likedLists;
+            })
+            let updatedLikes = {
+                likes: parseInt($('#listLike').html()) + 1
+            }
+            console.log(updatedLikes.likes);
+            const url1 = `https://daffy-tasteful-brownie.glitch.me/lists/${$(`#listModal`).data('data-list-id')}`;
+            const options1 = {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(updatedLikes)
+            };
+            fetch(url1, options1)
+                .then(response => response.json()).then(data => {
+                $('#listLike').html(updatedLikes.likes);
+                populateListsHome();
+                console.log(data);
+            })
+        } else {
+            console.log('un-checked');
+            let updatedLikedList = {
+                likedLists: user.likedLists
+            }
+            updatedLikedList.likedLists = updatedLikedList.likedLists.filter(function(list){
+                return list !== $(`#listModal`).data('data-list-id');
+            })
+            console.log(updatedLikedList);
+            const url = `https://wave-kaput-giant.glitch.me/users/${user.id}`;
+            const options = {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(updatedLikedList)
+            };
+            fetch(url, options)
+                .then(response => response.json()).then(data => {
+                console.log(data);
+            })
+            let updatedLikes = {
+                likes: parseInt($('#listLike').html()) - 1
+            }
+            console.log(updatedLikes.likes);
+            const url1 = `https://daffy-tasteful-brownie.glitch.me/lists/${$(`#listModal`).data('data-list-id')}`;
+            const options1 = {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(updatedLikes)
+            };
+            fetch(url1, options1)
+                .then(response => response.json()).then(data => {
+                $('#listLike').html(updatedLikes.likes);
+                populateListsHome();
+                console.log(data);
+            })
+        }
     }
 
     $(`#addCommentSection`).submit(function () {
@@ -796,26 +911,43 @@ $(document).ready(() => {
         }
     }
 
-    $(`#loginSubmit`).click(function (e) {
-        e.preventDefault();
-        login($('#usernameInput').val(), $('#passwordInput').val());
+    $(`#loginSubmitButton`).click(function (e) {
+        // e.preventDefault();
+        e.stopPropagation();
+        $('#loginSubmit').submit(() => {
+            login($('#usernameInput').val(), $('#passwordInput').val());
+        })
     })
 
     let user = {};
 
     function login(username, password) {
-        fetch(`https://wave-kaput-giant.glitch.me/users/${username}`)
+        fetch(`https://wave-kaput-giant.glitch.me/users/`)
             .then(response => response.json())
             // .then(response => console.log('Results by id', response)
             .then((userInfo) => {
-                console.log(userInfo);
-                if (password === userInfo.password) {
-                    user = userInfo;
+                let userNames = [];
+                userInfo.forEach((user) => {
+                    userNames.push(user.id);
+                })
+                if (userNames.includes(username)) {
+                    $('#invalidUserName').addClass('d-none');
+                    let usernameIndex = userNames.indexOf(username);
+                    if (password === userInfo[usernameIndex].password) {
+                        user = userInfo[usernameIndex];
+                        console.log('user', user);
+                        $(`#userName`).html(`&nbsp;${user.id}`);
+                        $(`#loginSection`).addClass('d-none');
+                        $(`.loggedInDropdown`).removeClass('d-none');
+                        $(`#createNewListButton`).removeClass('disabled');
+                        $('#incorrectPassword').addClass('d-none');
+                        $('.loginDropdown').toggleClass('show')
+                    } else {
+                        $('#incorrectPassword').removeClass('d-none');
+                    }
+                } else {
+                    $('#invalidUserName').removeClass('d-none');
                 }
-                $(`#userName`).html(`&nbsp;${userInfo.id}`);
-                $(`#loginSection`).addClass('d-none');
-                $(`.loggedInDropdown`).removeClass('d-none');
-                $(`#createNewListButton`).removeClass('disabled');
             })
             .catch(err => console.error(err))
     }
@@ -878,8 +1010,8 @@ $(document).ready(() => {
         })
     }
 
-    function returnSmallest(a, b){
-        if (a < b){
+    function returnSmallest(a, b) {
+        if (a < b) {
             return a;
         } else {
             return b;

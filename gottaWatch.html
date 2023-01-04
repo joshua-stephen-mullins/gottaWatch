@@ -26,7 +26,7 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarColor01">
-                <ul class="navbar-nav me-auto titleFont2">
+                <ul class="navbar-nav me-auto">
                     <li class="nav-item">
                         <a class="nav-link active" href="#" id="homeButton">HOME
                             <span class="visually-hidden">(current)</span>
@@ -101,7 +101,11 @@
                 <h1 class="titleFont homeScreenText m-1">DISCOVER NEW SHOWS.</h1>
                 <h1 class="titleFont homeScreenText m-1">BUILD YOUR LIST.</h1>
                 <h1 class="titleFont homeScreenText m-1">SHOW YOUR FRIENDS.</h1>
-                <button type="button" class="btn btn-danger btn-lg w-auto">CREATE AN ACCOUNT TO GET STARTED</button>
+                <div class="col-12">
+                    <button type="button" class="btn btn-danger btn-lg w-25" id="getStartedButton" data-bs-toggle="offcanvas"
+                            href="#offcanvasAccountCreate"
+                            role="button">CREATE AN ACCOUNT TO GET STARTED</button>
+                </div>
             </div>
         </div>
         <div class="d-none" id="discoverPage">
@@ -389,6 +393,9 @@
             </div>
         </div>
         <div class="row col-12 justify-content-center d-none" id="listsPage">
+            <div id="listPageHeader">
+                <h1 class="titleFont homeScreenText m-1">BUILD YOUR LIST.</h1>
+            </div>
             <div id="featuredLists">
                 <h1 class="text-center fw-bold titleFont">FEATURED LISTS</h1>
                 <div class="row m-0 p-0 justify-content-around" id="featuredListsContainer">

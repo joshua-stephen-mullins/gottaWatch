@@ -432,6 +432,7 @@ $(document).ready(() => {
             date_created: date,
             last_edited: date,
             content: [],
+            comments: [],
             creator: user.id,
             featured: 'n',
             likes: '0'
@@ -689,8 +690,8 @@ $(document).ready(() => {
                         $(`#listModalComments`).append(`
                         <div class="row col-7 p-0 m-0">
                             <div class="col-3">
-                                <p>${comment.user}</p>
-                                <p>${comment.date}</p>
+                                <p class="mb-1">${comment.user}</p>
+                                <p class="text-muted">${time_ago(comment.date)}</p>
                             </div>
                             <div class="col-8">
                                 <p>${comment.comment}</p>
@@ -746,18 +747,13 @@ $(document).ready(() => {
 
     function likeButton() {
         if ($('#listLikeButton').is(':checked')){
-            console.log('checked');
-            let updatedLikedList = {
-                likedLists: user.likedLists
-            }
+            let updatedLikedList = {likedLists: user.likedLists};
             updatedLikedList.likedLists.push($(`#listModal`).data('data-list-id'));
             console.log(updatedLikedList);
             const url = `https://wave-kaput-giant.glitch.me/users/${user.id}`;
             const options = {
                 method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
+                headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(updatedLikedList)
             };
             fetch(url, options)
@@ -765,16 +761,11 @@ $(document).ready(() => {
                 console.log(data);
                 user.likedLists = updatedLikedList.likedLists;
             })
-            let updatedLikes = {
-                likes: parseInt($('#listLike').html()) + 1
-            }
-            console.log(updatedLikes.likes);
+            let updatedLikes = {likes: parseInt($('#listLike').html()) + 1};
             const url1 = `https://daffy-tasteful-brownie.glitch.me/lists/${$(`#listModal`).data('data-list-id')}`;
             const options1 = {
                 method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
+                headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(updatedLikes)
             };
             fetch(url1, options1)
@@ -784,10 +775,7 @@ $(document).ready(() => {
                 console.log(data);
             })
         } else {
-            console.log('un-checked');
-            let updatedLikedList = {
-                likedLists: user.likedLists
-            }
+            let updatedLikedList = {likedLists: user.likedLists};
             updatedLikedList.likedLists = updatedLikedList.likedLists.filter(function(list){
                 return list !== $(`#listModal`).data('data-list-id');
             })
@@ -795,25 +783,19 @@ $(document).ready(() => {
             const url = `https://wave-kaput-giant.glitch.me/users/${user.id}`;
             const options = {
                 method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
+                headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(updatedLikedList)
             };
             fetch(url, options)
                 .then(response => response.json()).then(data => {
                 console.log(data);
             })
-            let updatedLikes = {
-                likes: parseInt($('#listLike').html()) - 1
-            }
+            let updatedLikes = {likes: parseInt($('#listLike').html()) - 1};
             console.log(updatedLikes.likes);
             const url1 = `https://daffy-tasteful-brownie.glitch.me/lists/${$(`#listModal`).data('data-list-id')}`;
             const options1 = {
                 method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
+                headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(updatedLikes)
             };
             fetch(url1, options1)
@@ -835,19 +817,17 @@ $(document).ready(() => {
     $(`#showAddCommentSection`).click(() => $('#addCommentSection').toggleClass('d-none'));
 
     function submitComment() {
-        let date = new Date().toISOString().slice(0, 10)
+        // let date = new Date();
         let newComment = {
             user: user.id,
             comment: $(`#commentSubmission`).val(),
-            date: date
+            date: new Date()
         }
         commentsUpdate.comments.push(newComment);
         const url = `https://daffy-tasteful-brownie.glitch.me/lists/${$(`#listModal`).data('data-list-id')}`;
         const options = {
             method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json'
-            },
+            headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(commentsUpdate)
         };
         fetch(url, options)
@@ -1017,6 +997,59 @@ $(document).ready(() => {
             return b;
         }
     }
+
+    function time_ago(time) {
+        switch (typeof time) {
+            case 'number':
+                break;
+            case 'string':
+                time = +new Date(time);
+                break;
+            case 'object':
+                if (time.constructor === Date) time = time.getTime();
+                break;
+            default:
+                time = +new Date();
+        }
+        let time_formats = [
+            [60, 'seconds', 1],
+            [120, '1 minute ago', '1 minute from now'],
+            [3600, 'minutes', 60],
+            [7200, '1 hour ago', '1 hour from now'],
+            [86400, 'hours', 3600],
+            [172800, 'Yesterday', 'Tomorrow'],
+            [604800, 'days', 86400],
+            [1209600, 'Last week', 'Next week'],
+            [2419200, 'weeks', 604800],
+            [4838400, 'Last month', 'Next month'],
+            [29030400, 'months', 2419200],
+            [58060800, 'Last year', 'Next year'],
+            [2903040000, 'years', 29030400],
+            [5806080000, 'Last century', 'Next century'],
+            [58060800000, 'centuries', 2903040000]
+        ];
+        let seconds = (+new Date() - time) / 1000,
+            token = 'ago',
+            list_choice = 1;
+        if (seconds === 0) {
+            return 'Just now'
+        }
+        if (seconds < 0) {
+            seconds = Math.abs(seconds);
+            token = 'from now';
+            list_choice = 2;
+        }
+        let i = 0,
+            format;
+        while (format = time_formats[i++])
+            if (seconds < format[0]) {
+                if (typeof format[2] == 'string')
+                    return format[list_choice];
+                else
+                    return Math.floor(seconds / format[2]) + ' ' + format[1] + ' ' + token;
+            }
+        return time;
+    }
 })
 
 
@@ -1024,8 +1057,11 @@ $(document).ready(() => {
 
 // remove unused or blank fields from showing in moreinfo modal
 //
-// like button functionality
+// fix formatting if there are two directors for a movie
 //
-// discover tab and create home
-
 // remove anchor styling from comments list modal
+//
+//create my profile page
+// make ability to edit lists
+//
+// responseive!

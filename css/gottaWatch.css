@@ -4,27 +4,17 @@
 
 .homeScreenText {
     font-size: 4em;
-    text-shadow: black 1px 0 10px;
+    text-shadow: black 5px 0 10px;
+}
+
+#getStartedButton {
+    text-shadow: black 5px 0 10px;
+    box-shadow: black 5px 0 10px;
 }
 
 body {
     font-family: 'Lekton', sans-serif;
-}
-
-#moreInfoModal {
-    z-index: 2001 !important;
-}
-
-#moreInfoModalDialog {
-    z-index: 2002 !important;
-}
-
-#listModal {
-    z-index: 1999 !important;
-}
-
-#listModalDialog {
-    z-index: 2000;
+    background-color: black;
 }
 
 .smallCard {

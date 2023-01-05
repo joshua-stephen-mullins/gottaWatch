@@ -18,11 +18,10 @@ body {
 }
 
 .profilePicture {
-    width: 1.5em;
-    height: 1.5em;
+    width: 1.4em;
+    height: 1.4em;
     border: black 1px solid;
     border-radius: 50%;
-    /*box-shadow: black 1px 0 1px;*/
 }
 
 .smallCard {

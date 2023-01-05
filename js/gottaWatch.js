@@ -532,49 +532,57 @@ $(document).ready(() => {
     }
 
     function generateFeaturedListsCards(lists) {
-        lists.forEach((list) => {
+        for (let j = 0; j < 3; j++) {
             $('#featuredListsContainer').append(`
-            <div class="card mb-3 col-4 listCard border-0" id="listCard_${list.id}" data-bs-toggle="modal" data-bs-target="#listModal" data-id="${list.id}">
+            <div class="card mb-3 col-4 listCard border-0" id="listCard_${lists[j].id}" data-bs-toggle="modal" data-bs-target="#listModal" data-id="${lists[j].id}">
               <div class="row g-0">
-                <div class="col-12 listCardFeatured" id="listCardImages_${list.id}">
+                <div class="col-12 listCardFeatured" id="listCardImages_${lists[j].id}">
                 </div>
                 <div class="col-12">
                   <div class="">
-                    <h5>${list.list_name}</h5>
-                    <p><img class="profilePicture" src="img/profilePictures/profilePicture_default.jpg" alt="Profile Picture"> ${list.creator}  |  <i class="fa-solid fa-heart"></i> ${list.likes}  |  <i class="fa-solid fa-comment"></i> ${list.comments.length} </p>
+                    <h5>${lists[j].list_name}</h5>
+                    <p><img class="profilePicture" src="img/profilePictures/default.jpg" alt="Profile Picture" id="featuredListProfilePicture_${lists[j].id}"> ${lists[j].creator}  |  <span id="featuredListLastEdited_${lists[j].id}"></span> | <i class="fa-solid fa-heart"></i> ${lists[j].likes}  |  <i class="fa-solid fa-comment"></i> ${lists[j].comments.length} </p>
                   </div>
                 </div>
               </div>
             </div>
         `)
-            $(`#listCard_${list.id}`).click(function () {
+            $(`#featuredListLastEdited_${lists[j].id}`).html(`Updated ${time_ago(lists[j].last_edited)}`)
+            fetch(`https://wave-kaput-giant.glitch.me/users/${lists[j].creator}`)
+                .then(response => response.json())
+                .then((data) => {
+                    console.log("creator data", data);
+                    $(`#featuredListProfilePicture_${lists[j].id}`).attr('src', `img/profilePictures/${data.profilePic}.jpg`)
+                })
+            $(`#listCard_${lists[j].id}`).click(function () {
                 populateListModal($(this).data("id"));
             });
-            if (list.content.length < 5) {
-                for (let i = 0; i < list.content.length; i++) {
-                    fetch(`https://api.themoviedb.org/3/${list.content[i].type}/${list.content[i].id}?api_key=${apiKeyTMDP}&language=en-US`)
+            if (lists[j].content.length < 5) {
+                for (let i = 0; i < lists[j].content.length; i++) {
+                    fetch(`https://api.themoviedb.org/3/${lists[j].content[i].type}/${lists[j].content[i].id}?api_key=${apiKeyTMDP}&language=en-US`)
                         .then(response => response.json())
                         .then((data) => {
-                            $(`#listCardImages_${list.id}`).append(`
+                            $(`#listCardImages_${lists[j].id}`).append(`
                             <img src="https://image.tmdb.org/t/p/original/${data.poster_path}" class="border border-1" alt="Movie Poster" style="position: absolute; left: ${i * 17}%; height: 8em; z-index: ${500 - (5 * i)}">
                         `)
                         })
                 }
             } else {
                 for (let i = 0; i < 5; i++) {
-                    fetch(`https://api.themoviedb.org/3/${list.content[i].type}/${list.content[i].id}?api_key=${apiKeyTMDP}&language=en-US`)
+                    fetch(`https://api.themoviedb.org/3/${lists[j].content[i].type}/${lists[j].content[i].id}?api_key=${apiKeyTMDP}&language=en-US`)
                         .then(response => response.json())
                         .then((data) => {
-                            $(`#listCardImages_${list.id}`).append(`
+                            $(`#listCardImages_${lists[j].id}`).append(`
                             <img src="https://image.tmdb.org/t/p/original/${data.poster_path}" class="border border-1" alt="Movie Poster" style="position: absolute; left: ${i * 17}%; height: 8em; z-index: ${500 - (5 * i)}">
                         `)
                         })
                 }
             }
-        })
+        }
     }
 
-    function profilePicturePopulation(){
+
+    function profilePicturePopulation() {
         $(`.profilePicture`).each()
     }
 
@@ -588,7 +596,7 @@ $(document).ready(() => {
                     <div class="col-5">
                       <div>
                         <h5>${list.list_name}</h5>
-                        <p><img class="profilePicture" src="img/profilePictures/profilePicture_default.jpg" alt="Profile Picture"> ${list.creator}  |  <i class="fa-solid fa-heart"></i> ${list.likes}  |  <i class="fa-solid fa-comment"></i> ${list.comments.length}</p>
+                        <p><img class="profilePicture" src="img/profilePictures/default.jpg" alt="Profile Picture" id="popularListProfilePicture_${list.id}"> ${list.creator}  |  <span id="popularListLastEdited_${list.id}"></span> | <i class="fa-solid fa-heart"></i> ${list.likes}  |  <i class="fa-solid fa-comment"></i> ${list.comments.length}</p>
                         <p class="" id="listCard_desc${list.id}"></p>
                       </div>
                     </div>
@@ -598,6 +606,13 @@ $(document).ready(() => {
             <hr>
             </div>
         `)
+            $(`#popularListLastEdited_${list.id}`).html(`Updated ${time_ago(list.last_edited)}`)
+            fetch(`https://wave-kaput-giant.glitch.me/users/${list.creator}`)
+                .then(response => response.json())
+                .then((data) => {
+                    console.log("creator data", data);
+                    $(`#popularListProfilePicture_${list.id}`).attr('src', `img/profilePictures/${data.profilePic}.jpg`)
+                })
             $(`#listCard_${list.id}`).click(function () {
                 populateListModal($(this).data("id"));
             });
@@ -645,8 +660,15 @@ $(document).ready(() => {
             .then((list) => {
                 $(`#listModalTitle`).html(list.list_name);
                 $(`#listModalCreator`).html(list.creator);
+                $(`#listModalLastUpdated`).html(`Updated ${time_ago(list.last_edited)} | `)
                 $(`#listModalDescription`).html(list.list_desc);
                 $(`#listLike`).html(`${list.likes}`);
+                fetch(`https://wave-kaput-giant.glitch.me/users/${list.creator}`)
+                    .then(response => response.json())
+                    .then((data) => {
+                        console.log("creator data", data);
+                        $(`#listModalProfilePicture`).attr('src', `img/profilePictures/${data.profilePic}.jpg`)
+                    })
                 if (user.hasOwnProperty('likedLists')) {
                     if (user.likedLists.includes(listId)) {
                         $(`#listLikeButton`).attr('checked', 'checked');
@@ -672,11 +694,11 @@ $(document).ready(() => {
                         </div>
                     `)
                 } else {
-                    list.comments.forEach(function (comment) {
+                    list.comments.forEach((comment) => {
                         $(`#listModalComments`).append(`
                         <div class="row col-7 p-0 m-0">
                             <div class="col-3">
-                                <p class="mb-1">${comment.user}</p>
+                                <p class="mb-1"><img class="profilePicture comment_${comment.user}" src="img/profilePictures/default.jpg" alt="Profile Picture"> ${comment.user}</p>
                                 <p class="text-muted">${time_ago(comment.date)}</p>
                             </div>
                             <div class="col-8">
@@ -687,6 +709,12 @@ $(document).ready(() => {
                         <hr>
                         </div>
                     `)
+                        fetch(`https://wave-kaput-giant.glitch.me/users/${comment.user}`)
+                            .then(response => response.json())
+                            .then((data) => {
+                                console.log("creator data", data);
+                                $(`.comment_${comment.user}`).attr('src', `img/profilePictures/${data.profilePic}.jpg`)
+                            })
                     })
                 }
                 list.content.forEach((content) => {
@@ -721,8 +749,8 @@ $(document).ready(() => {
 
     }
 
-    $(`#listLikeButton`).click(function(){
-        if ($('#listLikeButton').is(':checked')){
+    $(`#listLikeButton`).click(function () {
+        if ($('#listLikeButton').is(':checked')) {
             likeButton();
         } else {
             likeButton();
@@ -730,7 +758,7 @@ $(document).ready(() => {
     })
 
     function likeButton() {
-        if ($('#listLikeButton').is(':checked')){
+        if ($('#listLikeButton').is(':checked')) {
             let updatedLikedList = {likedLists: user.likedLists};
             updatedLikedList.likedLists.push($(`#listModal`).data('data-list-id'));
             const url = `https://wave-kaput-giant.glitch.me/users/${user.id}`;
@@ -757,7 +785,7 @@ $(document).ready(() => {
             })
         } else {
             let updatedLikedList = {likedLists: user.likedLists};
-            updatedLikedList.likedLists = updatedLikedList.likedLists.filter(function(list){
+            updatedLikedList.likedLists = updatedLikedList.likedLists.filter(function (list) {
                 return list !== $(`#listModal`).data('data-list-id');
             })
             console.log(updatedLikedList);
@@ -867,7 +895,6 @@ $(document).ready(() => {
     }
 
     $(`#loginSubmitButton`).click(function (e) {
-        // e.preventDefault();
         e.stopPropagation();
         $('#loginSubmit').submit(() => {
             login($('#usernameInput').val(), $('#passwordInput').val());
@@ -889,7 +916,6 @@ $(document).ready(() => {
                     let usernameIndex = userNames.indexOf(username);
                     if (password === userInfo[usernameIndex].password) {
                         user = userInfo[usernameIndex];
-                        console.log('user', user);
                         $(`#userName`).html(`&nbsp;${user.id}`);
                         $(`#loginSection`).addClass('d-none');
                         $(`.loggedInDropdown`).removeClass('d-none');
@@ -921,7 +947,6 @@ $(document).ready(() => {
         fetch(`https://wave-kaput-giant.glitch.me/users/`)
             .then(response => response.json())
             .then((userInfo) => {
-                console.log(userInfo);
                 let users = [];
                 userInfo.forEach(function (user) {
                     users.push(user.id.toLowerCase());
@@ -958,7 +983,6 @@ $(document).ready(() => {
         };
         fetch(url, options)
             .then(response => response.json()).then(data => {
-            console.log(data);
         })
     }
 
@@ -1020,12 +1044,10 @@ $(document).ready(() => {
     }
 
     function randomizeLists(lists) {
-        let currentIndex = lists.length,  randomIndex;
+        let currentIndex = lists.length, randomIndex;
         while (currentIndex != 0) {
-            // Pick a remaining element.
             randomIndex = Math.floor(Math.random() * currentIndex);
             currentIndex--;
-            // And swap it with the current element.
             [lists[currentIndex], lists[randomIndex]] = [
                 lists[randomIndex], lists[currentIndex]];
         }
@@ -1046,8 +1068,6 @@ $(document).ready(() => {
 // make ability to edit lists
 //
 // filter/search popular lists
-//
-//randomize featured lists
 //
 // responseive!
 //

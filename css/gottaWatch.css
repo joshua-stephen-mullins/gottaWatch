@@ -17,6 +17,14 @@ body {
     background-color: black;
 }
 
+.profilePicture {
+    width: 1.25em;
+    height: 1.25em;
+    border: black 1px solid;
+    border-radius: 50%;
+    box-shadow: black 1px 0 1px;
+}
+
 .smallCard {
     font-size: .6em !important;
     width: 15%;

@@ -559,7 +559,7 @@ $(document).ready(() => {
                 <div class="col-12">
                   <div class="">
                     <h5>${list.list_name}</h5>
-                    <p>Created by: ${list.creator}  |  <i class="fa-solid fa-heart"></i> ${list.likes}  |  <i class="fa-solid fa-comment"></i> ${list.comments.length} </p>
+                    <p><img class="profilePicture" src="img/profilePicture_default.jpg" alt="Profile Picture"> ${list.creator}  |  <i class="fa-solid fa-heart"></i> ${list.likes}  |  <i class="fa-solid fa-comment"></i> ${list.comments.length} </p>
                   </div>
                 </div>
               </div>
@@ -601,7 +601,7 @@ $(document).ready(() => {
                     <div class="col-5">
                       <div>
                         <h5>${list.list_name}</h5>
-                        <p>Created by: ${list.creator}  |  <i class="fa-solid fa-heart"></i> ${list.likes}  |  <i class="fa-solid fa-comment"></i> ${list.comments.length}</p>
+                        <p><img class="profilePicture" src="img/profilePicture_default.jpg" alt="Profile Picture"> ${list.creator}  |  <i class="fa-solid fa-heart"></i> ${list.likes}  |  <i class="fa-solid fa-comment"></i> ${list.comments.length}</p>
                         <p class="" id="listCard_desc${list.id}"></p>
                       </div>
                     </div>
@@ -973,6 +973,7 @@ $(document).ready(() => {
             password: $('#accountCreatePassword').val(),
             description: $('#accountUserDesc').val(),
             admin: "n",
+            profilePic: "default",
             createdLists: [],
             likedLists: []
         }
@@ -1065,3 +1066,5 @@ $(document).ready(() => {
 // make ability to edit lists
 //
 // responseive!
+//
+//highlight movies already on list in list modal dropdown

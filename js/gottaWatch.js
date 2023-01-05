@@ -16,7 +16,6 @@ $(document).ready(() => {
         fetch(`https://api.themoviedb.org/3/${showType}/popular?api_key=${apiKeyTMDP}&language=en-US&page=1`)
             .then(response => response.json())
             .then((response) => {
-                console.log(`Results ${showType}`, response);
                 if (showType === 'tv') {
                     let filteredResponse = {results: []};
                     response.results.forEach((result) => {
@@ -47,7 +46,6 @@ $(document).ready(() => {
                         return item.genre_ids.includes(parseInt(movieFilters[i]));
                     })
                 }
-                console.log(itemsToPopulate.results);
             })
             $('#topRatedMovieResults').html('');
             if (itemsToPopulate.results.length === 0) {
@@ -95,7 +93,6 @@ $(document).ready(() => {
                         return item.genre_ids.includes(parseInt(tvFilters[i]));
                     })
                 }
-                console.log(itemsToPopulate.results);
             })
             $('#topRatedTVResults').html('');
             if (itemsToPopulate.results.length === 0) {
@@ -132,7 +129,6 @@ $(document).ready(() => {
         fetch(`https://api.themoviedb.org/3/search/multi?api_key=${apiKeyTMDP}&language=en-US&query=${input}&include_adult=false`)
             .then(response => response.json())
             .then(response => {
-                console.log('Search Results', response);
                 filterSearchData(response);
             })
             .catch(err => console.error(err));
@@ -220,9 +216,7 @@ $(document).ready(() => {
     function searchById(searchType, id) {
         fetch(`https://api.themoviedb.org/3/${searchType}/${id}?api_key=${apiKeyTMDP}&language=en-US`)
             .then(response => response.json())
-            // .then(response => console.log('Results by id', response)
             .then((data) => {
-                console.log('Results by id', data);
                 moreInfo(data, searchType, id);
             })
             .catch(err => console.error(err));
@@ -329,7 +323,6 @@ $(document).ready(() => {
             $('#moreInfoRating').html('');
             fetch(`https://api.themoviedb.org/3/movie/${id}/release_dates?api_key=${apiKeyTMDP}`)
                 .then(response => response.json())
-                // .then(response => console.log('Results by id', response)
                 .then((data) => {
                     data.results.forEach(function (country) {
                         if (country.iso_3166_1 === "US") {
@@ -345,9 +338,7 @@ $(document).ready(() => {
             $('#moreInfoRating').html('');
             fetch(`https://api.themoviedb.org/3/tv/${id}/content_ratings?api_key=${apiKeyTMDP}&language=en-US`)
                 .then(response => response.json())
-                // .then(response => console.log('Results by id', response)
                 .then((data) => {
-                    console.log('Content Rating: ', data)
                     data.results.forEach(function (country) {
                         if (country.iso_3166_1 === "US") {
                             $('#moreInfoRating').html(country.rating);
@@ -357,7 +348,6 @@ $(document).ready(() => {
         }
         fetch(`https://api.themoviedb.org/3/${searchType}/${id}/credits?api_key=${apiKeyTMDP}&language=en-US`)
             .then(response => response.json())
-            // .then(response => console.log('Results by id', response)
             .then((data) => {
                 data.crew.forEach(function (person) {
                     if (person.job === "Director") {
@@ -404,20 +394,17 @@ $(document).ready(() => {
     }
 
     function addMovieToList(data, listId) {
-        let date = new Date().toISOString().slice(0, 10)
+        let date = new Date();
         let updateContent = {
             content: data,
             last_edited: date
         }
-        const url = 'https://daffy-tasteful-brownie.glitch.me/lists/' + listId;
+        const url = `https://daffy-tasteful-brownie.glitch.me/lists/${listId}`;
         const options = {
             method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json'
-            },
+            headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(updateContent)
         };
-        console.log(JSON.stringify(data));
         fetch(url, options)
             .then(response => response.json()).then(data => console.log(data))
             .catch(error => console.error(error));
@@ -425,7 +412,7 @@ $(document).ready(() => {
     }
 
     function createNewList() {
-        let date = new Date().toISOString().slice(0, 10)
+        let date = new Date();
         let newList = {
             list_name: $('#listCreateName').val(),
             list_desc: $('#listCreateDesc').val(),
@@ -440,15 +427,11 @@ $(document).ready(() => {
         const url = 'https://daffy-tasteful-brownie.glitch.me/lists/';
         const options = {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
+            headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(newList)
         };
         fetch(url, options)
             .then(response => response.json()).then(data => {
-            console.log(data);
-            console.log(user);
             let userUpdate = {
                 createdLists: user.createdLists
             }
@@ -456,14 +439,11 @@ $(document).ready(() => {
             const url2 = `https://wave-kaput-giant.glitch.me/users/${user.id}`;
             const options2 = {
                 method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
+                headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(userUpdate)
             };
             fetch(url2, options2)
                 .then(response => response.json()).then(data => {
-                console.log(data);
             })
                 .catch(error => console.error(error));
         })
@@ -509,7 +489,6 @@ $(document).ready(() => {
                 $(`#smallCardRating_${showInfo.results[i].id}_${cardType}`).html('');
                 fetch(`https://api.themoviedb.org/3/movie/${showInfo.results[i].id}/release_dates?api_key=${apiKeyTMDP}`)
                     .then(response => response.json())
-                    // .then(response => console.log('Results by id', response)
                     .then((data) => {
                         data.results.forEach(function (country) {
                             if (country.iso_3166_1 === "US") {
@@ -525,7 +504,6 @@ $(document).ready(() => {
                 $(`#smallCardRating_${showInfo.results[i].id}_${cardType}`).html('');
                 fetch(`https://api.themoviedb.org/3/tv/${showInfo.results[i].id}/content_ratings?api_key=${apiKeyTMDP}&language=en-US`)
                     .then(response => response.json())
-                    // .then(response => console.log('Results by id', response)
                     .then((data) => {
                         data.results.forEach(function (country) {
                             if (country.iso_3166_1 === "US") {
@@ -543,15 +521,19 @@ $(document).ready(() => {
         fetch(`https://daffy-tasteful-brownie.glitch.me/lists`)
             .then(response => response.json())
             .then((data) => {
-                console.log(data);
+                let allFeaturedLists = [];
+                let allPopularLists = [];
                 data.forEach(function (list) {
-                    list.featured === "y" ? generateFeaturedListsCards(list) : generatePopularListsCards(list);
+                    list.featured === "y" ? allFeaturedLists.push(list) : allPopularLists.push(list);
                 })
+                generateFeaturedListsCards(randomizeLists(allFeaturedLists));
+                generatePopularListsCards(randomizeLists(allPopularLists));
             })
     }
 
-    function generateFeaturedListsCards(list) {
-        $('#featuredListsContainer').append(`
+    function generateFeaturedListsCards(lists) {
+        lists.forEach((list) => {
+            $('#featuredListsContainer').append(`
             <div class="card mb-3 col-4 listCard border-0" id="listCard_${list.id}" data-bs-toggle="modal" data-bs-target="#listModal" data-id="${list.id}">
               <div class="row g-0">
                 <div class="col-12 listCardFeatured" id="listCardImages_${list.id}">
@@ -559,41 +541,46 @@ $(document).ready(() => {
                 <div class="col-12">
                   <div class="">
                     <h5>${list.list_name}</h5>
-                    <p><img class="profilePicture" src="img/profilePicture_default.jpg" alt="Profile Picture"> ${list.creator}  |  <i class="fa-solid fa-heart"></i> ${list.likes}  |  <i class="fa-solid fa-comment"></i> ${list.comments.length} </p>
+                    <p><img class="profilePicture" src="img/profilePictures/profilePicture_default.jpg" alt="Profile Picture"> ${list.creator}  |  <i class="fa-solid fa-heart"></i> ${list.likes}  |  <i class="fa-solid fa-comment"></i> ${list.comments.length} </p>
                   </div>
                 </div>
               </div>
             </div>
         `)
-        $(`#listCard_${list.id}`).click(function () {
-            populateListModal($(this).data("id"));
-        });
-        if (list.content.length < 5) {
-            for (let i = 0; i < list.content.length; i++) {
-                fetch(`https://api.themoviedb.org/3/${list.content[i].type}/${list.content[i].id}?api_key=${apiKeyTMDP}&language=en-US`)
-                    .then(response => response.json())
-                    .then((data) => {
-                        // console.log(data);
-                        $(`#listCardImages_${list.id}`).append(`
+            $(`#listCard_${list.id}`).click(function () {
+                populateListModal($(this).data("id"));
+            });
+            if (list.content.length < 5) {
+                for (let i = 0; i < list.content.length; i++) {
+                    fetch(`https://api.themoviedb.org/3/${list.content[i].type}/${list.content[i].id}?api_key=${apiKeyTMDP}&language=en-US`)
+                        .then(response => response.json())
+                        .then((data) => {
+                            $(`#listCardImages_${list.id}`).append(`
                             <img src="https://image.tmdb.org/t/p/original/${data.poster_path}" class="border border-1" alt="Movie Poster" style="position: absolute; left: ${i * 17}%; height: 8em; z-index: ${500 - (5 * i)}">
                         `)
-                    })
-            }
-        } else {
-            for (let i = 0; i < 5; i++) {
-                fetch(`https://api.themoviedb.org/3/${list.content[i].type}/${list.content[i].id}?api_key=${apiKeyTMDP}&language=en-US`)
-                    .then(response => response.json())
-                    .then((data) => {
-                        $(`#listCardImages_${list.id}`).append(`
+                        })
+                }
+            } else {
+                for (let i = 0; i < 5; i++) {
+                    fetch(`https://api.themoviedb.org/3/${list.content[i].type}/${list.content[i].id}?api_key=${apiKeyTMDP}&language=en-US`)
+                        .then(response => response.json())
+                        .then((data) => {
+                            $(`#listCardImages_${list.id}`).append(`
                             <img src="https://image.tmdb.org/t/p/original/${data.poster_path}" class="border border-1" alt="Movie Poster" style="position: absolute; left: ${i * 17}%; height: 8em; z-index: ${500 - (5 * i)}">
                         `)
-                    })
+                        })
+                }
             }
-        }
+        })
     }
 
-    function generatePopularListsCards(list) {
-        $('#popularListsContainer').append(`
+    function profilePicturePopulation(){
+        $(`.profilePicture`).each()
+    }
+
+    function generatePopularListsCards(lists) {
+        lists.forEach((list) => {
+            $('#popularListsContainer').append(`
                 <div class="card col-9 m-1 border-0" id="listCard_${list.id}" data-bs-toggle="modal" data-bs-target="#listModal" data-id="${list.id}">
                   <div class="row g-0">
                     <div class="col-7 listCardPopular" id="listCardImages_${list.id}">
@@ -601,7 +588,7 @@ $(document).ready(() => {
                     <div class="col-5">
                       <div>
                         <h5>${list.list_name}</h5>
-                        <p><img class="profilePicture" src="img/profilePicture_default.jpg" alt="Profile Picture"> ${list.creator}  |  <i class="fa-solid fa-heart"></i> ${list.likes}  |  <i class="fa-solid fa-comment"></i> ${list.comments.length}</p>
+                        <p><img class="profilePicture" src="img/profilePictures/profilePicture_default.jpg" alt="Profile Picture"> ${list.creator}  |  <i class="fa-solid fa-heart"></i> ${list.likes}  |  <i class="fa-solid fa-comment"></i> ${list.comments.length}</p>
                         <p class="" id="listCard_desc${list.id}"></p>
                       </div>
                     </div>
@@ -611,32 +598,32 @@ $(document).ready(() => {
             <hr>
             </div>
         `)
-        $(`#listCard_${list.id}`).click(function () {
-            populateListModal($(this).data("id"));
-        });
-        (list.list_desc.length > 100) ? $(`#listCard_desc${list.id}`).html(list.list_desc.slice(0, 100) + "...") : $(`#listCard_desc${list.id}`).html(list.list_desc);
-        if (list.content.length < 5) {
-            for (let i = 0; i < list.content.length; i++) {
-                fetch(`https://api.themoviedb.org/3/${list.content[i].type}/${list.content[i].id}?api_key=${apiKeyTMDP}&language=en-US`)
-                    .then(response => response.json())
-                    .then((data) => {
-                        // console.log(data);
-                        $(`#listCardImages_${list.id}`).append(`
+            $(`#listCard_${list.id}`).click(function () {
+                populateListModal($(this).data("id"));
+            });
+            (list.list_desc.length > 100) ? $(`#listCard_desc${list.id}`).html(list.list_desc.slice(0, 100) + "...") : $(`#listCard_desc${list.id}`).html(list.list_desc);
+            if (list.content.length < 5) {
+                for (let i = 0; i < list.content.length; i++) {
+                    fetch(`https://api.themoviedb.org/3/${list.content[i].type}/${list.content[i].id}?api_key=${apiKeyTMDP}&language=en-US`)
+                        .then(response => response.json())
+                        .then((data) => {
+                            $(`#listCardImages_${list.id}`).append(`
                             <img src="https://image.tmdb.org/t/p/original/${data.poster_path}" class="border border-1" alt="Movie Poster" style="position: absolute; left: ${i * 9}%; height: 8em; z-index: ${500 - (5 * i)}">
                         `)
-                    })
-            }
-        } else {
-            for (let i = 0; i < 5; i++) {
-                fetch(`https://api.themoviedb.org/3/${list.content[i].type}/${list.content[i].id}?api_key=${apiKeyTMDP}&language=en-US`)
-                    .then(response => response.json())
-                    .then((data) => {
-                        $(`#listCardImages_${list.id}`).append(`
+                        })
+                }
+            } else {
+                for (let i = 0; i < 5; i++) {
+                    fetch(`https://api.themoviedb.org/3/${list.content[i].type}/${list.content[i].id}?api_key=${apiKeyTMDP}&language=en-US`)
+                        .then(response => response.json())
+                        .then((data) => {
+                            $(`#listCardImages_${list.id}`).append(`
                             <img src="https://image.tmdb.org/t/p/original/${data.poster_path}" class="border border-1" alt="Movie Poster" style="position: absolute; left: ${i * 9}%; height: 8em; z-index: ${500 - (5 * i)}">
                         `)
-                    })
+                        })
+                }
             }
-        }
+        })
     }
 
     function showBackToListButton() {
@@ -655,7 +642,6 @@ $(document).ready(() => {
         $(`#listModal`).data('data-list-id', listId);
         fetch(`https://daffy-tasteful-brownie.glitch.me/lists/${listId}`)
             .then(response => response.json())
-            // .then(response => console.log('Results by id', response)
             .then((list) => {
                 $(`#listModalTitle`).html(list.list_name);
                 $(`#listModalCreator`).html(list.creator);
@@ -737,10 +723,8 @@ $(document).ready(() => {
 
     $(`#listLikeButton`).click(function(){
         if ($('#listLikeButton').is(':checked')){
-            console.log('checked');
             likeButton();
         } else {
-            console.log('un-checked');
             likeButton();
         }
     })
@@ -749,7 +733,6 @@ $(document).ready(() => {
         if ($('#listLikeButton').is(':checked')){
             let updatedLikedList = {likedLists: user.likedLists};
             updatedLikedList.likedLists.push($(`#listModal`).data('data-list-id'));
-            console.log(updatedLikedList);
             const url = `https://wave-kaput-giant.glitch.me/users/${user.id}`;
             const options = {
                 method: 'PATCH',
@@ -758,7 +741,6 @@ $(document).ready(() => {
             };
             fetch(url, options)
                 .then(response => response.json()).then(data => {
-                console.log(data);
                 user.likedLists = updatedLikedList.likedLists;
             })
             let updatedLikes = {likes: parseInt($('#listLike').html()) + 1};
@@ -772,7 +754,6 @@ $(document).ready(() => {
                 .then(response => response.json()).then(data => {
                 $('#listLike').html(updatedLikes.likes);
                 populateListsHome();
-                console.log(data);
             })
         } else {
             let updatedLikedList = {likedLists: user.likedLists};
@@ -802,7 +783,6 @@ $(document).ready(() => {
                 .then(response => response.json()).then(data => {
                 $('#listLike').html(updatedLikes.likes);
                 populateListsHome();
-                console.log(data);
             })
         }
     }
@@ -817,7 +797,6 @@ $(document).ready(() => {
     $(`#showAddCommentSection`).click(() => $('#addCommentSection').toggleClass('d-none'));
 
     function submitComment() {
-        // let date = new Date();
         let newComment = {
             user: user.id,
             comment: $(`#commentSubmission`).val(),
@@ -832,7 +811,6 @@ $(document).ready(() => {
         };
         fetch(url, options)
             .then(response => response.json()).then(data => {
-            console.log(data);
             $(`#commentSubmission`).val('');
         })
     }
@@ -840,10 +818,7 @@ $(document).ready(() => {
     function toHoursAndMinutes(totalMinutes) {
         const hours = Math.floor(totalMinutes / 60);
         const minutes = totalMinutes % 60;
-        if (hours > 0) {
-            return `${hours}h${minutes > 0 ? ` ${minutes}m` : ''}`;
-        } else
-            return ` ${minutes}m`;
+        return hours > 0 ? `${hours}h${minutes > 0 ? ` ${minutes}m` : ''}` : ` ${minutes}m`;
     }
 
     function genreIdToText(id) {
@@ -904,7 +879,6 @@ $(document).ready(() => {
     function login(username, password) {
         fetch(`https://wave-kaput-giant.glitch.me/users/`)
             .then(response => response.json())
-            // .then(response => console.log('Results by id', response)
             .then((userInfo) => {
                 let userNames = [];
                 userInfo.forEach((user) => {
@@ -946,7 +920,6 @@ $(document).ready(() => {
         e.preventDefault();
         fetch(`https://wave-kaput-giant.glitch.me/users/`)
             .then(response => response.json())
-            // .then(response => console.log('Results by id', response)
             .then((userInfo) => {
                 console.log(userInfo);
                 let users = [];
@@ -980,9 +953,7 @@ $(document).ready(() => {
         const url = 'https://wave-kaput-giant.glitch.me/users/';
         const options = {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
+            headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(newUser)
         };
         fetch(url, options)
@@ -992,11 +963,7 @@ $(document).ready(() => {
     }
 
     function returnSmallest(a, b) {
-        if (a < b) {
-            return a;
-        } else {
-            return b;
-        }
+        return a < b ? a : b;
     }
 
     function time_ago(time) {
@@ -1051,6 +1018,19 @@ $(document).ready(() => {
             }
         return time;
     }
+
+    function randomizeLists(lists) {
+        let currentIndex = lists.length,  randomIndex;
+        while (currentIndex != 0) {
+            // Pick a remaining element.
+            randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex--;
+            // And swap it with the current element.
+            [lists[currentIndex], lists[randomIndex]] = [
+                lists[randomIndex], lists[currentIndex]];
+        }
+        return lists;
+    }
 })
 
 
@@ -1064,6 +1044,10 @@ $(document).ready(() => {
 //
 //create my profile page
 // make ability to edit lists
+//
+// filter/search popular lists
+//
+//randomize featured lists
 //
 // responseive!
 //

@@ -102,9 +102,11 @@
                 <h1 class="titleFont homeScreenText m-1">BUILD YOUR LIST.</h1>
                 <h1 class="titleFont homeScreenText m-1">SHOW YOUR FRIENDS.</h1>
                 <div class="col-12">
-                    <button type="button" class="btn btn-danger btn-lg w-25" id="getStartedButton" data-bs-toggle="offcanvas"
+                    <button type="button" class="btn btn-danger btn-lg w-25" id="getStartedButton"
+                            data-bs-toggle="offcanvas"
                             href="#offcanvasAccountCreate"
-                            role="button">CREATE AN ACCOUNT TO GET STARTED</button>
+                            role="button">CREATE AN ACCOUNT TO GET STARTED
+                    </button>
                 </div>
             </div>
         </div>
@@ -401,14 +403,35 @@
                 <div class="row m-0 p-0 justify-content-around" id="featuredListsContainer">
                 </div>
             </div>
-            <div id="popularLists">
+            <div class="row justify-content-center m-0 p-0" id="popularLists">
                 <h1 class="text-center fw-bold titleFont">POPULAR LISTS</h1>
-                <div class="row m-0 p-0 justify-content-around" id="popularListsContainer">
+                <div class="d-flex flex-column col-2" id="popularListsFilterContainer">
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="popularListFilterInput"
+                               placeholder="Search Lists">
+                        <button class="btn btn-primary" type="button" id="button-addon2">Button</button>
+                    </div>
+                    <div class="row m-0 p-0 popularListFilterButtonsContainer">
+                        <input class="popularListFilterRadio" type="radio" name="popularListFilter"
+                               id="popularListFilterMostLiked">
+                        <label class="col-12 popularListFilterButton" for="popularListFilterMostLiked"><span
+                                class="btn btn-warning rounded-1 w-100 btn-sm"
+                                id="popularListFilterMostLikedLabel">Most Liked</span>
+                        </label>
+                        <input class="popularListFilterRadio" type="radio" name="popularListFilter"
+                               id="popularListFilterRecentlyUpdated">
+                        <label class="col-12 popularListFilterButton" for="popularListFilterRecentlyUpdated"><span
+                                class="btn btn-warning rounded-1 w-100 btn-sm"
+                                id="popularListFilterRecentlyUpdatedLabel">Recently Updated</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="col-10 row m-0 p-0 justify-content-around" id="popularListsContainer">
                 </div>
             </div>
         </div>
         <div class="row col-12 justify-content-center d-none" id="profilePage">
-            <div class="card text-white bg-success mb-3" style="max-width: 20rem;">
+            <div class="card text-white bg-success mb-3">
                 <div class="card-header">Header</div>
                 <div class="card-body">
                     <h4 class="card-title">Success card title</h4>
@@ -471,7 +494,11 @@
             </div>
             <div class="modal-body p-0">
                 <h1 class="modal-title ps-5 pe-5 ms-2 me-2" id="listModalTitle"></h1>
-                <h3 class="ps-5 pe-5 ms-2 me-2 text-muted listLiked"><img class="profilePicture" src="img/profilePictures/default.jpg" alt="Profile Picture" id="listModalProfilePicture"> <span id="listModalCreator"></span> | <span id="listModalLastUpdated"></span>
+                <h3 class="ps-5 pe-5 ms-2 me-2 text-muted listLiked"><img class="profilePicture"
+                                                                          src="img/profilePictures/default.jpg"
+                                                                          alt="Profile Picture"
+                                                                          id="listModalProfilePicture"> <span
+                        id="listModalCreator"></span> | <span id="listModalLastUpdated"></span>
                     <input type="checkbox" class="loginRequired disabled" id="listLikeButton" disabled>
                     <label for="listLikeButton"><i class="fa-solid fa-heart"></i></label>
                     <span id="listLike"></span> Likes | <a href="#listModalComments"><i class="fa-solid fa-comment"></i>

@@ -115,3 +115,59 @@ body {
     background-color: #de4e5d !important;
     z-index: -1;
 }
+
+.popularListFilterButtonsContainer input[type="radio"] {
+    display: none;
+}
+
+.popularListFilterButtonsContainer label {
+    position: relative;
+    cursor: pointer;
+}
+
+.popularListFilterButtonsContainer label:before {
+    background-color: white;
+    color: white;
+    content: " ";
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    width: 25px;
+    height: 25px;
+    text-align: center;
+    line-height: 28px;
+    transition-duration: 0.4s;
+    transform: scale(0);
+}
+
+.popularListFilterButtonsContainer label span {
+    transition-duration: 0.2s;
+    transform-origin: 50% 50%;
+}
+
+.popularListFilterButtonsContainer input[type="radio"]:checked + label span {
+    transform: scale(1.1);
+    background-color: #de4e5d !important;
+    z-index: -1;
+}
+
+/*!* Labels for checked inputs *!*/
+/*.popularListFilterButtonsContainer input:checked + label {*/
+/*    color: red;*/
+/*}*/
+
+/*!* Radio element, when checked *!*/
+/*.popularListFilterButtonsContainer input[type="radio"]:checked + label span {*/
+/*    box-shadow: 0 0 0 3px orange !important;*/
+/*}*/
+
+/*!* Checkbox element, when checked *!*/
+/*.popularListFilterButtonsContainer input[type="radio"]:checked {*/
+/*    box-shadow: 0 0 0 3px hotpink;*/
+/*}*/
+
+/*!* Option elements, when selected *!*/
+/*.popularListFilterButtonsContainer option:checked {*/
+/*    box-shadow: 0 0 0 3px lime;*/
+/*    color: red;*/
+/*}*/

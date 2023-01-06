@@ -78,6 +78,51 @@ $(document).ready(() => {
         }
     }
 
+    $('.popularListFilterButton').click(() => {
+        filterPopularLists();
+    })
+
+    function filterPopularLists() {
+        // $.each($('input[class="popularListFilterRadio"]:checked'), function () {
+        // if ($(".popularListFilterRadio").is(':checked')){
+        //     console.log("checked")
+        // }
+        // setTimeout(function (){
+        //     console.log("checked", $(`input[class="popularListFilterRadio"]:selected`));
+        // }, 50);
+
+        // if ($(".popularListFilterRadio").is(':checked')) {
+        //     console.log("checked");
+        // }
+        setTimeout(function(){
+            $.each($('input[class="popularListFilterRadio"]'), function (index) {
+                if ($(".popularListFilterRadio").hasClass('theone')) {
+                    console.log($(".theone")[0].id);
+                }
+                // })
+            })
+        }, 100);
+    }
+
+    $("input:radio").on("click",function (e) {
+        let inp=$(this); //cache the selector
+        if (inp.is(".theone")) { //see if it has the selected class
+            inp.prop("checked",false).removeClass("theone");
+            return;
+        }
+        $("input:radio[name='"+inp.prop("name")+"'].theone").removeClass("theone");
+        inp.addClass("theone");
+    });
+
+    //
+    // $('input[type=radio]').click(function(){
+    //     if (this.previous) {
+    //         this.checked = false;
+    //     }
+    //     this.previous = this.checked;
+    // });
+
+
     $('.topRatedFilterButtonTV').click(() => {
         filterTopRatedTV();
     })
@@ -207,6 +252,7 @@ $(document).ready(() => {
     })
     $('#submitNewList').submit(function () {
         createNewList();
+        populateListsHome();
     })
     $('#createNewListButton').click(function () {
         $('#listCreateName').html('');
@@ -551,7 +597,6 @@ $(document).ready(() => {
             fetch(`https://wave-kaput-giant.glitch.me/users/${lists[j].creator}`)
                 .then(response => response.json())
                 .then((data) => {
-                    console.log("creator data", data);
                     $(`#featuredListProfilePicture_${lists[j].id}`).attr('src', `img/profilePictures/${data.profilePic}.jpg`)
                 })
             $(`#listCard_${lists[j].id}`).click(function () {
@@ -581,19 +626,14 @@ $(document).ready(() => {
         }
     }
 
-
-    function profilePicturePopulation() {
-        $(`.profilePicture`).each()
-    }
-
     function generatePopularListsCards(lists) {
         lists.forEach((list) => {
             $('#popularListsContainer').append(`
                 <div class="card col-9 m-1 border-0" id="listCard_${list.id}" data-bs-toggle="modal" data-bs-target="#listModal" data-id="${list.id}">
                   <div class="row g-0">
-                    <div class="col-7 listCardPopular" id="listCardImages_${list.id}">
+                    <div class="col-6 listCardPopular" id="listCardImages_${list.id}">
                     </div>
-                    <div class="col-5">
+                    <div class="col-6">
                       <div>
                         <h5>${list.list_name}</h5>
                         <p><img class="profilePicture" src="img/profilePictures/default.jpg" alt="Profile Picture" id="popularListProfilePicture_${list.id}"> ${list.creator}  |  <span id="popularListLastEdited_${list.id}"></span> | <i class="fa-solid fa-heart"></i> ${list.likes}  |  <i class="fa-solid fa-comment"></i> ${list.comments.length}</p>
@@ -610,7 +650,6 @@ $(document).ready(() => {
             fetch(`https://wave-kaput-giant.glitch.me/users/${list.creator}`)
                 .then(response => response.json())
                 .then((data) => {
-                    console.log("creator data", data);
                     $(`#popularListProfilePicture_${list.id}`).attr('src', `img/profilePictures/${data.profilePic}.jpg`)
                 })
             $(`#listCard_${list.id}`).click(function () {
@@ -675,11 +714,15 @@ $(document).ready(() => {
                     } else {
                         $(`#listLikeButton`).prop('checked', false);
                     }
+                } else {
+                    $(`#listLikeButton`).prop('checked', false);
                 }
                 $(`#listCommentCounter`).html(`${list.comments.length}`);
                 if (user.hasOwnProperty('id')) {
                     $(`#listLikeButton`).removeClass('disabled').removeAttr('disabled');
                     $(`#showAddCommentSection`).removeClass('disabled').removeAttr('disabled');
+                } else {
+                    $(`#listLikeButton`).addClass('disabled').prop('disabled', true);
                 }
                 commentsUpdate = {
                     comments: list.comments
@@ -733,8 +776,7 @@ $(document).ready(() => {
                                 $(`#listContent_${content.id}`).click(function () {
                                     searchById(content.type, content.id);
                                     showBackToListButton();
-                                })
-                                $(`#listContent_${content.id}`).hover(
+                                }).hover(
                                     function () {
                                         $(`#listContent_${content.id}`).addClass('border rounded border-danger border-5');
                                     },
@@ -896,7 +938,8 @@ $(document).ready(() => {
 
     $(`#loginSubmitButton`).click(function (e) {
         e.stopPropagation();
-        $('#loginSubmit').submit(() => {
+        $('#loginSubmit').submit((e) => {
+            e.preventDefault();
             login($('#usernameInput').val(), $('#passwordInput').val());
         })
     })
@@ -951,7 +994,6 @@ $(document).ready(() => {
                 userInfo.forEach(function (user) {
                     users.push(user.id.toLowerCase());
                 })
-                console.log(users);
                 if (users.includes($('#accountCreateUsername').val())) {
                     $('#userNameTaken').removeClass('d-none');
                 } else {
@@ -1062,8 +1104,6 @@ $(document).ready(() => {
 //
 // fix formatting if there are two directors for a movie
 //
-// remove anchor styling from comments list modal
-//
 //create my profile page
 // make ability to edit lists
 //
@@ -1072,3 +1112,9 @@ $(document).ready(() => {
 // responseive!
 //
 //highlight movies already on list in list modal dropdown
+
+//re disable like button on logout
+
+// discover top rated card size when only limited number of cards
+//
+//footer with API and my contact information

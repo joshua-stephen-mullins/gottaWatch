@@ -478,9 +478,7 @@ $(document).ready(() => {
         };
         fetch(url, options)
             .then(response => response.json()).then(data => {
-            let userUpdate = {
-                createdLists: user.createdLists
-            }
+            let userUpdate = {createdLists: user.createdLists};
             userUpdate.createdLists.push(data.id);
             const url2 = `https://wave-kaput-giant.glitch.me/users/${user.id}`;
             const options2 = {
@@ -705,7 +703,6 @@ $(document).ready(() => {
                 fetch(`https://wave-kaput-giant.glitch.me/users/${list.creator}`)
                     .then(response => response.json())
                     .then((data) => {
-                        console.log("creator data", data);
                         $(`#listModalProfilePicture`).attr('src', `img/profilePictures/${data.profilePic}.jpg`)
                     })
                 if (user.hasOwnProperty('likedLists')) {

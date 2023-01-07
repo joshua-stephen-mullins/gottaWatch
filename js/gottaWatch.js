@@ -12,6 +12,7 @@ $(document).ready(() => {
         populateListsHome();
     }
 
+
     function loadPopular(showType, location) {
         fetch(`https://api.themoviedb.org/3/${showType}/popular?api_key=${apiKeyTMDP}&language=en-US&page=1`)
             .then(response => response.json())
@@ -77,50 +78,6 @@ $(document).ready(() => {
                 })
         }
     }
-
-    $('.popularListFilterButton').click(() => {
-        filterPopularLists();
-    })
-
-    function filterPopularLists() {
-        // $.each($('input[class="popularListFilterRadio"]:checked'), function () {
-        // if ($(".popularListFilterRadio").is(':checked')){
-        //     console.log("checked")
-        // }
-        // setTimeout(function (){
-        //     console.log("checked", $(`input[class="popularListFilterRadio"]:selected`));
-        // }, 50);
-
-        // if ($(".popularListFilterRadio").is(':checked')) {
-        //     console.log("checked");
-        // }
-        setTimeout(function(){
-            $.each($('input[class="popularListFilterRadio"]'), function (index) {
-                if ($(".popularListFilterRadio").hasClass('theone')) {
-                    console.log($(".theone")[0].id);
-                }
-                // })
-            })
-        }, 100);
-    }
-
-    $("input:radio").on("click",function (e) {
-        let inp=$(this); //cache the selector
-        if (inp.is(".theone")) { //see if it has the selected class
-            inp.prop("checked",false).removeClass("theone");
-            return;
-        }
-        $("input:radio[name='"+inp.prop("name")+"'].theone").removeClass("theone");
-        inp.addClass("theone");
-    });
-
-    //
-    // $('input[type=radio]').click(function(){
-    //     if (this.previous) {
-    //         this.checked = false;
-    //     }
-    //     this.previous = this.checked;
-    // });
 
 
     $('.topRatedFilterButtonTV').click(() => {
@@ -559,14 +516,15 @@ $(document).ready(() => {
         }
     }
 
+    let allFeaturedLists = [];
+    let allPopularLists = [];
+
     function populateListsHome() {
         $('#featuredListsContainer').html('');
         $('#popularListsContainer').html('');
         fetch(`https://daffy-tasteful-brownie.glitch.me/lists`)
             .then(response => response.json())
             .then((data) => {
-                let allFeaturedLists = [];
-                let allPopularLists = [];
                 data.forEach(function (list) {
                     list.featured === "y" ? allFeaturedLists.push(list) : allPopularLists.push(list);
                 })
@@ -575,9 +533,56 @@ $(document).ready(() => {
             })
     }
 
-    function generateFeaturedListsCards(lists) {
-        for (let j = 0; j < 3; j++) {
-            $('#featuredListsContainer').append(`
+    $('.popularListFilterButton').click(() => {
+        filterPopularLists();
+    })
+
+    function filterPopularLists() {
+        // $.each($('input[class="popularListFilterRadio"]:checked'), function () {
+        // if ($(".popularListFilterRadio").is(':checked')){
+        //     console.log("checked")
+        // }
+        // setTimeout(function (){
+        //     console.log("checked", $(`input[class="popularListFilterRadio"]:selected`));
+        // }, 50);
+
+        // if ($(".popularListFilterRadio").is(':checked')) {
+        //     console.log("checked");
+        // }
+        setTimeout(function () {
+            $('#popularListsContainer').html('');
+            $.each($('input[class="popularListFilterRadio"]'), function () {
+                if ($(".popularListFilterRadio").hasClass('theone')) {
+                    if (($(".theone")[0].id) === 'popularListFilterMostLiked') {
+                        let filteredPopularList = allPopularLists.sort((a, b) => {
+                            return b.likes - a.likes
+                        });
+                        generatePopularListsCards(filteredPopularList);
+                    } else {
+                        let filteredPopularList = allPopularLists.sort((a, b) => {
+                            return new Date(b.last_edited).getTime() - new Date(a.last_edited).getTime();
+                        });
+                        generatePopularListsCards(filteredPopularList);
+                    }
+                }
+            })
+        }, 100);
+    }
+
+
+        $("input:radio").on("click", function (e) {
+            let inp = $(this); //cache the selector
+            if (inp.is(".theone")) { //see if it has the selected class
+                inp.prop("checked", false).removeClass("theone");
+                return;
+            }
+            $("input:radio[name='" + inp.prop("name") + "'].theone").removeClass("theone");
+            inp.addClass("theone");
+        });
+
+        function generateFeaturedListsCards(lists) {
+            for (let j = 0; j < 3; j++) {
+                $('#featuredListsContainer').append(`
             <div class="card mb-3 col-4 listCard border-0" id="listCard_${lists[j].id}" data-bs-toggle="modal" data-bs-target="#listModal" data-id="${lists[j].id}">
               <div class="row g-0">
                 <div class="col-12 listCardFeatured" id="listCardImages_${lists[j].id}">
@@ -591,42 +596,42 @@ $(document).ready(() => {
               </div>
             </div>
         `)
-            $(`#featuredListLastEdited_${lists[j].id}`).html(`Updated ${time_ago(lists[j].last_edited)}`)
-            fetch(`https://wave-kaput-giant.glitch.me/users/${lists[j].creator}`)
-                .then(response => response.json())
-                .then((data) => {
-                    $(`#featuredListProfilePicture_${lists[j].id}`).attr('src', `img/profilePictures/${data.profilePic}.jpg`)
-                })
-            $(`#listCard_${lists[j].id}`).click(function () {
-                populateListModal($(this).data("id"));
-            });
-            if (lists[j].content.length < 5) {
-                for (let i = 0; i < lists[j].content.length; i++) {
-                    fetch(`https://api.themoviedb.org/3/${lists[j].content[i].type}/${lists[j].content[i].id}?api_key=${apiKeyTMDP}&language=en-US`)
-                        .then(response => response.json())
-                        .then((data) => {
-                            $(`#listCardImages_${lists[j].id}`).append(`
+                $(`#featuredListLastEdited_${lists[j].id}`).html(`Updated ${time_ago(lists[j].last_edited)}`)
+                fetch(`https://wave-kaput-giant.glitch.me/users/${lists[j].creator}`)
+                    .then(response => response.json())
+                    .then((data) => {
+                        $(`#featuredListProfilePicture_${lists[j].id}`).attr('src', `img/profilePictures/${data.profilePic}.jpg`)
+                    })
+                $(`#listCard_${lists[j].id}`).click(function () {
+                    populateListModal($(this).data("id"));
+                });
+                if (lists[j].content.length < 5) {
+                    for (let i = 0; i < lists[j].content.length; i++) {
+                        fetch(`https://api.themoviedb.org/3/${lists[j].content[i].type}/${lists[j].content[i].id}?api_key=${apiKeyTMDP}&language=en-US`)
+                            .then(response => response.json())
+                            .then((data) => {
+                                $(`#listCardImages_${lists[j].id}`).append(`
                             <img src="https://image.tmdb.org/t/p/original/${data.poster_path}" class="border border-1" alt="Movie Poster" style="position: absolute; left: ${i * 17}%; height: 8em; z-index: ${500 - (5 * i)}">
                         `)
-                        })
-                }
-            } else {
-                for (let i = 0; i < 5; i++) {
-                    fetch(`https://api.themoviedb.org/3/${lists[j].content[i].type}/${lists[j].content[i].id}?api_key=${apiKeyTMDP}&language=en-US`)
-                        .then(response => response.json())
-                        .then((data) => {
-                            $(`#listCardImages_${lists[j].id}`).append(`
+                            })
+                    }
+                } else {
+                    for (let i = 0; i < 5; i++) {
+                        fetch(`https://api.themoviedb.org/3/${lists[j].content[i].type}/${lists[j].content[i].id}?api_key=${apiKeyTMDP}&language=en-US`)
+                            .then(response => response.json())
+                            .then((data) => {
+                                $(`#listCardImages_${lists[j].id}`).append(`
                             <img src="https://image.tmdb.org/t/p/original/${data.poster_path}" class="border border-1" alt="Movie Poster" style="position: absolute; left: ${i * 17}%; height: 8em; z-index: ${500 - (5 * i)}">
                         `)
-                        })
+                            })
+                    }
                 }
             }
         }
-    }
 
-    function generatePopularListsCards(lists) {
-        lists.forEach((list) => {
-            $('#popularListsContainer').append(`
+        function generatePopularListsCards(lists) {
+            lists.forEach((list) => {
+                $('#popularListsContainer').append(`
                 <div class="card col-9 m-1 border-0" id="listCard_${list.id}" data-bs-toggle="modal" data-bs-target="#listModal" data-id="${list.id}">
                   <div class="row g-0">
                     <div class="col-6 listCardPopular" id="listCardImages_${list.id}">
@@ -644,88 +649,88 @@ $(document).ready(() => {
             <hr>
             </div>
         `)
-            $(`#popularListLastEdited_${list.id}`).html(`Updated ${time_ago(list.last_edited)}`)
-            fetch(`https://wave-kaput-giant.glitch.me/users/${list.creator}`)
-                .then(response => response.json())
-                .then((data) => {
-                    $(`#popularListProfilePicture_${list.id}`).attr('src', `img/profilePictures/${data.profilePic}.jpg`)
-                })
-            $(`#listCard_${list.id}`).click(function () {
-                populateListModal($(this).data("id"));
-            });
-            (list.list_desc.length > 100) ? $(`#listCard_desc${list.id}`).html(list.list_desc.slice(0, 100) + "...") : $(`#listCard_desc${list.id}`).html(list.list_desc);
-            if (list.content.length < 5) {
-                for (let i = 0; i < list.content.length; i++) {
-                    fetch(`https://api.themoviedb.org/3/${list.content[i].type}/${list.content[i].id}?api_key=${apiKeyTMDP}&language=en-US`)
-                        .then(response => response.json())
-                        .then((data) => {
-                            $(`#listCardImages_${list.id}`).append(`
-                            <img src="https://image.tmdb.org/t/p/original/${data.poster_path}" class="border border-1" alt="Movie Poster" style="position: absolute; left: ${i * 9}%; height: 8em; z-index: ${500 - (5 * i)}">
-                        `)
-                        })
-                }
-            } else {
-                for (let i = 0; i < 5; i++) {
-                    fetch(`https://api.themoviedb.org/3/${list.content[i].type}/${list.content[i].id}?api_key=${apiKeyTMDP}&language=en-US`)
-                        .then(response => response.json())
-                        .then((data) => {
-                            $(`#listCardImages_${list.id}`).append(`
-                            <img src="https://image.tmdb.org/t/p/original/${data.poster_path}" class="border border-1" alt="Movie Poster" style="position: absolute; left: ${i * 9}%; height: 8em; z-index: ${500 - (5 * i)}">
-                        `)
-                        })
-                }
-            }
-        })
-    }
-
-    function showBackToListButton() {
-        $(`#backToListButton`).removeClass('d-none');
-    }
-
-    function hideBackToListButton() {
-        $(`#backToListButton`).addClass('d-none');
-    }
-
-    let commentsUpdate;
-
-    function populateListModal(listId) {
-        $('#listModalMovies').html('');
-        $(`#listModalComments`).html('');
-        $(`#listModal`).data('data-list-id', listId);
-        fetch(`https://daffy-tasteful-brownie.glitch.me/lists/${listId}`)
-            .then(response => response.json())
-            .then((list) => {
-                $(`#listModalTitle`).html(list.list_name);
-                $(`#listModalCreator`).html(list.creator);
-                $(`#listModalLastUpdated`).html(`Updated ${time_ago(list.last_edited)} | `)
-                $(`#listModalDescription`).html(list.list_desc);
-                $(`#listLike`).html(`${list.likes}`);
+                $(`#popularListLastEdited_${list.id}`).html(`Updated ${time_ago(list.last_edited)}`)
                 fetch(`https://wave-kaput-giant.glitch.me/users/${list.creator}`)
                     .then(response => response.json())
                     .then((data) => {
-                        $(`#listModalProfilePicture`).attr('src', `img/profilePictures/${data.profilePic}.jpg`)
+                        $(`#popularListProfilePicture_${list.id}`).attr('src', `img/profilePictures/${data.profilePic}.jpg`)
                     })
-                if (user.hasOwnProperty('likedLists')) {
-                    if (user.likedLists.includes(listId)) {
-                        $(`#listLikeButton`).attr('checked', 'checked');
+                $(`#listCard_${list.id}`).click(function () {
+                    populateListModal($(this).data("id"));
+                });
+                (list.list_desc.length > 100) ? $(`#listCard_desc${list.id}`).html(list.list_desc.slice(0, 100) + "...") : $(`#listCard_desc${list.id}`).html(list.list_desc);
+                if (list.content.length < 5) {
+                    for (let i = 0; i < list.content.length; i++) {
+                        fetch(`https://api.themoviedb.org/3/${list.content[i].type}/${list.content[i].id}?api_key=${apiKeyTMDP}&language=en-US`)
+                            .then(response => response.json())
+                            .then((data) => {
+                                $(`#listCardImages_${list.id}`).append(`
+                            <img src="https://image.tmdb.org/t/p/original/${data.poster_path}" class="border border-1" alt="Movie Poster" style="position: absolute; left: ${i * 9}%; height: 8em; z-index: ${500 - (5 * i)}">
+                        `)
+                            })
+                    }
+                } else {
+                    for (let i = 0; i < 5; i++) {
+                        fetch(`https://api.themoviedb.org/3/${list.content[i].type}/${list.content[i].id}?api_key=${apiKeyTMDP}&language=en-US`)
+                            .then(response => response.json())
+                            .then((data) => {
+                                $(`#listCardImages_${list.id}`).append(`
+                            <img src="https://image.tmdb.org/t/p/original/${data.poster_path}" class="border border-1" alt="Movie Poster" style="position: absolute; left: ${i * 9}%; height: 8em; z-index: ${500 - (5 * i)}">
+                        `)
+                            })
+                    }
+                }
+            })
+        }
+
+        function showBackToListButton() {
+            $(`#backToListButton`).removeClass('d-none');
+        }
+
+        function hideBackToListButton() {
+            $(`#backToListButton`).addClass('d-none');
+        }
+
+        let commentsUpdate;
+
+        function populateListModal(listId) {
+            $('#listModalMovies').html('');
+            $(`#listModalComments`).html('');
+            $(`#listModal`).data('data-list-id', listId);
+            fetch(`https://daffy-tasteful-brownie.glitch.me/lists/${listId}`)
+                .then(response => response.json())
+                .then((list) => {
+                    $(`#listModalTitle`).html(list.list_name);
+                    $(`#listModalCreator`).html(list.creator);
+                    $(`#listModalLastUpdated`).html(`Updated ${time_ago(list.last_edited)} | `)
+                    $(`#listModalDescription`).html(list.list_desc);
+                    $(`#listLike`).html(`${list.likes}`);
+                    fetch(`https://wave-kaput-giant.glitch.me/users/${list.creator}`)
+                        .then(response => response.json())
+                        .then((data) => {
+                            $(`#listModalProfilePicture`).attr('src', `img/profilePictures/${data.profilePic}.jpg`)
+                        })
+                    if (user.hasOwnProperty('likedLists')) {
+                        if (user.likedLists.includes(listId)) {
+                            $(`#listLikeButton`).attr('checked', 'checked');
+                        } else {
+                            $(`#listLikeButton`).prop('checked', false);
+                        }
                     } else {
                         $(`#listLikeButton`).prop('checked', false);
                     }
-                } else {
-                    $(`#listLikeButton`).prop('checked', false);
-                }
-                $(`#listCommentCounter`).html(`${list.comments.length}`);
-                if (user.hasOwnProperty('id')) {
-                    $(`#listLikeButton`).removeClass('disabled').removeAttr('disabled');
-                    $(`#showAddCommentSection`).removeClass('disabled').removeAttr('disabled');
-                } else {
-                    $(`#listLikeButton`).addClass('disabled').prop('disabled', true);
-                }
-                commentsUpdate = {
-                    comments: list.comments
-                };
-                if (list.comments.length === 0) {
-                    $(`#listModalComments`).append(`
+                    $(`#listCommentCounter`).html(`${list.comments.length}`);
+                    if (user.hasOwnProperty('id')) {
+                        $(`#listLikeButton`).removeClass('disabled').removeAttr('disabled');
+                        $(`#showAddCommentSection`).removeClass('disabled').removeAttr('disabled');
+                    } else {
+                        $(`#listLikeButton`).addClass('disabled').prop('disabled', true);
+                    }
+                    commentsUpdate = {
+                        comments: list.comments
+                    };
+                    if (list.comments.length === 0) {
+                        $(`#listModalComments`).append(`
                         <div class="row col-7 p-0 m-0 justify-content-center">
                             <h1 class="text-center">Leave a Comment!</h1>
                         </div>
@@ -733,9 +738,9 @@ $(document).ready(() => {
                             <hr>
                         </div>
                     `)
-                } else {
-                    list.comments.forEach((comment) => {
-                        $(`#listModalComments`).append(`
+                    } else {
+                        list.comments.forEach((comment) => {
+                            $(`#listModalComments`).append(`
                         <div class="row col-7 p-0 m-0">
                             <div class="col-3">
                                 <p class="mb-1"><img class="profilePicture comment_${comment.user}" src="img/profilePictures/default.jpg" alt="Profile Picture"> ${comment.user}</p>
@@ -749,350 +754,351 @@ $(document).ready(() => {
                         <hr>
                         </div>
                     `)
-                        fetch(`https://wave-kaput-giant.glitch.me/users/${comment.user}`)
+                            fetch(`https://wave-kaput-giant.glitch.me/users/${comment.user}`)
+                                .then(response => response.json())
+                                .then((data) => {
+                                    console.log("creator data", data);
+                                    $(`.comment_${comment.user}`).attr('src', `img/profilePictures/${data.profilePic}.jpg`)
+                                })
+                        })
+                    }
+                    list.content.forEach((content) => {
+                        fetch(`https://api.themoviedb.org/3/${content.type}/${content.id}?api_key=${apiKeyTMDP}&language=en-US`)
                             .then(response => response.json())
                             .then((data) => {
-                                console.log("creator data", data);
-                                $(`.comment_${comment.user}`).attr('src', `img/profilePictures/${data.profilePic}.jpg`)
-                            })
-                    })
-                }
-                list.content.forEach((content) => {
-                    fetch(`https://api.themoviedb.org/3/${content.type}/${content.id}?api_key=${apiKeyTMDP}&language=en-US`)
-                        .then(response => response.json())
-                        .then((data) => {
-                                if (content.type === 'movie') {
-                                    $(`#listModalMovies`).append(`
+                                    if (content.type === 'movie') {
+                                        $(`#listModalMovies`).append(`
                                 <img src="https://image.tmdb.org/t/p/original/${data.poster_path}" class="m-2 rounded-1" alt="Movie Poster" id="listContent_${content.id}" style="height: 20em" data-bs-toggle="modal" data-bs-target="#moreInfoModal">
                             `)
-                                } else {
-                                    $(`#listModalMovies`).append(`
+                                    } else {
+                                        $(`#listModalMovies`).append(`
                                 <img src="https://image.tmdb.org/t/p/original/${data.poster_path}" class="m-2 rounded-1" alt="Movie Poster" id="listContent_${content.id}" style="height: 20em" data-bs-toggle="modal" data-bs-target="#moreInfoModal">
                             `)
-                                }
-                                $(`#listContent_${content.id}`).click(function () {
-                                    searchById(content.type, content.id);
-                                    showBackToListButton();
-                                }).hover(
-                                    function () {
-                                        $(`#listContent_${content.id}`).addClass('border rounded border-danger border-5');
-                                    },
-                                    function () {
-                                        $(`#listContent_${content.id}`).removeClass('border rounded border-danger border-5');
                                     }
-                                );
-                            }
-                        )
+                                    $(`#listContent_${content.id}`).click(function () {
+                                        searchById(content.type, content.id);
+                                        showBackToListButton();
+                                    }).hover(
+                                        function () {
+                                            $(`#listContent_${content.id}`).addClass('border rounded border-danger border-5');
+                                        },
+                                        function () {
+                                            $(`#listContent_${content.id}`).removeClass('border rounded border-danger border-5');
+                                        }
+                                    );
+                                }
+                            )
+                    })
                 })
-            })
 
-    }
-
-    $(`#listLikeButton`).click(function () {
-        if ($('#listLikeButton').is(':checked')) {
-            likeButton();
-        } else {
-            likeButton();
         }
-    })
 
-    function likeButton() {
-        if ($('#listLikeButton').is(':checked')) {
-            let updatedLikedList = {likedLists: user.likedLists};
-            updatedLikedList.likedLists.push($(`#listModal`).data('data-list-id'));
-            const url = `https://wave-kaput-giant.glitch.me/users/${user.id}`;
-            const options = {
-                method: 'PATCH',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(updatedLikedList)
-            };
-            fetch(url, options)
-                .then(response => response.json()).then(data => {
-                user.likedLists = updatedLikedList.likedLists;
-            })
-            let updatedLikes = {likes: parseInt($('#listLike').html()) + 1};
-            const url1 = `https://daffy-tasteful-brownie.glitch.me/lists/${$(`#listModal`).data('data-list-id')}`;
-            const options1 = {
-                method: 'PATCH',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(updatedLikes)
-            };
-            fetch(url1, options1)
-                .then(response => response.json()).then(data => {
-                $('#listLike').html(updatedLikes.likes);
-                populateListsHome();
-            })
-        } else {
-            let updatedLikedList = {likedLists: user.likedLists};
-            updatedLikedList.likedLists = updatedLikedList.likedLists.filter(function (list) {
-                return list !== $(`#listModal`).data('data-list-id');
-            })
-            console.log(updatedLikedList);
-            const url = `https://wave-kaput-giant.glitch.me/users/${user.id}`;
-            const options = {
-                method: 'PATCH',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(updatedLikedList)
-            };
-            fetch(url, options)
-                .then(response => response.json()).then(data => {
-                console.log(data);
-            })
-            let updatedLikes = {likes: parseInt($('#listLike').html()) - 1};
-            console.log(updatedLikes.likes);
-            const url1 = `https://daffy-tasteful-brownie.glitch.me/lists/${$(`#listModal`).data('data-list-id')}`;
-            const options1 = {
-                method: 'PATCH',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(updatedLikes)
-            };
-            fetch(url1, options1)
-                .then(response => response.json()).then(data => {
-                $('#listLike').html(updatedLikes.likes);
-                populateListsHome();
-            })
-        }
-    }
-
-    $(`#addCommentSection`).submit(function () {
-        submitComment();
-        setTimeout(function () {
-            populateListsHome();
-            populateListModal($(`#listModal`).data('data-list-id'));
-        }, 1000)
-    })
-    $(`#showAddCommentSection`).click(() => $('#addCommentSection').toggleClass('d-none'));
-
-    function submitComment() {
-        let newComment = {
-            user: user.id,
-            comment: $(`#commentSubmission`).val(),
-            date: new Date()
-        }
-        commentsUpdate.comments.push(newComment);
-        const url = `https://daffy-tasteful-brownie.glitch.me/lists/${$(`#listModal`).data('data-list-id')}`;
-        const options = {
-            method: 'PATCH',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(commentsUpdate)
-        };
-        fetch(url, options)
-            .then(response => response.json()).then(data => {
-            $(`#commentSubmission`).val('');
+        $(`#listLikeButton`).click(function () {
+            if ($('#listLikeButton').is(':checked')) {
+                likeButton();
+            } else {
+                likeButton();
+            }
         })
-    }
 
-    function toHoursAndMinutes(totalMinutes) {
-        const hours = Math.floor(totalMinutes / 60);
-        const minutes = totalMinutes % 60;
-        return hours > 0 ? `${hours}h${minutes > 0 ? ` ${minutes}m` : ''}` : ` ${minutes}m`;
-    }
-
-    function genreIdToText(id) {
-        let genres = [
-            {id: 28, name: 'Action'},
-            {id: 12, name: 'Adventure'},
-            {id: 16, name: 'Animation'},
-            {id: 35, name: 'Comedy'},
-            {id: 80, name: 'Crime'},
-            {id: 99, name: 'Documentary'},
-            {id: 18, name: 'Drama'},
-            {id: 10751, name: 'Family'},
-            {id: 14, name: 'Fantasy'},
-            {id: 36, name: 'History'},
-            {id: 27, name: 'Horror'},
-            {id: 10402, name: 'Music'},
-            {id: 9648, name: 'Mystery'},
-            {id: 10749, name: 'Romance'},
-            {id: 878, name: 'Science Fiction'},
-            {id: 10770, name: 'TV Movie'},
-            {id: 53, name: 'Thriller'},
-            {id: 10752, name: 'War'},
-            {id: 37, name: 'Western'},
-            {id: 10759, name: 'Action & Adventure'},
-            {id: 16, name: 'Animation'},
-            {id: 35, name: 'Comedy'},
-            {id: 80, name: 'Crime'},
-            {id: 99, name: 'Documentary'},
-            {id: 18, name: 'Drama'},
-            {id: 10751, name: 'Family'},
-            {id: 10762, name: 'Kids'},
-            {id: 9648, name: 'Mystery'},
-            {id: 10763, name: 'News'},
-            {id: 10764, name: 'Reality'},
-            {id: 10765, name: 'Sci-Fi & Fantasy'},
-            {id: 10766, name: 'Soap'},
-            {id: 10767, name: 'Talk'},
-            {id: 10768, name: 'War & Politics'},
-            {id: 37, name: 'Western'}
-        ];
-        for (let i = 0; i < genres.length; i++) {
-            if (id === genres[i].id) {
-                return genres[i].name;
+        function likeButton() {
+            if ($('#listLikeButton').is(':checked')) {
+                let updatedLikedList = {likedLists: user.likedLists};
+                updatedLikedList.likedLists.push($(`#listModal`).data('data-list-id'));
+                const url = `https://wave-kaput-giant.glitch.me/users/${user.id}`;
+                const options = {
+                    method: 'PATCH',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(updatedLikedList)
+                };
+                fetch(url, options)
+                    .then(response => response.json()).then(data => {
+                    user.likedLists = updatedLikedList.likedLists;
+                })
+                let updatedLikes = {likes: parseInt($('#listLike').html()) + 1};
+                const url1 = `https://daffy-tasteful-brownie.glitch.me/lists/${$(`#listModal`).data('data-list-id')}`;
+                const options1 = {
+                    method: 'PATCH',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(updatedLikes)
+                };
+                fetch(url1, options1)
+                    .then(response => response.json()).then(data => {
+                    $('#listLike').html(updatedLikes.likes);
+                    populateListsHome();
+                })
+            } else {
+                let updatedLikedList = {likedLists: user.likedLists};
+                updatedLikedList.likedLists = updatedLikedList.likedLists.filter(function (list) {
+                    return list !== $(`#listModal`).data('data-list-id');
+                })
+                console.log(updatedLikedList);
+                const url = `https://wave-kaput-giant.glitch.me/users/${user.id}`;
+                const options = {
+                    method: 'PATCH',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(updatedLikedList)
+                };
+                fetch(url, options)
+                    .then(response => response.json()).then(data => {
+                })
+                let updatedLikes = {likes: parseInt($('#listLike').html()) - 1};
+                console.log(updatedLikes.likes);
+                const url1 = `https://daffy-tasteful-brownie.glitch.me/lists/${$(`#listModal`).data('data-list-id')}`;
+                const options1 = {
+                    method: 'PATCH',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(updatedLikes)
+                };
+                fetch(url1, options1)
+                    .then(response => response.json()).then(data => {
+                    $('#listLike').html(updatedLikes.likes);
+                    populateListsHome();
+                })
             }
         }
-    }
 
-    $(`#loginSubmitButton`).click(function (e) {
-        e.stopPropagation();
-        $('#loginSubmit').submit((e) => {
-            e.preventDefault();
-            login($('#usernameInput').val(), $('#passwordInput').val());
+        $(`#addCommentSection`).submit(function () {
+            submitComment();
+            setTimeout(function () {
+                populateListsHome();
+                populateListModal($(`#listModal`).data('data-list-id'));
+            }, 500)
         })
-    })
+        $(`#showAddCommentSection`).click(() => $('#addCommentSection').toggleClass('d-none'));
 
-    let user = {};
+        function submitComment() {
+            let newComment = {
+                user: user.id,
+                comment: $(`#commentSubmission`).val(),
+                date: new Date()
+            }
+            commentsUpdate.comments.push(newComment);
+            const url = `https://daffy-tasteful-brownie.glitch.me/lists/${$(`#listModal`).data('data-list-id')}`;
+            const options = {
+                method: 'PATCH',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(commentsUpdate)
+            };
+            fetch(url, options)
+                .then(response => response.json()).then(data => {
+                $(`#commentSubmission`).val('');
+            })
+        }
 
-    function login(username, password) {
-        fetch(`https://wave-kaput-giant.glitch.me/users/`)
-            .then(response => response.json())
-            .then((userInfo) => {
-                let userNames = [];
-                userInfo.forEach((user) => {
-                    userNames.push(user.id);
-                })
-                if (userNames.includes(username)) {
-                    $('#invalidUserName').addClass('d-none');
-                    let usernameIndex = userNames.indexOf(username);
-                    if (password === userInfo[usernameIndex].password) {
-                        user = userInfo[usernameIndex];
-                        $(`#userName`).html(`&nbsp;${user.id}`);
-                        $(`#loginSection`).addClass('d-none');
-                        $(`.loggedInDropdown`).removeClass('d-none');
-                        $(`#createNewListButton`).removeClass('disabled');
-                        $('#incorrectPassword').addClass('d-none');
-                        $('.loginDropdown').toggleClass('show')
+        function toHoursAndMinutes(totalMinutes) {
+            const hours = Math.floor(totalMinutes / 60);
+            const minutes = totalMinutes % 60;
+            return hours > 0 ? `${hours}h${minutes > 0 ? ` ${minutes}m` : ''}` : ` ${minutes}m`;
+        }
+
+        function genreIdToText(id) {
+            let genres = [
+                {id: 28, name: 'Action'},
+                {id: 12, name: 'Adventure'},
+                {id: 16, name: 'Animation'},
+                {id: 35, name: 'Comedy'},
+                {id: 80, name: 'Crime'},
+                {id: 99, name: 'Documentary'},
+                {id: 18, name: 'Drama'},
+                {id: 10751, name: 'Family'},
+                {id: 14, name: 'Fantasy'},
+                {id: 36, name: 'History'},
+                {id: 27, name: 'Horror'},
+                {id: 10402, name: 'Music'},
+                {id: 9648, name: 'Mystery'},
+                {id: 10749, name: 'Romance'},
+                {id: 878, name: 'Science Fiction'},
+                {id: 10770, name: 'TV Movie'},
+                {id: 53, name: 'Thriller'},
+                {id: 10752, name: 'War'},
+                {id: 37, name: 'Western'},
+                {id: 10759, name: 'Action & Adventure'},
+                {id: 16, name: 'Animation'},
+                {id: 35, name: 'Comedy'},
+                {id: 80, name: 'Crime'},
+                {id: 99, name: 'Documentary'},
+                {id: 18, name: 'Drama'},
+                {id: 10751, name: 'Family'},
+                {id: 10762, name: 'Kids'},
+                {id: 9648, name: 'Mystery'},
+                {id: 10763, name: 'News'},
+                {id: 10764, name: 'Reality'},
+                {id: 10765, name: 'Sci-Fi & Fantasy'},
+                {id: 10766, name: 'Soap'},
+                {id: 10767, name: 'Talk'},
+                {id: 10768, name: 'War & Politics'},
+                {id: 37, name: 'Western'}
+            ];
+            for (let i = 0; i < genres.length; i++) {
+                if (id === genres[i].id) {
+                    return genres[i].name;
+                }
+            }
+        }
+
+        $(`#loginSubmitButton`).click(function (e) {
+            e.stopPropagation();
+            $('#loginSubmit').submit((e) => {
+                e.preventDefault();
+                login($('#usernameInput').val(), $('#passwordInput').val());
+            })
+        })
+
+        let user = {};
+
+        function login(username, password) {
+            fetch(`https://wave-kaput-giant.glitch.me/users/`)
+                .then(response => response.json())
+                .then((userInfo) => {
+                    let userNames = [];
+                    userInfo.forEach((user) => {
+                        userNames.push(user.id);
+                    })
+                    if (userNames.includes(username)) {
+                        $('#invalidUserName').addClass('d-none');
+                        let usernameIndex = userNames.indexOf(username);
+                        if (password === userInfo[usernameIndex].password) {
+                            user = userInfo[usernameIndex];
+                            $(`#userName`).html(`&nbsp;${user.id}`);
+                            $(`#loginSection`).addClass('d-none');
+                            $(`.loggedInDropdown`).removeClass('d-none');
+                            $(`#createNewListButton`).removeClass('disabled');
+                            $('#incorrectPassword').addClass('d-none');
+                            $('.loginDropdown').toggleClass('show')
+                        } else {
+                            $('#incorrectPassword').removeClass('d-none');
+                        }
                     } else {
-                        $('#incorrectPassword').removeClass('d-none');
+                        $('#invalidUserName').removeClass('d-none');
                     }
-                } else {
-                    $('#invalidUserName').removeClass('d-none');
-                }
-            })
-            .catch(err => console.error(err))
-    }
-
-    $(`#logoutButton`).click(() => logout());
-
-    function logout() {
-        user = {};
-        $(`#userName`).html(``);
-        $(`.loggedInDropdown`).addClass('d-none');
-        $(`#loginSection`).removeClass('d-none');
-        $(`#createNewListButton`).addClass('disabled');
-    }
-
-    $(`#submitNewAccount`).submit((e) => {
-        e.preventDefault();
-        fetch(`https://wave-kaput-giant.glitch.me/users/`)
-            .then(response => response.json())
-            .then((userInfo) => {
-                let users = [];
-                userInfo.forEach(function (user) {
-                    users.push(user.id.toLowerCase());
                 })
-                if (users.includes($('#accountCreateUsername').val())) {
-                    $('#userNameTaken').removeClass('d-none');
-                } else {
-                    createAccount();
-                    $(`#offcanvasAccountCreate`).offcanvas('hide');
-                    setTimeout(() => {
-                        login($('#accountCreateUsername').val(), $('#accountCreatePassword').val());
-                        $(`#submitNewAccount`)[0].reset();
-                    }, 1000);
-                }
-            })
-    })
-
-    function createAccount() {
-        let newUser = {
-            id: $('#accountCreateUsername').val(),
-            password: $('#accountCreatePassword').val(),
-            description: $('#accountUserDesc').val(),
-            admin: "n",
-            profilePic: "default",
-            createdLists: [],
-            likedLists: []
+                .catch(err => console.error(err))
         }
-        const url = 'https://wave-kaput-giant.glitch.me/users/';
-        const options = {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(newUser)
-        };
-        fetch(url, options)
-            .then(response => response.json()).then(data => {
+
+        $(`#logoutButton`).click(() => logout());
+
+        function logout() {
+            user = {};
+            $(`#userName`).html(``);
+            $(`.loggedInDropdown`).addClass('d-none');
+            $(`#loginSection`).removeClass('d-none');
+            $(`#createNewListButton`).addClass('disabled');
+        }
+
+        $(`#submitNewAccount`).submit((e) => {
+            e.preventDefault();
+            fetch(`https://wave-kaput-giant.glitch.me/users/`)
+                .then(response => response.json())
+                .then((userInfo) => {
+                    let users = [];
+                    userInfo.forEach(function (user) {
+                        users.push(user.id.toLowerCase());
+                    })
+                    if (users.includes($('#accountCreateUsername').val())) {
+                        $('#userNameTaken').removeClass('d-none');
+                    } else {
+                        createAccount();
+                        $(`#offcanvasAccountCreate`).offcanvas('hide');
+                        setTimeout(() => {
+                            login($('#accountCreateUsername').val(), $('#accountCreatePassword').val());
+                            $(`#submitNewAccount`)[0].reset();
+                        }, 1000);
+                    }
+                })
         })
-    }
 
-    function returnSmallest(a, b) {
-        return a < b ? a : b;
-    }
-
-    function time_ago(time) {
-        switch (typeof time) {
-            case 'number':
-                break;
-            case 'string':
-                time = +new Date(time);
-                break;
-            case 'object':
-                if (time.constructor === Date) time = time.getTime();
-                break;
-            default:
-                time = +new Date();
-        }
-        let time_formats = [
-            [60, 'seconds', 1],
-            [120, '1 minute ago', '1 minute from now'],
-            [3600, 'minutes', 60],
-            [7200, '1 hour ago', '1 hour from now'],
-            [86400, 'hours', 3600],
-            [172800, 'Yesterday', 'Tomorrow'],
-            [604800, 'days', 86400],
-            [1209600, 'Last week', 'Next week'],
-            [2419200, 'weeks', 604800],
-            [4838400, 'Last month', 'Next month'],
-            [29030400, 'months', 2419200],
-            [58060800, 'Last year', 'Next year'],
-            [2903040000, 'years', 29030400],
-            [5806080000, 'Last century', 'Next century'],
-            [58060800000, 'centuries', 2903040000]
-        ];
-        let seconds = (+new Date() - time) / 1000,
-            token = 'ago',
-            list_choice = 1;
-        if (seconds === 0) {
-            return 'Just now'
-        }
-        if (seconds < 0) {
-            seconds = Math.abs(seconds);
-            token = 'from now';
-            list_choice = 2;
-        }
-        let i = 0,
-            format;
-        while (format = time_formats[i++])
-            if (seconds < format[0]) {
-                if (typeof format[2] == 'string')
-                    return format[list_choice];
-                else
-                    return Math.floor(seconds / format[2]) + ' ' + format[1] + ' ' + token;
+        function createAccount() {
+            let newUser = {
+                id: $('#accountCreateUsername').val(),
+                password: $('#accountCreatePassword').val(),
+                description: $('#accountUserDesc').val(),
+                admin: "n",
+                profilePic: "default",
+                createdLists: [],
+                likedLists: []
             }
-        return time;
+            const url = 'https://wave-kaput-giant.glitch.me/users/';
+            const options = {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(newUser)
+            };
+            fetch(url, options)
+                .then(response => response.json()).then(data => {
+            })
+        }
+
+        function returnSmallest(a, b) {
+            return a < b ? a : b;
+        }
+
+        function time_ago(time) {
+            switch (typeof time) {
+                case 'number':
+                    break;
+                case 'string':
+                    time = +new Date(time);
+                    break;
+                case 'object':
+                    if (time.constructor === Date) time = time.getTime();
+                    break;
+                default:
+                    time = +new Date();
+            }
+            let time_formats = [
+                [60, 'seconds', 1],
+                [120, '1 minute ago', '1 minute from now'],
+                [3600, 'minutes', 60],
+                [7200, '1 hour ago', '1 hour from now'],
+                [86400, 'hours', 3600],
+                [172800, 'Yesterday', 'Tomorrow'],
+                [604800, 'days', 86400],
+                [1209600, 'Last week', 'Next week'],
+                [2419200, 'weeks', 604800],
+                [4838400, 'Last month', 'Next month'],
+                [29030400, 'months', 2419200],
+                [58060800, 'Last year', 'Next year'],
+                [2903040000, 'years', 29030400],
+                [5806080000, 'Last century', 'Next century'],
+                [58060800000, 'centuries', 2903040000]
+            ];
+            let seconds = (+new Date() - time) / 1000,
+                token = 'ago',
+                list_choice = 1;
+            if (seconds === 0) {
+                return 'Just now'
+            }
+            if (seconds < 0) {
+                seconds = Math.abs(seconds);
+                token = 'from now';
+                list_choice = 2;
+            }
+            let i = 0,
+                format;
+            while (format = time_formats[i++])
+                if (seconds < format[0]) {
+                    if (typeof format[2] == 'string')
+                        return format[list_choice];
+                    else
+                        return Math.floor(seconds / format[2]) + ' ' + format[1] + ' ' + token;
+                }
+            return time;
+        }
+
+        function randomizeLists(lists) {
+            let currentIndex = lists.length, randomIndex;
+            while (currentIndex != 0) {
+                randomIndex = Math.floor(Math.random() * currentIndex);
+                currentIndex--;
+                [lists[currentIndex], lists[randomIndex]] = [
+                    lists[randomIndex], lists[currentIndex]];
+            }
+            return lists;
+        }
     }
 
-    function randomizeLists(lists) {
-        let currentIndex = lists.length, randomIndex;
-        while (currentIndex != 0) {
-            randomIndex = Math.floor(Math.random() * currentIndex);
-            currentIndex--;
-            [lists[currentIndex], lists[randomIndex]] = [
-                lists[randomIndex], lists[currentIndex]];
-        }
-        return lists;
-    }
-})
+)
 
 
 //TODOS:

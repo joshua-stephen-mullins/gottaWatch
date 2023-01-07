@@ -197,6 +197,7 @@ $(document).ready(() => {
         })
         $('#listsButton').click((e) => {
             e.preventDefault();
+            generatePopularListsCards(randomizeLists(allPopularLists));
             $('#homePage').addClass('d-none');
             $('#searchResults').addClass('d-none');
             $('#listsPage').removeClass('d-none');
@@ -411,7 +412,7 @@ $(document).ready(() => {
             fetch(url, options)
                 .then(response => response.json()).then(data => console.log(data))
                 .catch(error => console.error(error));
-            populateListsHome();
+            generatePopularListsCards(randomizeLists(allPopularLists));
         }
 
         function createNewList() {
@@ -449,7 +450,8 @@ $(document).ready(() => {
                     .catch(error => console.error(error));
             })
                 .catch(error => console.error(error));
-            populateListsHome();
+            allPopularLists.push(newList);
+            refreshListHome();
         }
 
         function generateSmallCards(showInfo, numberOfCards, container, showType, cardType) {
@@ -531,6 +533,13 @@ $(document).ready(() => {
                     generateFeaturedListsCards(randomizeLists(allFeaturedLists));
                     generatePopularListsCards(randomizeLists(allPopularLists));
                 })
+        }
+
+        function refreshListHome(){
+            $('#featuredListsContainer').html('');
+            $('#popularListsContainer').html('');
+            generateFeaturedListsCards(randomizeLists(allFeaturedLists));
+            generatePopularListsCards(randomizeLists(allPopularLists));
         }
 
         $('.popularListFilterButton').click(() => {
@@ -999,6 +1008,7 @@ $(document).ready(() => {
 
         $(`#submitNewAccount`).submit((e) => {
             e.preventDefault();
+            e.stopPropagation();
             fetch(`https://wave-kaput-giant.glitch.me/users/`)
                 .then(response => response.json())
                 .then((userInfo) => {
@@ -1014,7 +1024,8 @@ $(document).ready(() => {
                         setTimeout(() => {
                             login($('#accountCreateUsername').val(), $('#accountCreatePassword').val());
                             $(`#submitNewAccount`)[0].reset();
-                        }, 1000);
+                            $('.loginDropdown').find('button.dropdown-toggle').dropdown('toggle')
+                        }, 500);
                     }
                 })
         })
@@ -1024,6 +1035,7 @@ $(document).ready(() => {
                 id: $('#accountCreateUsername').val(),
                 password: $('#accountCreatePassword').val(),
                 description: $('#accountUserDesc').val(),
+                userCreated: new Date(),
                 admin: "n",
                 profilePic: "default",
                 createdLists: [],

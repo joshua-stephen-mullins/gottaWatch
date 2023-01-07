@@ -196,8 +196,7 @@ $(document).ready(() => {
             allSearch($('#movieSearchInput').val());
         })
         $('#listsButton').click((e) => {
-            e.preventDefault();
-            generatePopularListsCards(randomizeLists(allPopularLists));
+            // e.preventDefault();
             $('#homePage').addClass('d-none');
             $('#searchResults').addClass('d-none');
             $('#listsPage').removeClass('d-none');
@@ -210,7 +209,6 @@ $(document).ready(() => {
         })
         $('#submitNewList').submit(function () {
             createNewList();
-            populateListsHome();
         })
         $('#createNewListButton').click(function () {
             $('#listCreateName').html('');
@@ -535,10 +533,7 @@ $(document).ready(() => {
                 })
         }
 
-        function refreshListHome(){
-            $('#featuredListsContainer').html('');
-            $('#popularListsContainer').html('');
-            generateFeaturedListsCards(randomizeLists(allFeaturedLists));
+        function refreshListHome() {
             generatePopularListsCards(randomizeLists(allPopularLists));
         }
 
@@ -610,7 +605,7 @@ $(document).ready(() => {
                 <div class="col-12">
                   <div class="">
                     <h5>${lists[j].list_name}</h5>
-                    <p><img class="profilePicture" src="img/profilePictures/default.jpg" alt="Profile Picture" id="featuredListProfilePicture_${lists[j].id}"> ${lists[j].creator}  |  <span id="featuredListLastEdited_${lists[j].id}"></span> | <i class="fa-solid fa-heart"></i> ${lists[j].likes}  |  <i class="fa-solid fa-comment"></i> ${lists[j].comments.length} </p>
+                    <p><img class="profilePicture" src="img/profilePictures/default.jpg" alt="Profile Picture" id="featuredListProfilePicture_${lists[j].id}"> ${lists[j].creator}  |  <span id="featuredListLastEdited_${lists[j].id}"></span> | <i class="fa-solid fa-heart"></i> <span id="listCardLikes_${lists[j].id}">${lists[j].likes}</span>  |  <i class="fa-solid fa-comment"></i> <span id="listCardComments_${lists[j].id}">${lists[j].comments.length}</span> </p>
                   </div>
                 </div>
               </div>
@@ -659,7 +654,7 @@ $(document).ready(() => {
                     <div class="col-6">
                       <div>
                         <h5>${list.list_name}</h5>
-                        <p><img class="profilePicture" src="img/profilePictures/default.jpg" alt="Profile Picture" id="popularListProfilePicture_${list.id}"> ${list.creator}  |  <span id="popularListLastEdited_${list.id}"></span> | <i class="fa-solid fa-heart"></i> ${list.likes}  |  <i class="fa-solid fa-comment"></i> ${list.comments.length}</p>
+                        <p><img class="profilePicture" src="img/profilePictures/default.jpg" alt="Profile Picture" id="popularListProfilePicture_${list.id}"> ${list.creator}  |  <span id="popularListLastEdited_${list.id}"></span> | <i class="fa-solid fa-heart"></i> <span id="listCardLikes_${list.id}">${list.likes}</span>  |  <i class="fa-solid fa-comment"></i> <span id="listCardComments_${list.id}">${list.comments.length}</span></p>
                         <p class="" id="listCard_desc${list.id}"></p>
                       </div>
                     </div>
@@ -845,7 +840,7 @@ $(document).ready(() => {
                 fetch(url1, options1)
                     .then(response => response.json()).then(data => {
                     $('#listLike').html(updatedLikes.likes);
-                    populateListsHome();
+                    $(`#listCardLikes_${$('#listModal').data('data-list-id')}`).html(updatedLikes.likes);
                 })
             } else {
                 let updatedLikedList = {likedLists: user.likedLists};
@@ -873,15 +868,14 @@ $(document).ready(() => {
                 fetch(url1, options1)
                     .then(response => response.json()).then(data => {
                     $('#listLike').html(updatedLikes.likes);
-                    populateListsHome();
+                    $(`#listCardLikes_${$('#listModal').data('data-list-id')}`).html(updatedLikes.likes);
                 })
             }
         }
 
-        $(`#addCommentSection`).submit(function () {
+        $(`#addCommentSection`).submit(() => {
             submitComment();
             setTimeout(function () {
-                populateListsHome();
                 populateListModal($(`#listModal`).data('data-list-id'));
             }, 500)
         })
@@ -903,6 +897,7 @@ $(document).ready(() => {
             fetch(url, options)
                 .then(response => response.json()).then(data => {
                 $(`#commentSubmission`).val('');
+                $(`#listCardComments_${$(`#listModal`).data('data-list-id')}`).html(data.comments.length);
             })
         }
 

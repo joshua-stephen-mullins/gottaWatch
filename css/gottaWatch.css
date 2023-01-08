@@ -24,6 +24,13 @@ body {
     border-radius: 50%;
 }
 
+#profilePagePicture {
+    width: 13em;
+    height: 13em;
+    border: black 1px solid;
+    border-radius: 50%;
+}
+
 .smallCard {
     font-size: .6em !important;
     width: 15%;

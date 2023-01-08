@@ -174,6 +174,7 @@ $(document).ready(() => {
             $('#searchResults').removeClass('d-none');
             $('#profilePage').addClass('d-none');
             $('#discoverPage').addClass('d-none');
+            $('#profilePage').addClass('d-none');
         })
         $('#homeButton').click(() => {
             $('#homePage').removeClass('d-none');
@@ -181,6 +182,7 @@ $(document).ready(() => {
             $('#listsPage').addClass('d-none');
             $('#profilePage').addClass('d-none');
             $('#discoverPage').addClass('d-none');
+            $('#profilePage').addClass('d-none');
         })
         $('#discoverButton').click((e) => {
             e.preventDefault();
@@ -189,6 +191,7 @@ $(document).ready(() => {
             $('#listsPage').addClass('d-none');
             $('#profilePage').addClass('d-none');
             $('#discoverPage').removeClass('d-none');
+            $('#profilePage').addClass('d-none');
         })
         $('#movieSearchInputButton').click(function (e) {
             e.preventDefault();
@@ -202,17 +205,26 @@ $(document).ready(() => {
             $('#listsPage').removeClass('d-none');
             $('#profilePage').addClass('d-none');
             $('#discoverPage').addClass('d-none');
+            $('#profilePage').addClass('d-none');
         })
         $('#profileButton').click(() => {
             $(`#usernameInput`).val('');
             $(`#passwordInput`).val('');
         })
-        $('#submitNewList').submit(function () {
+        $('#submitNewList').submit(() => {
             createNewList();
         })
-        $('#createNewListButton').click(function () {
+        $('#createNewListButton').click(() => {
             $('#listCreateName').html('');
             $('#listCreateDesc').html('');
+        })
+        $(`#myProfileButton`).click(() => {
+            $('#homePage').addClass('d-none');
+            $('#searchResults').addClass('d-none');
+            $('#listsPage').addClass('d-none');
+            $('#profilePage').addClass('d-none');
+            $('#discoverPage').addClass('d-none');
+            $('#profilePage').removeClass('d-none');
         })
 
         function searchById(searchType, id) {

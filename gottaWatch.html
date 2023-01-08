@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>gotta Watch</title>
     <!--    bootswatch-->
     <link rel="stylesheet" href="css/vapor-bootstrap.css">
@@ -409,7 +410,8 @@
                     <div class="row m-1 p-0 input-group">
                         <input type="text" class="form-control col-9" id="popularListFilterSearchInput"
                                placeholder="Search Lists">
-                        <button class="btn btn-primary col-3" type="button" id="popularListFilterSearchButton"><i class="fa-solid fa-magnifying-glass"></i></button>
+                        <button class="btn btn-primary col-3" type="button" id="popularListFilterSearchButton"><i
+                                class="fa-solid fa-magnifying-glass"></i></button>
                     </div>
                     <div class="row m-0 p-0 popularListFilterButtonsContainer">
                         <input class="popularListFilterRadio" type="radio" name="popularListFilter"
@@ -431,12 +433,32 @@
             </div>
         </div>
         <div class="row col-12 justify-content-center d-none" id="profilePage">
-            <div class="card text-white bg-success mb-3">
-                <div class="card-header">Header</div>
-                <div class="card-body">
-                    <h4 class="card-title">Success card title</h4>
-                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-                        card's content.</p>
+            <div class="col-10 row justify-content-center ">
+                <div class="row m-5 mb-4 align-content-center" id="profilePageHeader">
+                    <img class="col-4" src="img/profilePictures/default.jpg" alt="Profile Picture"
+                         id="profilePagePicture">
+                    <div class="row col-4 align-content-center flex-grow-1 p-3">
+                        <h1 class="col-12 m-0 p-0">USERNAME</h1>
+                        <button type="button" class="btn btn-info btn-lg col-5" id="editProfileButton">EDIT PROFILE
+                        </button>
+                    </div>
+                    <div class="row col-4 align-content-center">
+                        <div class="col-4 d-flex flex-column align-content-end">
+                            <p>Date Here</p>
+                            <small class="text-muted">Member Since</small>
+                        </div>
+                        <div class="col-4 d-flex flex-column align-content-end">
+                            <p>0</p>
+                            <small class="text-muted">Lists Created</small>
+                        </div>
+                        <div class="col-4 d-flex flex-column align-content-end">
+                            <p>0</p>
+                            <small class="text-muted">Lists Liked</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="row col-10 justify-content-center">
+                    <hr>
                 </div>
             </div>
         </div>

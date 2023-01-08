@@ -174,7 +174,6 @@ $(document).ready(() => {
             $('#searchResults').removeClass('d-none');
             $('#profilePage').addClass('d-none');
             $('#discoverPage').addClass('d-none');
-            $('#profilePage').addClass('d-none');
         })
         $('#homeButton').click(() => {
             $('#homePage').removeClass('d-none');
@@ -182,7 +181,6 @@ $(document).ready(() => {
             $('#listsPage').addClass('d-none');
             $('#profilePage').addClass('d-none');
             $('#discoverPage').addClass('d-none');
-            $('#profilePage').addClass('d-none');
         })
         $('#discoverButton').click((e) => {
             e.preventDefault();
@@ -191,7 +189,6 @@ $(document).ready(() => {
             $('#listsPage').addClass('d-none');
             $('#profilePage').addClass('d-none');
             $('#discoverPage').removeClass('d-none');
-            $('#profilePage').addClass('d-none');
         })
         $('#movieSearchInputButton').click(function (e) {
             e.preventDefault();
@@ -205,7 +202,6 @@ $(document).ready(() => {
             $('#listsPage').removeClass('d-none');
             $('#profilePage').addClass('d-none');
             $('#discoverPage').addClass('d-none');
-            $('#profilePage').addClass('d-none');
         })
         $('#profileButton').click(() => {
             $(`#usernameInput`).val('');
@@ -225,6 +221,7 @@ $(document).ready(() => {
             $('#profilePage').addClass('d-none');
             $('#discoverPage').addClass('d-none');
             $('#profilePage').removeClass('d-none');
+            populateProfilePage(user.id);
         })
 
         function searchById(searchType, id) {
@@ -784,7 +781,6 @@ $(document).ready(() => {
                             fetch(`https://wave-kaput-giant.glitch.me/users/${comment.user}`)
                                 .then(response => response.json())
                                 .then((data) => {
-                                    console.log("creator data", data);
                                     $(`.comment_${comment.user}`).attr('src', `img/profilePictures/${data.profilePic}.jpg`)
                                 })
                         })
@@ -1011,6 +1007,11 @@ $(document).ready(() => {
             $(`.loggedInDropdown`).addClass('d-none');
             $(`#loginSection`).removeClass('d-none');
             $(`#createNewListButton`).addClass('disabled');
+            $('#homePage').removeClass('d-none');
+            $('#searchResults').addClass('d-none');
+            $('#listsPage').addClass('d-none');
+            $('#profilePage').addClass('d-none');
+            $('#discoverPage').addClass('d-none');
         }
 
         $(`#submitNewAccount`).submit((e) => {
@@ -1057,6 +1058,40 @@ $(document).ready(() => {
             fetch(url, options)
                 .then(response => response.json()).then(data => {
             })
+        }
+
+        function populateProfilePage(username) {
+            fetch(`https://wave-kaput-giant.glitch.me/users/${username}`)
+                .then(response => response.json())
+                .then((user) => {
+                    $(`#profilePageProfilePicture`).attr('src', `img/profilePictures/${user.profilePic}.jpg`);
+                    $(`#profilePageUsername`).html(`${user.id}`);
+                    let dateCreated = new Date(user.userCreated);
+                    $(`#profilePageMemberDate`).html(`${dateCreated.toDateString()}`);
+                    $(`#profilePageListsCreated`).html(`${user.createdLists.length}`);
+                    $(`#profilePageFollowers`).html(`${user.followers.length}`);
+                    $(`#profilePageFollowing`).html(`${user.following.length}`);
+                    if (user.id === username){
+                        $(`#profilePageEditButton`).removeClass('d-none');
+                        $(`#profilePageFollowButton`).addClass('d-none');
+                        $(`#profilePageFollowingButton`).addClass('d-none');
+                        console.log("option1")
+                    } else if (user.hasOwnProperty('id') || user.following.includes(username)){
+                        $(`#profilePageEditButton`).addClass('d-none');
+                        $(`#profilePageFollowButton`).addClass('d-none');
+                        $(`#profilePageFollowingButton`).removeClass('d-none');
+                        console.log("option2")
+                    } else if (user.hasOwnProperty('id')){
+                        $(`#profilePageEditButton`).addClass('d-none');
+                        $(`#profilePageFollowButton`).removeClass('d-none');
+                        $(`#profilePageFollowingButton`).addClass('d-none');
+                    } else {
+                        $(`#profilePageEditButton`).addClass('d-none');
+                        $(`#profilePageFollowButton`).removeClass('d-none');
+                        $(`#profilePageFollowingButton`).addClass('d-none');
+                        console.log("option3")
+                    }
+                })
         }
 
         function returnSmallest(a, b) {
@@ -1118,7 +1153,7 @@ $(document).ready(() => {
 
         function randomizeLists(lists) {
             let currentIndex = lists.length, randomIndex;
-            while (currentIndex != 0) {
+            while (currentIndex !== 0) {
                 randomIndex = Math.floor(Math.random() * currentIndex);
                 currentIndex--;
                 [lists[currentIndex], lists[randomIndex]] = [

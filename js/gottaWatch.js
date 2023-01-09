@@ -1047,7 +1047,10 @@ $(document).ready(() => {
                 admin: "n",
                 profilePic: "default",
                 createdLists: [],
-                likedLists: []
+                likedLists: [],
+                followers: ['gottaWatch'],
+                following: ['gottaWatch'],
+                recentActivity: []
             }
             const url = 'https://wave-kaput-giant.glitch.me/users/';
             const options = {

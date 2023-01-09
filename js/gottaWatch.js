@@ -1074,20 +1074,23 @@ $(document).ready(() => {
     }
 
     function follow() {
-
-        let updatedLikedList = {likedLists: user.likedLists};
-        updatedLikedList.likedLists.push($(`#listModal`).data('data-list-id'));
+        let updatedFollowList = {following: user.following};
+        updatedFollowList.following.push($(`#profilePageUsername`).html());
         const url = `https://wave-kaput-giant.glitch.me/users/${user.id}`;
         const options = {
             method: 'PATCH',
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(updatedLikedList)
+            body: JSON.stringify(updatedFollowList)
         };
         fetch(url, options)
             .then(response => response.json()).then(data => {
-            user.likedLists = updatedLikedList.likedLists;
+            user.following = updatedFollowList.following;
+            $(`#profilePageFollowButton`).addClass('d-none');
+            $(`#profilePageFollowingButton`).removeClass('d-none');
         })
     }
+
+
 
     function returnSmallest(a, b) {
         return a < b ? a : b;

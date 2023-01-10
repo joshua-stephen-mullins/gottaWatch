@@ -1046,16 +1046,15 @@ $(document).ready(() => {
         populateProfilePage($(`#listModalCreator`).html());
     })
 
-    let profilePageFollowers = [];
     function populateProfilePage(username) {
-        profilePageFollowers = [];
         fetch(`https://wave-kaput-giant.glitch.me/users/${username}`)
             .then(response => response.json())
             .then((profileUser) => {
                 $(`#profilePageProfilePicture`).attr('src', `img/profilePictures/${profileUser.profilePic}.jpg`);
                 $(`#profilePageUsername`).html(`${profileUser.id}`);
                 let dateCreated = new Date(profileUser.userCreated);
-                profilePageFollowers.push(profileUser.followers);
+                for (let i = 0; i < profileUser.followers; i++){
+                }
                 $(`#profilePageMemberDate`).html(`${dateCreated.toDateString()}`);
                 $(`#profilePageListsCreated`).html(`${profileUser.createdLists.length}`);
                 $(`#profilePageFollowers`).html(`${profileUser.followers.length}`);
@@ -1064,22 +1063,18 @@ $(document).ready(() => {
                     $(`#profilePageEditButton`).removeClass('d-none');
                     $(`#profilePageFollowButton`).addClass('d-none');
                     $(`#profilePageFollowingButton`).addClass('d-none');
-                    console.log("option 1");
                 } else if (user.hasOwnProperty('id') && user.following.includes(username)) {
                     $(`#profilePageEditButton`).addClass('d-none');
                     $(`#profilePageFollowButton`).addClass('d-none');
                     $(`#profilePageFollowingButton`).removeClass('d-none');
-                    console.log("option 2");
                 } else if (user.hasOwnProperty('id')) {
                     $(`#profilePageEditButton`).addClass('d-none');
                     $(`#profilePageFollowButton`).removeClass('d-none');
                     $(`#profilePageFollowingButton`).addClass('d-none');
-                    console.log("option 3");
                 } else {
                     $(`#profilePageEditButton`).addClass('d-none');
                     $(`#profilePageFollowButton`).addClass('d-none');
                     $(`#profilePageFollowingButton`).addClass('d-none');
-                    console.log("option 4");
                 }
             })
         $('#homePage').addClass('d-none');
@@ -1109,23 +1104,24 @@ $(document).ready(() => {
             $(`#profilePageFollowButton`).addClass('d-none');
             $(`#profilePageFollowingButton`).removeClass('d-none');
         });
-        let updatedFollowersList = {followers: profilePageFollowers};
-        console.log("original list", updatedFollowersList)
-        updatedFollowersList.followers.push(user.id);
-        console.log("after user.id push", updatedFollowersList);
-        const url1 = `https://wave-kaput-giant.glitch.me/users/${$(`#profilePageUsername`).html()}`;
-        const options1 = {
-            method: 'PATCH',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(updatedFollowersList)
-        };
-        fetch(url1, options1)
-            .then(response => response.json()).then(data => {
-            profilePageFollowers = updatedFollowersList.followers;
-            $('#profilePageFollowers').html(profilePageFollowers.length);
-            $(`#profilePageFollowButton`).addClass('d-none');
-            $(`#profilePageFollowingButton`).removeClass('d-none');
-        })
+        fetch(`https://wave-kaput-giant.glitch.me/users/${$(`#profilePageUsername`).html()}`)
+            .then(response => response.json())
+            .then((profileUser) => {
+                let updatedFollowersList = {followers: profileUser.followers};
+                updatedFollowersList.followers.push(user.id);
+                const url1 = `https://wave-kaput-giant.glitch.me/users/${$(`#profilePageUsername`).html()}`;
+                const options1 = {
+                    method: 'PATCH',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(updatedFollowersList)
+                };
+                fetch(url1, options1)
+                    .then(response => response.json()).then(data => {
+                    $('#profilePageFollowers').html(updatedFollowersList.followers.length);
+                    $(`#profilePageFollowButton`).addClass('d-none');
+                    $(`#profilePageFollowingButton`).removeClass('d-none');
+                })
+            })
     }
 
     function returnSmallest(a, b) {

@@ -748,8 +748,8 @@ $(document).ready(() => {
                 list.comments.forEach((comment) => {
                     $(`#listModalComments`).append(`
                         <div class="row col-7 p-0 m-0">
-                            <div class="col-3">
-                                <p class="mb-1"><img class="profilePicture comment_${comment.user}" src="img/profilePictures/default.jpg" alt="Profile Picture"> ${comment.user}</p>
+                            <div class="col-3 listComment" data-commenterId="${comment.user}">
+                                <p class="mb-1" data-bs-toggle="modal" data-bs-target="#listModal"><img class="profilePicture comment_${comment.user}" src="img/profilePictures/default.jpg" alt="Profile Picture"> ${comment.user}</p>
                                 <p class="text-muted">${time_ago(comment.date)}</p>
                             </div>
                             <div class="col-8">
@@ -760,6 +760,9 @@ $(document).ready(() => {
                         <hr>
                         </div>
                     `)
+                    $(`.listComment`).click(function(){
+                        populateProfilePage($(this).data('commenterid'));
+                    })
                     fetch(`https://wave-kaput-giant.glitch.me/users/${comment.user}`)
                         .then(response => response.json()).then((data) => {
                         $(`.comment_${comment.user}`).attr('src', `img/profilePictures/${data.profilePic}.jpg`)
@@ -1055,7 +1058,7 @@ $(document).ready(() => {
                 let dateCreated = new Date(profileUser.userCreated);
                 for (let i = 0; i < profileUser.followers; i++){
                 }
-                $(`#profilePageMemberDate`).html(`${dateCreated.toDateString()}`);
+                $(`#profilePageMemberDate`).html(dateCreated.toDateString().substring(4, dateCreated.toDateString().length));
                 $(`#profilePageListsCreated`).html(`${profileUser.createdLists.length}`);
                 $(`#profilePageFollowers`).html(`${profileUser.followers.length}`);
                 $(`#profilePageFollowing`).html(`${profileUser.following.length}`);
@@ -1087,6 +1090,7 @@ $(document).ready(() => {
 
     $('#profilePageFollowButton').click(() => {
         follow();
+        $('#listModal').modal('hide');
     })
 
     function follow() {
@@ -1120,6 +1124,43 @@ $(document).ready(() => {
                     $('#profilePageFollowers').html(updatedFollowersList.followers.length);
                     $(`#profilePageFollowButton`).addClass('d-none');
                     $(`#profilePageFollowingButton`).removeClass('d-none');
+                })
+            })
+    }
+
+$('#profilePageFollowingButton').click(() => {
+    unfollow();
+})
+
+    function unfollow() {
+        let updatedFollowingList = {following: user.following.filter(item => item !== $(`#profilePageUsername`).html())};
+        const url = `https://wave-kaput-giant.glitch.me/users/${user.id}`;
+        const options = {
+            method: 'PATCH',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(updatedFollowingList)
+        };
+        fetch(url, options)
+            .then(response => response.json()).then(data => {
+            user.following = updatedFollowingList.following;
+            $(`#profilePageFollowButton`).addClass('d-none');
+            $(`#profilePageFollowingButton`).removeClass('d-none');
+        });
+        fetch(`https://wave-kaput-giant.glitch.me/users/${$(`#profilePageUsername`).html()}`)
+            .then(response => response.json())
+            .then((profileUser) => {
+                let updatedFollowersList = {followers: profileUser.followers.filter(item => item !== user.id)};
+                const url1 = `https://wave-kaput-giant.glitch.me/users/${$(`#profilePageUsername`).html()}`;
+                const options1 = {
+                    method: 'PATCH',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(updatedFollowersList)
+                };
+                fetch(url1, options1)
+                    .then(response => response.json()).then(data => {
+                    $('#profilePageFollowers').html(updatedFollowersList.followers.length);
+                    $(`#profilePageFollowButton`).removeClass('d-none');
+                    $(`#profilePageFollowingButton`).addClass('d-none');
                 })
             })
     }

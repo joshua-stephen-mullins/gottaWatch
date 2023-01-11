@@ -443,24 +443,25 @@
                         </button>
                         <button type="button" class="btn btn-warning btn-lg col-5" id="profilePageFollowButton">FOLLOW
                         </button>
-                        <button type="button" class="btn btn-success btn-lg col-5" id="profilePageFollowingButton">FOLLOWING
+                        <button type="button" class="btn btn-success btn-lg col-5" id="profilePageFollowingButton">
+                            FOLLOWING
                         </button>
                     </div>
-                    <div class="row col-4 align-content-center flex-grow-1">
+                    <div class="row col-4 align-content-center flex-grow-1 text-center">
                         <div class="col-3 d-flex flex-column align-content-end">
                             <p class="mb-0" id="profilePageMemberDate">Date Here</p>
                             <small class="text-muted">Joined</small>
                         </div>
                         <div class="col-3 d-flex flex-column align-content-end">
-                            <p class="mb-0" id="profilePageListsCreated">0</p>
+                            <p class="mb-0 text-center" id="profilePageListsCreated">0</p>
                             <small class="text-muted">Lists Created</small>
                         </div>
                         <div class="col-3 d-flex flex-column align-content-end">
-                            <p class="mb-0" id="profilePageFollowers">0</p>
+                            <p class="mb-0 text-center" id="profilePageFollowers">0</p>
                             <small class="text-muted">Followers</small>
                         </div>
                         <div class="col-3 d-flex flex-column align-content-end">
-                            <p class="mb-0" id="profilePageFollowing">0</p>
+                            <p class="mb-0 text-center" id="profilePageFollowing">0</p>
                             <small class="text-muted">Following</small>
                         </div>
                     </div>
@@ -528,6 +529,7 @@
                                                                           src="img/profilePictures/default.jpg"
                                                                           alt="Profile Picture"
                                                                           id="listModalProfilePicture"> <span
+                        data-bs-toggle="modal" data-bs-target="#listModal"
                         id="listModalCreator"></span> | <span id="listModalLastUpdated"></span>
                     <input type="checkbox" class="loginRequired disabled" id="listLikeButton" disabled>
                     <label for="listLikeButton"><i class="fa-solid fa-heart"></i></label>

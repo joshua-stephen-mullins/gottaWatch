@@ -408,7 +408,7 @@ $(document).ready(() => {
         fetch(url, options)
             .then(response => response.json()).then(data => console.log(data))
             .catch(error => console.error(error));
-        generatePopularListsCards(randomizeLists(allPopularLists));
+        // generatePopularListsCards(randomizeLists(allPopularLists), "#popularListsContainer");
     }
 
     function createNewList() {
@@ -523,13 +523,13 @@ $(document).ready(() => {
             data.forEach(function (list) {
                 list.featured === "y" ? allFeaturedLists.push(list) : allPopularLists.push(list);
             })
-            generateFeaturedListsCards(randomizeLists(allFeaturedLists));
-            generatePopularListsCards(randomizeLists(allPopularLists));
+            generateFeaturedListsCards(randomizeLists(allFeaturedLists), "popularListsContainer");
+            generatePopularListsCards(randomizeLists(allPopularLists), "popularListsContainer");
         })
     }
 
     function refreshListHome() {
-        generatePopularListsCards(randomizeLists(allPopularLists));
+        generatePopularListsCards(randomizeLists(allPopularLists), "popularListsContainer");
     }
 
     $('.popularListFilterButton').click(() => {
@@ -545,13 +545,13 @@ $(document).ready(() => {
                             return b.likes - a.likes
                         });
                         $('#popularListsContainer').html('');
-                        generatePopularListsCards(filteredPopularList);
+                        generatePopularListsCards(filteredPopularList, "popularListsContainer");
                     } else {
                         let filteredPopularList = allPopularLists.sort((a, b) => {
                             return new Date(b.last_edited).getTime() - new Date(a.last_edited).getTime();
                         });
                         $('#popularListsContainer').html('');
-                        generatePopularListsCards(filteredPopularList);
+                        generatePopularListsCards(filteredPopularList, "popularListsContainer");
                     }
                 }
             })
@@ -572,7 +572,7 @@ $(document).ready(() => {
             }
             $('#popularListsContainer').html('');
             if (filteredPopularList.length !== 0) {
-                generatePopularListsCards(filteredPopularList);
+                generatePopularListsCards(filteredPopularList, "popularListsContainer");
             } else {
                 $('#popularListsContainer').html('<h1 class="text-center">No Results Found</h1>');
             }
@@ -637,18 +637,18 @@ $(document).ready(() => {
         }
     }
 
-    function generatePopularListsCards(lists) {
+    function generatePopularListsCards(lists, location) {
         lists.forEach((list) => {
-            $('#popularListsContainer').append(`
-                <div class="card col-9 m-1 border-0" id="listCard_${list.id}" data-bs-toggle="modal" data-bs-target="#listModal" data-id="${list.id}">
+            $(`#${location}`).append(`
+                <div class="card col-9 m-1 border-0" id="listCard_${list.id}_${location}" data-bs-toggle="modal" data-bs-target="#listModal" data-id="${list.id}">
                   <div class="row g-0">
-                    <div class="col-6 listCardPopular" id="listCardImages_${list.id}">
+                    <div class="col-6 listCardPopular" id="listCardImages_${list.id}_${location}">
                     </div>
                     <div class="col-6">
                       <div>
                         <h5>${list.list_name}</h5>
-                        <p><img class="profilePicture" src="img/profilePictures/default.jpg" alt="Profile Picture" id="popularListProfilePicture_${list.id}"> ${list.creator}  |  <span id="popularListLastEdited_${list.id}"></span> | <i class="fa-solid fa-heart"></i> <span id="listCardLikes_${list.id}">${list.likes}</span>  |  <i class="fa-solid fa-comment"></i> <span id="listCardComments_${list.id}">${list.comments.length}</span></p>
-                        <p class="" id="listCard_desc${list.id}"></p>
+                        <p><img class="profilePicture" src="img/profilePictures/default.jpg" alt="Profile Picture" id="popularListProfilePicture_${list.id}_${location}"> ${list.creator}  |  <span id="popularListLastEdited_${list.id}_${location}"></span> | <i class="fa-solid fa-heart"></i> <span id="listCardLikes_${list.id}_${location}">${list.likes}</span>  |  <i class="fa-solid fa-comment"></i> <span id="listCardComments_${list.id}_${location}">${list.comments.length}</span></p>
+                        <p class="" id="listCard_desc${list.id}_${location}"></p>
                       </div>
                     </div>
                   </div>
@@ -657,21 +657,21 @@ $(document).ready(() => {
             <hr>
             </div>
         `)
-            $(`#popularListLastEdited_${list.id}`).html(`Updated ${time_ago(list.last_edited)}`)
+            $(`#popularListLastEdited_${list.id}_${location}`).html(`Updated ${time_ago(list.last_edited)}`)
             fetch(`https://wave-kaput-giant.glitch.me/users/${list.creator}`)
                 .then(response => response.json()).then((data) => {
-                $(`#popularListProfilePicture_${list.id}`).attr('src', `img/profilePictures/${data.profilePic}.jpg`)
+                $(`#popularListProfilePicture_${list.id}_${location}`).attr('src', `img/profilePictures/${data.profilePic}.jpg`)
             })
-            $(`#listCard_${list.id}`).click(function () {
+            $(`#listCard_${list.id}_${location}`).click(function () {
                 populateListModal($(this).data("id"));
             });
-            (list.list_desc.length > 100) ? $(`#listCard_desc${list.id}`).html(list.list_desc.slice(0, 100) + "...") : $(`#listCard_desc${list.id}`).html(list.list_desc);
+            (list.list_desc.length > 100) ? $(`#listCard_desc${list.id}_${location}`).html(list.list_desc.slice(0, 100) + "...") : $(`#listCard_desc${list.id}_${location}`).html(list.list_desc);
             if (list.content.length < 5) {
                 for (let i = 0; i < list.content.length; i++) {
                     fetch(`https://api.themoviedb.org/3/${list.content[i].type}/${list.content[i].id}?api_key=${apiKeyTMDP}&language=en-US`)
                         .then(response => response.json())
                         .then((data) => {
-                            $(`#listCardImages_${list.id}`).append(`
+                            $(`#listCardImages_${list.id}_${location}`).append(`
                             <img src="https://image.tmdb.org/t/p/original/${data.poster_path}" class="border border-1" alt="Movie Poster" style="position: absolute; left: ${i * 9}%; height: 8em; z-index: ${500 - (5 * i)}">
                         `)
                         })
@@ -681,7 +681,7 @@ $(document).ready(() => {
                     fetch(`https://api.themoviedb.org/3/${list.content[i].type}/${list.content[i].id}?api_key=${apiKeyTMDP}&language=en-US`)
                         .then(response => response.json())
                         .then((data) => {
-                            $(`#listCardImages_${list.id}`).append(`
+                            $(`#listCardImages_${list.id}_${location}`).append(`
                             <img src="https://image.tmdb.org/t/p/original/${data.poster_path}" class="border border-1" alt="Movie Poster" style="position: absolute; left: ${i * 9}%; height: 8em; z-index: ${500 - (5 * i)}">
                         `)
                         })
@@ -760,7 +760,7 @@ $(document).ready(() => {
                         <hr>
                         </div>
                     `)
-                    $(`.listComment`).click(function(){
+                    $(`.listComment`).click(function () {
                         populateProfilePage($(this).data('commenterid'));
                     })
                     fetch(`https://wave-kaput-giant.glitch.me/users/${comment.user}`)
@@ -1056,7 +1056,7 @@ $(document).ready(() => {
                 $(`#profilePageProfilePicture`).attr('src', `img/profilePictures/${profileUser.profilePic}.jpg`);
                 $(`#profilePageUsername`).html(`${profileUser.id}`);
                 let dateCreated = new Date(profileUser.userCreated);
-                for (let i = 0; i < profileUser.followers; i++){
+                for (let i = 0; i < profileUser.followers; i++) {
                 }
                 $(`#profilePageMemberDate`).html(dateCreated.toDateString().substring(4, dateCreated.toDateString().length));
                 $(`#profilePageListsCreated`).html(`${profileUser.createdLists.length}`);
@@ -1079,11 +1079,25 @@ $(document).ready(() => {
                     $(`#profilePageFollowButton`).addClass('d-none');
                     $(`#profilePageFollowingButton`).addClass('d-none');
                 }
+                $('#profilePageLists').html("<h1>No Lists Created</h1>")
+                let profileUserCreatedList = [];
+                if (profileUser.createdLists.length > 0) {
+                    allPopularLists.forEach((list) => {
+                        profileUser.createdLists.forEach((createdList) => {
+                        if (list.id === (createdList)){
+                            console.log("list id", list.id);
+                            console.log("createdlist", createdList);
+                            profileUserCreatedList.push(list);
+                        }
+                        })
+                    })
+                    console.log(profileUserCreatedList);
+                    generatePopularListsCards(profileUserCreatedList, "profilePageLists")
+                }
             })
         $('#homePage').addClass('d-none');
         $('#searchResults').addClass('d-none');
         $('#listsPage').addClass('d-none');
-        $('#profilePage').addClass('d-none');
         $('#discoverPage').addClass('d-none');
         $('#profilePage').removeClass('d-none');
     }
@@ -1128,9 +1142,9 @@ $(document).ready(() => {
             })
     }
 
-$('#profilePageFollowingButton').click(() => {
-    unfollow();
-})
+    $('#profilePageFollowingButton').click(() => {
+        unfollow();
+    })
 
     function unfollow() {
         let updatedFollowingList = {following: user.following.filter(item => item !== $(`#profilePageUsername`).html())};

@@ -12,7 +12,6 @@ $(document).ready(() => {
         populateListsHome();
     }
 
-
     function loadPopular(showType, location) {
         fetch(`https://api.themoviedb.org/3/${showType}/popular?api_key=${apiKeyTMDP}&language=en-US&page=1`)
             .then(response => response.json()).then((response) => {
@@ -394,11 +393,9 @@ $(document).ready(() => {
     }
 
     function addMovieToList(data, listId) {
-        console.log("initial data", data);
-        let date = new Date();
         let updateContent = {
             content: data,
-            last_edited: date
+            last_edited: new Date()
         }
         const url = `https://daffy-tasteful-brownie.glitch.me/lists/${listId}`;
         const options = {
@@ -433,12 +430,11 @@ $(document).ready(() => {
     }
 
     function createNewList() {
-        let date = new Date();
         let newList = {
             list_name: $('#listCreateName').val(),
             list_desc: $('#listCreateDesc').val(),
-            date_created: date,
-            last_edited: date,
+            date_created: new Date(),
+            last_edited: new Date(),
             content: [],
             comments: [],
             creator: user.id,
@@ -453,9 +449,11 @@ $(document).ready(() => {
         };
         fetch(url, options)
             .then(response => response.json()).then(data => {
-            let userUpdate = {createdLists: user.createdLists, recentActivity: user.recentActivity};
+            let userUpdate = {
+                createdLists: user.createdLists,
+                recentActivity: recentActivityPush({type: "newList", listId: data.id, date: new Date()})
+            };
             userUpdate.createdLists.push(data.id);
-            userUpdate.recentActivity = recentActivityPush({type: "newList", listId: data.id, date: new Date()});
             const url2 = `https://wave-kaput-giant.glitch.me/users/${user.id}`;
             const options2 = {
                 method: 'PATCH',
@@ -662,6 +660,7 @@ $(document).ready(() => {
     }
 
     function generatePopularListsCards(lists, location) {
+        $(`#${location}`).html('');
         lists.forEach((list) => {
             $(`#${location}`).append(`
                 <div class="card col-9 m-1 border-0" id="listCard_${list.id}_${location}" data-bs-toggle="modal" data-bs-target="#listModal" data-id="${list.id}">
@@ -892,7 +891,8 @@ $(document).ready(() => {
             };
             fetch(url1, options1)
                 .then(response => response.json()).then(data => {
-                $('#listLike').html(updatedLikes.likes);
+                $(`#listCardLikes_${$('#listModal').data('data-list-id')}_popularListsContainer`).html(updatedLikes.likes);
+                $(`#listCardLikes_${$('#listModal').data('data-list-id')}_profilePageLists`).html(updatedLikes.likes);
                 $(`#listCardLikes_${$('#listModal').data('data-list-id')}`).html(updatedLikes.likes);
             })
         }
@@ -1152,8 +1152,41 @@ $(document).ready(() => {
         $('#listModal').modal('hide');
     })
 
+    function generateProfileListsCards(lists, location) {
+        $(`#${location}`).html('');
+        lists.forEach((list) => {
+            $(`#${location}`).append(`
+                <div class="card col-9 m-1 border-0" id="listCard_${list.id}_${location}" data-bs-toggle="modal" data-bs-target="#listModal" data-id="${list.id}">
+                  <div class="row g-0">
+                    <div class="col-12">
+                      <div>
+                        <h5>${list.list_name}</h5>
+                        <p><span id="popularListLastEdited_${list.id}_${location}"></span> | <i class="fa-solid fa-heart"></i> <span id="listCardLikes_${list.id}_${location}">${list.likes}</span>  |  <i class="fa-solid fa-comment"></i> <span id="listCardComments_${list.id}_${location}">${list.comments.length}</span></p>
+                        <p class="" id="listCard_desc${list.id}_${location}"></p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            <div class="col-9">
+            <hr>
+            </div>
+        `)
+            $(`#popularListLastEdited_${list.id}_${location}`).html(`Updated ${time_ago(list.last_edited)}`)
+            $(`#listCard_${list.id}_${location}`).click(function () {
+                populateListModal($(this).data("id"));
+            });
+            (list.list_desc.length > 100) ? $(`#listCard_desc${list.id}_${location}`).html(list.list_desc.slice(0, 100) + "...") : $(`#listCard_desc${list.id}_${location}`).html(list.list_desc);
+        })
+    }
+
     function follow() {
-        let updatedFollowingList = {following: user.following};
+        let updatedFollowingList = {
+            following: user.following, recentActivity: recentActivityPush({
+                type: "follow",
+                user: $(`#profilePageUsername`).html(),
+                date: new Date()
+            })
+        };
         updatedFollowingList.following.push($(`#profilePageUsername`).html());
         const url = `https://wave-kaput-giant.glitch.me/users/${user.id}`;
         const options = {
@@ -1164,6 +1197,7 @@ $(document).ready(() => {
         fetch(url, options)
             .then(response => response.json()).then(data => {
             user.following = updatedFollowingList.following;
+            user.recentActivity = updatedFollowingList.recentActivity;
             $(`#profilePageFollowButton`).addClass('d-none');
             $(`#profilePageFollowingButton`).removeClass('d-none');
         });
@@ -1223,7 +1257,6 @@ $(document).ready(() => {
                 })
             })
     }
-
 
     function recentActivityPush(newActivity) {
         let sortedActivity = user.recentActivity.sort((a, b) => {
@@ -1313,16 +1346,12 @@ $(document).ready(() => {
 //
 // fix formatting if there are two directors for a movie
 //
-//create my profile page
 // make ability to edit lists
 //
-// filter/search popular lists
 //
 // responseive!
 //
 //highlight movies already on list in list modal dropdown
-
-//re disable like button on logout
 
 // discover top rated card size when only limited number of cards
 //

@@ -432,8 +432,10 @@ $(document).ready(() => {
         };
         fetch(url, options)
             .then(response => response.json()).then(data => {
-            let userUpdate = {createdLists: user.createdLists};
+            let userUpdate = {createdLists: user.createdLists, recentActivity: user.recentActivity};
             userUpdate.createdLists.push(data.id);
+            userUpdate.recentActivity.push({type: "newList", listId: data.id, date: new Date()});
+            user.recentActivity.push({type: "newList", listId: data.id, date: new Date()});
             const url2 = `https://wave-kaput-giant.glitch.me/users/${user.id}`;
             const options2 = {
                 method: 'PATCH',
@@ -810,7 +812,12 @@ $(document).ready(() => {
 
     function likeButton() {
         if ($('#listLikeButton').is(':checked')) {
-            let updatedLikedList = {likedLists: user.likedLists};
+            let updatedLikedList = {
+                likedLists: user.likedLists,
+                recentActivity: user.recentActivity
+            };
+            updatedLikedList.recentActivity.push({type: "like", listId: $(`#listModal`).data('data-list-id'), date: new Date()});
+            user.recentActivity.push({type: "like", listId: $(`#listModal`).data('data-list-id'), date: new Date()});
             updatedLikedList.likedLists.push($(`#listModal`).data('data-list-id'));
             const url = `https://wave-kaput-giant.glitch.me/users/${user.id}`;
             const options = {
@@ -832,7 +839,8 @@ $(document).ready(() => {
             fetch(url1, options1)
                 .then(response => response.json()).then(data => {
                 $('#listLike').html(updatedLikes.likes);
-                $(`#listCardLikes_${$('#listModal').data('data-list-id')}`).html(updatedLikes.likes);
+                $(`#listCardLikes_${$('#listModal').data('data-list-id')}_popularListsContainer`).html(updatedLikes.likes);
+                $(`#listCardLikes_${$('#listModal').data('data-list-id')}_profilePageLists`).html(updatedLikes.likes);
             })
         } else {
             let updatedLikedList = {likedLists: user.likedLists};
@@ -1079,20 +1087,13 @@ $(document).ready(() => {
                     $(`#profilePageFollowButton`).addClass('d-none');
                     $(`#profilePageFollowingButton`).addClass('d-none');
                 }
-                $('#profilePageLists').html("<h1>No Lists Created</h1>")
-                let profileUserCreatedList = [];
                 if (profileUser.createdLists.length > 0) {
-                    allPopularLists.forEach((list) => {
-                        profileUser.createdLists.forEach((createdList) => {
-                        if (list.id === (createdList)){
-                            console.log("list id", list.id);
-                            console.log("createdlist", createdList);
-                            profileUserCreatedList.push(list);
-                        }
-                        })
-                    })
-                    console.log(profileUserCreatedList);
+                    let profileUserCreatedList = allPopularLists.filter((list) => {
+                        return profileUser.createdLists.includes(list.id);
+                    });
                     generatePopularListsCards(profileUserCreatedList, "profilePageLists")
+                } else {
+                    $('#profilePageLists').html("<h1 class='text-center'>No Lists Created</h1>")
                 }
             })
         $('#homePage').addClass('d-none');
@@ -1268,4 +1269,9 @@ $(document).ready(() => {
 
 // discover top rated card size when only limited number of cards
 //
-//footer with API and my contact information
+// footer with API and my contact information
+
+
+//BUGS
+
+// create new list populates a second set of lists on list home

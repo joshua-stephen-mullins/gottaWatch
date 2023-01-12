@@ -394,6 +394,7 @@ $(document).ready(() => {
     }
 
     function addMovieToList(data, listId) {
+        console.log("initial data", data);
         let date = new Date();
         let updateContent = {
             content: data,
@@ -406,9 +407,22 @@ $(document).ready(() => {
             body: JSON.stringify(updateContent)
         };
         fetch(url, options)
-            .then(response => response.json()).then(data => console.log(data))
-            .catch(error => console.error(error));
-        // generatePopularListsCards(randomizeLists(allPopularLists), "#popularListsContainer");
+            .then(response => response.json()).then(data2 => {
+            console.log(data2);
+            let userUpdate = {recentActivity: recentActivityPush({type: "listAdd", listId: listId, contentId: data[data.length - 1].id, date: new Date()})};
+            const url2 = `https://wave-kaput-giant.glitch.me/users/${user.id}`;
+            const options2 = {
+                method: 'PATCH',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(userUpdate)
+            };
+            fetch(url2, options2)
+                .then(response => response.json()).then(data2 => {
+                    user.recentActivity = userUpdate.recentActivity;
+            })
+                .catch(error => console.error(error));
+            // generatePopularListsCards(randomizeLists(allPopularLists), "#popularListsContainer");
+        })
     }
 
     function createNewList() {
@@ -434,7 +448,7 @@ $(document).ready(() => {
             .then(response => response.json()).then(data => {
             let userUpdate = {createdLists: user.createdLists, recentActivity: user.recentActivity};
             userUpdate.createdLists.push(data.id);
-            userUpdate.recentActivity.push({type: "newList", listId: data.id, date: new Date()});
+            userUpdate.recentActivity = recentActivityPush({type: "newList", listId: data.id, date: new Date()});
             const url2 = `https://wave-kaput-giant.glitch.me/users/${user.id}`;
             const options2 = {
                 method: 'PATCH',
@@ -443,7 +457,8 @@ $(document).ready(() => {
             };
             fetch(url2, options2)
                 .then(response => response.json()).then(data2 => {
-                user.recentActivity.push({type: "newList", listId: data.id, date: new Date()});
+                user.createdLists = userUpdate.createdLists;
+                user.recentActivity = userUpdate.recentActivity;
             })
                 .catch(error => console.error(error));
         })
@@ -814,9 +829,8 @@ $(document).ready(() => {
         if ($('#listLikeButton').is(':checked')) {
             let updatedLikedList = {
                 likedLists: user.likedLists,
-                recentActivity: user.recentActivity
+                recentActivity: recentActivityPush({type: "like", listId: $(`#listModal`).data('data-list-id'), date: new Date()})
             };
-            updatedLikedList.recentActivity.push({type: "like", listId: $(`#listModal`).data('data-list-id'), date: new Date()});
             updatedLikedList.likedLists.push($(`#listModal`).data('data-list-id'));
             const url = `https://wave-kaput-giant.glitch.me/users/${user.id}`;
             const options = {
@@ -827,7 +841,7 @@ $(document).ready(() => {
             fetch(url, options)
                 .then(response => response.json()).then(data => {
                 user.likedLists = updatedLikedList.likedLists;
-                user.recentActivity.push({type: "like", listId: $(`#listModal`).data('data-list-id'), date: new Date()});
+                user.recentActivity = updatedLikedList.recentActivity;
             })
             let updatedLikes = {likes: parseInt($('#listLike').html()) + 1};
             const url1 = `https://daffy-tasteful-brownie.glitch.me/lists/${$(`#listModal`).data('data-list-id')}`;
@@ -898,7 +912,9 @@ $(document).ready(() => {
             .then(response => response.json()).then(data => {
             $(`#commentSubmission`).val('');
             $(`#listCardComments_${$(`#listModal`).data('data-list-id')}`).html(data.comments.length);
-        })
+        }).then(
+
+        )
     }
 
     function toHoursAndMinutes(totalMinutes) {
@@ -1178,6 +1194,19 @@ $(document).ready(() => {
                     $(`#profilePageFollowingButton`).addClass('d-none');
                 })
             })
+    }
+
+
+    function recentActivityPush(newActivity) {
+        let sortedActivity = user.recentActivity.sort((a, b) => {
+            return new Date(b.date).getTime() - new Date(a.date).getTime();
+        })
+        if (sortedActivity.length === 15) {
+            sortedActivity[15] = newActivity;
+        } else {
+            sortedActivity.push(newActivity);
+        }
+        return sortedActivity
     }
 
     function returnSmallest(a, b) {

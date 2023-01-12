@@ -1,5 +1,6 @@
 .titleFont {
     font-family: 'Audiowide', cursive;
+    text-shadow: black 5px 0 10px;
 }
 
 .homeScreenText {
@@ -45,7 +46,11 @@ body {
     width: auto
 }
 
-#listCardImages {
+.divGlow {
+    box-shadow: black 0 0 20px;
+}
+
+.listCardImages {
     position: relative;
 }
 

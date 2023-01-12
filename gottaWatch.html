@@ -439,14 +439,17 @@
                     <img class="col-4" src="img/profilePictures/default.jpg" alt="Profile Picture"
                          id="profilePageProfilePicture">
                     <div class="row col-4 align-content-center p-3">
-                        <h1 class="col-12 m-0 p-0" id="profilePageUsername">USERNAME</h1>
-                        <button type="button" class="btn btn-info btn-sm col-5" id="profilePageEditButton">EDIT PROFILE
+                        <h1 class="col-6 m-0 p-0" id="profilePageUsername">USERNAME</h1>
+                        <button type="button" class="btn btn-info btn-sm" id="profilePageEditButton">EDIT
+                            PROFILE
                         </button>
-                        <button type="button" class="btn btn-warning btn-sm col-5" id="profilePageFollowButton">FOLLOW
+                        <button type="button" class="btn btn-warning btn-sm" id="profilePageFollowButton">
+                            FOLLOW
                         </button>
-                        <button type="button" class="btn btn-success btn-sm col-5" id="profilePageFollowingButton">
+                        <button type="button" class="btn btn-success btn-sm" id="profilePageFollowingButton">
                             FOLLOWING
                         </button>
+                        <p id="profilePageUserDesc">Bio about user here.</p>
                     </div>
                     <div class="row col-4 align-content-center flex-grow-1 text-center">
                         <div class="col-5 d-flex flex-column align-content-end">
@@ -470,10 +473,14 @@
                 <div class="row justify-content-center">
                     <hr>
                 </div>
-                <div class="row" id="profilePageContent">
-                    <div class="row justify-content-center col-8">
-                        <h1 class="text-center">Created Lists</h1>
-                        <div id="profilePageLists"></div>
+                <div class="row justify-content-evenly" id="profilePageContent">
+                    <div class="row justify-content-center col-7">
+                        <h1 class="text-center titleFont">RECENT ACTIVITY</h1>
+                        <div id="profilePageActivity"></div>
+                    </div>
+                    <div class="row justify-content-center col-5">
+                        <h1 class="text-center titleFont">CREATED LISTS</h1>
+                        <div class="row justify-content-center" id="profilePageLists"></div>
                     </div>
                 </div>
             </div>

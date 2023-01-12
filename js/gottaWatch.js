@@ -615,14 +615,14 @@ $(document).ready(() => {
     function generateFeaturedListsCards(lists) {
         for (let j = 0; j < 3; j++) {
             $('#featuredListsContainer').append(`
-            <div class="card mb-3 col-4 listCard border-0" id="listCard_${lists[j].id}" data-bs-toggle="modal" data-bs-target="#listModal" data-id="${lists[j].id}">
+            <div class="card m-1 mt-0 col-3 flex-grow-1 listCard border-0 bg-primary p-3 rounded-3 divGlow" id="listCard_${lists[j].id}" data-bs-toggle="modal" data-bs-target="#listModal" data-id="${lists[j].id}">
               <div class="row g-0">
-                <div class="col-12 listCardFeatured" id="listCardImages_${lists[j].id}">
+                <div class="col-12 listCardFeatured listCardImages" id="listCardImages_${lists[j].id}">
                 </div>
                 <div class="col-12">
                   <div class="">
                     <h5>${lists[j].list_name}</h5>
-                    <p><img class="profilePicture" src="img/profilePictures/default.jpg" alt="Profile Picture" id="featuredListProfilePicture_${lists[j].id}"> ${lists[j].creator}  |  <span id="featuredListLastEdited_${lists[j].id}"></span> | <i class="fa-solid fa-heart"></i> <span id="listCardLikes_${lists[j].id}">${lists[j].likes}</span>  |  <i class="fa-solid fa-comment"></i> <span id="listCardComments_${lists[j].id}">${lists[j].comments.length}</span> </p>
+                    <p class="mb-0"><img class="profilePicture" src="img/profilePictures/default.jpg" alt="Profile Picture" id="featuredListProfilePicture_${lists[j].id}"> ${lists[j].creator}  |  <span id="featuredListLastEdited_${lists[j].id}"></span> | <i class="fa-solid fa-heart"></i> <span id="listCardLikes_${lists[j].id}">${lists[j].likes}</span>  |  <i class="fa-solid fa-comment"></i> <span id="listCardComments_${lists[j].id}">${lists[j].comments.length}</span> </p>
                   </div>
                 </div>
               </div>
@@ -663,9 +663,9 @@ $(document).ready(() => {
         $(`#${location}`).html('');
         lists.forEach((list) => {
             $(`#${location}`).append(`
-                <div class="card col-9 m-1 border-0" id="listCard_${list.id}_${location}" data-bs-toggle="modal" data-bs-target="#listModal" data-id="${list.id}">
+                <div class="card col-9 m-1 border-0 bg-primary p-3 rounded-3 divGlow" id="listCard_${list.id}_${location}" data-bs-toggle="modal" data-bs-target="#listModal" data-id="${list.id}">
                   <div class="row g-0">
-                    <div class="col-6 listCardPopular" id="listCardImages_${list.id}_${location}">
+                    <div class="col-6 listCardPopular listCardImages" id="listCardImages_${list.id}_${location}">
                     </div>
                     <div class="col-6">
                       <div>
@@ -676,9 +676,9 @@ $(document).ready(() => {
                     </div>
                   </div>
                 </div>
-            <div class="col-9">
-            <hr>
-            </div>
+<!--            <div class="col-9">-->
+<!--            <hr>-->
+<!--            </div>-->
         `)
             $(`#popularListLastEdited_${list.id}_${location}`).html(`Updated ${time_ago(list.last_edited)}`)
             fetch(`https://wave-kaput-giant.glitch.me/users/${list.creator}`)
@@ -695,7 +695,7 @@ $(document).ready(() => {
                         .then(response => response.json())
                         .then((data) => {
                             $(`#listCardImages_${list.id}_${location}`).append(`
-                            <img src="https://image.tmdb.org/t/p/original/${data.poster_path}" class="border border-1" alt="Movie Poster" style="position: absolute; left: ${i * 9}%; height: 8em; z-index: ${500 - (5 * i)}">
+                            <img src="https://image.tmdb.org/t/p/original/${data.poster_path}" class="border border-1" alt="Movie Poster" style="position: absolute; left: ${1 + (i * 15)}%; height: 8em; z-index: ${500 - (5 * i)}">
                         `)
                         })
                 }
@@ -705,7 +705,7 @@ $(document).ready(() => {
                         .then(response => response.json())
                         .then((data) => {
                             $(`#listCardImages_${list.id}_${location}`).append(`
-                            <img src="https://image.tmdb.org/t/p/original/${data.poster_path}" class="border border-1" alt="Movie Poster" style="position: absolute; left: ${i * 9}%; height: 8em; z-index: ${500 - (5 * i)}">
+                            <img src="https://image.tmdb.org/t/p/original/${data.poster_path}" class="border border-1" alt="Movie Poster" style="position: absolute; left: ${1 + (i * 15)}%; height: 8em; z-index: ${500 - (5 * i)}">
                         `)
                         })
                 }
@@ -1114,6 +1114,7 @@ $(document).ready(() => {
                 $(`#profilePageListsCreated`).html(`${profileUser.createdLists.length}`);
                 $(`#profilePageFollowers`).html(`${profileUser.followers.length}`);
                 $(`#profilePageFollowing`).html(`${profileUser.following.length}`);
+                $(`#profilePageUserDesc`).html(`${profileUser.description}`);
                 if (user.id === username) {
                     $(`#profilePageEditButton`).removeClass('d-none');
                     $(`#profilePageFollowButton`).addClass('d-none');
@@ -1135,7 +1136,7 @@ $(document).ready(() => {
                     let profileUserCreatedList = allPopularLists.filter((list) => {
                         return profileUser.createdLists.includes(list.id);
                     });
-                    generatePopularListsCards(profileUserCreatedList, "profilePageLists")
+                    generateProfileListsCards(profileUserCreatedList, "profilePageLists")
                 } else {
                     $('#profilePageLists').html("<h1 class='text-center'>No Lists Created</h1>")
                 }
@@ -1152,24 +1153,28 @@ $(document).ready(() => {
         $('#listModal').modal('hide');
     })
 
+    function populateRecentActivity(){
+
+    }
+
     function generateProfileListsCards(lists, location) {
         $(`#${location}`).html('');
         lists.forEach((list) => {
             $(`#${location}`).append(`
-                <div class="card col-9 m-1 border-0" id="listCard_${list.id}_${location}" data-bs-toggle="modal" data-bs-target="#listModal" data-id="${list.id}">
+                <div class="card col-12 m-1 border-0 bg-primary p-3 rounded-3 divGlow" id="listCard_${list.id}_${location}" data-bs-toggle="modal" data-bs-target="#listModal" data-id="${list.id}">
                   <div class="row g-0">
                     <div class="col-12">
                       <div>
                         <h5>${list.list_name}</h5>
-                        <p><span id="popularListLastEdited_${list.id}_${location}"></span> | <i class="fa-solid fa-heart"></i> <span id="listCardLikes_${list.id}_${location}">${list.likes}</span>  |  <i class="fa-solid fa-comment"></i> <span id="listCardComments_${list.id}_${location}">${list.comments.length}</span></p>
-                        <p class="" id="listCard_desc${list.id}_${location}"></p>
+                        <p class="mb-0"><span id="popularListLastEdited_${list.id}_${location}"></span> | <i class="fa-solid fa-heart"></i> <span id="listCardLikes_${list.id}_${location}">${list.likes}</span>  |  <i class="fa-solid fa-comment"></i> <span id="listCardComments_${list.id}_${location}">${list.comments.length}</span></p>
+                        <p class="mb-0" id="listCard_desc${list.id}_${location}"></p>
                       </div>
                     </div>
                   </div>
+<!--                  <div class="row col-9 justify-content-center">-->
+<!--                  <hr>-->
+<!--                  </div>-->
                 </div>
-            <div class="col-9">
-            <hr>
-            </div>
         `)
             $(`#popularListLastEdited_${list.id}_${location}`).html(`Updated ${time_ago(list.last_edited)}`)
             $(`#listCard_${list.id}_${location}`).click(function () {

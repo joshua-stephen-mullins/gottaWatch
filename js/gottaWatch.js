@@ -409,7 +409,14 @@ $(document).ready(() => {
         fetch(url, options)
             .then(response => response.json()).then(data2 => {
             console.log(data2);
-            let userUpdate = {recentActivity: recentActivityPush({type: "listAdd", listId: listId, contentId: data[data.length - 1].id, date: new Date()})};
+            let userUpdate = {
+                recentActivity: recentActivityPush({
+                    type: "listAdd",
+                    listId: listId,
+                    contentId: data[data.length - 1].id,
+                    date: new Date()
+                })
+            };
             const url2 = `https://wave-kaput-giant.glitch.me/users/${user.id}`;
             const options2 = {
                 method: 'PATCH',
@@ -418,7 +425,7 @@ $(document).ready(() => {
             };
             fetch(url2, options2)
                 .then(response => response.json()).then(data2 => {
-                    user.recentActivity = userUpdate.recentActivity;
+                user.recentActivity = userUpdate.recentActivity;
             })
                 .catch(error => console.error(error));
             // generatePopularListsCards(randomizeLists(allPopularLists), "#popularListsContainer");
@@ -829,7 +836,11 @@ $(document).ready(() => {
         if ($('#listLikeButton').is(':checked')) {
             let updatedLikedList = {
                 likedLists: user.likedLists,
-                recentActivity: recentActivityPush({type: "like", listId: $(`#listModal`).data('data-list-id'), date: new Date()})
+                recentActivity: recentActivityPush({
+                    type: "like",
+                    listId: $(`#listModal`).data('data-list-id'),
+                    date: new Date()
+                })
             };
             updatedLikedList.likedLists.push($(`#listModal`).data('data-list-id'));
             const url = `https://wave-kaput-giant.glitch.me/users/${user.id}`;
@@ -912,9 +923,26 @@ $(document).ready(() => {
             .then(response => response.json()).then(data => {
             $(`#commentSubmission`).val('');
             $(`#listCardComments_${$(`#listModal`).data('data-list-id')}`).html(data.comments.length);
-        }).then(
-
-        )
+            let userUpdate = {
+                recentActivity: recentActivityPush({
+                    type: "comment",
+                    listId: $(`#listModal`).data('data-list-id'),
+                    comment: newComment.comment,
+                    date: new Date()
+                })
+            };
+            const url2 = `https://wave-kaput-giant.glitch.me/users/${user.id}`;
+            const options2 = {
+                method: 'PATCH',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(userUpdate)
+            };
+            fetch(url2, options2)
+                .then(response => response.json()).then(data2 => {
+                user.recentActivity = userUpdate.recentActivity;
+            })
+                .catch(error => console.error(error));
+        })
     }
 
     function toHoursAndMinutes(totalMinutes) {

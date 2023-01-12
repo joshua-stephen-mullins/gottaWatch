@@ -435,7 +435,6 @@ $(document).ready(() => {
             let userUpdate = {createdLists: user.createdLists, recentActivity: user.recentActivity};
             userUpdate.createdLists.push(data.id);
             userUpdate.recentActivity.push({type: "newList", listId: data.id, date: new Date()});
-            user.recentActivity.push({type: "newList", listId: data.id, date: new Date()});
             const url2 = `https://wave-kaput-giant.glitch.me/users/${user.id}`;
             const options2 = {
                 method: 'PATCH',
@@ -443,7 +442,8 @@ $(document).ready(() => {
                 body: JSON.stringify(userUpdate)
             };
             fetch(url2, options2)
-                .then(response => response.json()).then(data => {
+                .then(response => response.json()).then(data2 => {
+                user.recentActivity.push({type: "newList", listId: data.id, date: new Date()});
             })
                 .catch(error => console.error(error));
         })
@@ -817,7 +817,6 @@ $(document).ready(() => {
                 recentActivity: user.recentActivity
             };
             updatedLikedList.recentActivity.push({type: "like", listId: $(`#listModal`).data('data-list-id'), date: new Date()});
-            user.recentActivity.push({type: "like", listId: $(`#listModal`).data('data-list-id'), date: new Date()});
             updatedLikedList.likedLists.push($(`#listModal`).data('data-list-id'));
             const url = `https://wave-kaput-giant.glitch.me/users/${user.id}`;
             const options = {
@@ -828,6 +827,7 @@ $(document).ready(() => {
             fetch(url, options)
                 .then(response => response.json()).then(data => {
                 user.likedLists = updatedLikedList.likedLists;
+                user.recentActivity.push({type: "like", listId: $(`#listModal`).data('data-list-id'), date: new Date()});
             })
             let updatedLikes = {likes: parseInt($('#listLike').html()) + 1};
             const url1 = `https://daffy-tasteful-brownie.glitch.me/lists/${$(`#listModal`).data('data-list-id')}`;

@@ -1152,8 +1152,23 @@ $(document).ready(() => {
         $('#listModal').modal('hide');
     })
 
-    function populateRecentActivity(){
+    function populateRecentActivity(userData, location){
+        let sortedActivity = userData.recentActivity.sort((a, b) => {
+            return new Date(b.date).getTime() - new Date(a.date).getTime();
+        })
+        for (let i = 0; i < sortedActivity.length; i++){
+            if (sortedActivity[i].type === "comment"){
 
+            } else if (sortedActivity[i].type === "like"){
+
+            } else if (sortedActivity[i].type === "listAdd"){
+
+            } else if (sortedActivity[i].type === "newList"){
+
+            } else if (sortedActivity[i].type === "follow"){
+
+            }
+        }
     }
 
     function generateProfileListsCards(lists, location) {

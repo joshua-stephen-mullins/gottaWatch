@@ -41,6 +41,11 @@ body {
     font-size: 1.2em !important;
 }
 
+.smallCardImg {
+    border-top-right-radius: .5rem;
+    border-top-left-radius: .5rem;
+}
+
 #navbarLogo {
     height: 3em;
     width: auto
@@ -50,12 +55,24 @@ body {
     box-shadow: black 0 0 20px;
 }
 
+.cardFontSize {
+    font-size: .85em;
+}
+
 .listCardImages {
     position: relative;
 }
 
 .listCardFeatured {
     height: 8em;
+}
+
+.listCard, .discoverCard {
+    cursor: pointer;
+}
+
+#popularListFilterSearchInput, #popularListFilterSearchButton {
+    height: 2em;
 }
 
 .listLiked input[type="checkbox"][id^="listLikeButton"] {
@@ -157,29 +174,8 @@ body {
     transform-origin: 50% 50%;
 }
 
-.popularListFilterButtonsContainer input[type="radio"]:checked + label span {
+.popularListFilterButtonsContainer input[type="radio"]:checked + label span, .discoverContentButtons .active {
     transform: scale(1.1);
     background-color: #de4e5d !important;
     z-index: -1;
 }
-
-/*!* Labels for checked inputs *!*/
-/*.popularListFilterButtonsContainer input:checked + label {*/
-/*    color: red;*/
-/*}*/
-
-/*!* Radio element, when checked *!*/
-/*.popularListFilterButtonsContainer input[type="radio"]:checked + label span {*/
-/*    box-shadow: 0 0 0 3px orange !important;*/
-/*}*/
-
-/*!* Checkbox element, when checked *!*/
-/*.popularListFilterButtonsContainer input[type="radio"]:checked {*/
-/*    box-shadow: 0 0 0 3px hotpink;*/
-/*}*/
-
-/*!* Option elements, when selected *!*/
-/*.popularListFilterButtonsContainer option:checked {*/
-/*    box-shadow: 0 0 0 3px lime;*/
-/*    color: red;*/
-/*}*/

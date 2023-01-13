@@ -201,7 +201,8 @@ $(document).ready(() => {
         $(`#usernameInput`).val('');
         $(`#passwordInput`).val('');
     })
-    $('#submitNewList').submit(() => {
+    $('#submitNewList').submit((e) => {
+        e.preventDefault();
         createNewList();
     })
     $('#createNewListButton').click(() => {
@@ -230,7 +231,7 @@ $(document).ready(() => {
         $(`#resultsContainer`).html('');
         for (let i = 0; i < data.length; i++) {
             $('#resultsContainer').append(`
-                <div class="card col-12 searchResultCard rounded border-1 border-primary bg-primary m-3 row flex-row" id="searchResult_${data[i].id}" data-bs-toggle="modal" data-bs-target="#moreInfoModal">
+                <div class="card col-12 searchResultCard rounded border-1 border-primary bg-primary m-3 row flex-row divGlow" id="searchResult_${data[i].id}" data-bs-toggle="modal" data-bs-target="#moreInfoModal">
                     <div class="row col-2 m-0 p-0">
                         <img class="col-12" src="" id="searchResult_${i}" alt="Search Result">
                     </div>
@@ -449,6 +450,9 @@ $(document).ready(() => {
         };
         fetch(url, options)
             .then(response => response.json()).then(data => {
+            allPopularLists.push(data);
+            refreshListHome();
+            populateProfilePage(user.id);
             let userUpdate = {
                 createdLists: user.createdLists,
                 recentActivity: recentActivityPush({type: "newList", listId: data.id, date: new Date()})
@@ -468,18 +472,16 @@ $(document).ready(() => {
                 .catch(error => console.error(error));
         })
             .catch(error => console.error(error));
-        allPopularLists.push(newList);
-        refreshListHome();
     }
 
     function generateSmallCards(showInfo, numberOfCards, container, showType, cardType) {
         for (let i = 0; i < numberOfCards; i++) {
             $(container).append(`
-                <div class="card border-1 border-light p-0 text-white bg-primary m-3 mb-3 smallCard" id="showCard_${showInfo.results[i].id}_${cardType}" data-type="${showType}" data-showId="${showInfo.results[i].id}">
-                    <div class="">
-                        <img class="w-100 h-100" src="https://image.tmdb.org/t/p/original/${showInfo.results[i].poster_path}" alt="Poster" data-bs-toggle="modal" data-bs-target="#moreInfoModal">
+                <div class="p-0 text-white bg-secondary m-3 mb-3 smallCard rounded-3 divGlow discoverCard" id="showCard_${showInfo.results[i].id}_${cardType}" data-type="${showType}" data-showId="${showInfo.results[i].id}" data-bs-toggle="modal" data-bs-target="#moreInfoModal">
+                    <div>
+                        <img class="w-100 h-100 smallCardImg" src="https://image.tmdb.org/t/p/original/${showInfo.results[i].poster_path}" alt="Poster">
                     </div>
-                    <div class="card-footer">
+                    <div class="card-footer p-3">
                         <h5><span id="resultTitle_${showInfo.results[i].id}_${cardType}"></span> <span class="text-muted" id="resultDate_${showInfo.results[i].id}_${cardType}"></span></h5>
                         <p><span class="badge bg-danger" id="smallCardRating_${showInfo.results[i].id}_${cardType}"></span> <span id="previewGenre_${showInfo.results[i].id}_${cardType}"></span></p>
                     </div>
@@ -589,7 +591,7 @@ $(document).ready(() => {
         let filteredPopularList = [];
         allPopularLists.forEach((list) => {
             console.log(list);
-            if (list.list_name.includes($('#popularListFilterSearchInput').val()) || list.list_desc.includes($('#popularListFilterSearchInput').val())) {
+            if (list.list_name.toLowerCase().includes($('#popularListFilterSearchInput').val().toLowerCase()) || list.list_desc.toLowerCase().includes($('#popularListFilterSearchInput').val().toLowerCase())) {
                 filteredPopularList.push(list);
             }
             $('#popularListsContainer').html('');
@@ -615,14 +617,14 @@ $(document).ready(() => {
     function generateFeaturedListsCards(lists) {
         for (let j = 0; j < 3; j++) {
             $('#featuredListsContainer').append(`
-            <div class="card m-1 mt-0 col-3 flex-grow-1 listCard border-0 bg-primary p-3 rounded-3 divGlow" id="listCard_${lists[j].id}" data-bs-toggle="modal" data-bs-target="#listModal" data-id="${lists[j].id}">
+            <div class="card m-1 mt-0 col-3 flex-grow-1 listCard border-0 bg-primary p-3 rounded-3 divGlow listCard" id="listCard_${lists[j].id}" data-bs-toggle="modal" data-bs-target="#listModal" data-id="${lists[j].id}">
               <div class="row g-0">
-                <div class="col-12 listCardFeatured listCardImages" id="listCardImages_${lists[j].id}">
+                <div class="listCardFeatured listCardImages" id="listCardImages_${lists[j].id}">
                 </div>
                 <div class="col-12">
-                  <div class="">
+                  <div class="d-flex flex-column">
                     <h5>${lists[j].list_name}</h5>
-                    <p class="mb-0"><img class="profilePicture" src="img/profilePictures/default.jpg" alt="Profile Picture" id="featuredListProfilePicture_${lists[j].id}"> ${lists[j].creator}  |  <span id="featuredListLastEdited_${lists[j].id}"></span> | <i class="fa-solid fa-heart"></i> <span id="listCardLikes_${lists[j].id}">${lists[j].likes}</span>  |  <i class="fa-solid fa-comment"></i> <span id="listCardComments_${lists[j].id}">${lists[j].comments.length}</span> </p>
+                    <p class="mb-0 cardFontSize align-self-end"><img class="profilePicture" src="img/profilePictures/default.jpg" alt="Profile Picture" id="featuredListProfilePicture_${lists[j].id}"> ${lists[j].creator}  |  <span id="featuredListLastEdited_${lists[j].id}"></span> | <i class="fa-solid fa-heart"></i> <span id="listCardLikes_${lists[j].id}">${lists[j].likes}</span>  |  <i class="fa-solid fa-comment"></i> <span id="listCardComments_${lists[j].id}">${lists[j].comments.length}</span> </p>
                   </div>
                 </div>
               </div>
@@ -642,7 +644,7 @@ $(document).ready(() => {
                     fetch(`https://api.themoviedb.org/3/${lists[j].content[i].type}/${lists[j].content[i].id}?api_key=${apiKeyTMDP}&language=en-US`)
                         .then(response => response.json()).then((data) => {
                         $(`#listCardImages_${lists[j].id}`).append(`
-                            <img src="https://image.tmdb.org/t/p/original/${data.poster_path}" class="border border-1" alt="Movie Poster" style="position: absolute; left: ${i * 17}%; height: 8em; z-index: ${500 - (5 * i)}">
+                            <img src="https://image.tmdb.org/t/p/original/${data.poster_path}" class="border border-1" alt="Movie Poster" style="position: absolute; left: ${i * 18}%; height: 8em; z-index: ${500 - (5 * i)}">
                         `)
                     })
                 }
@@ -651,7 +653,7 @@ $(document).ready(() => {
                     fetch(`https://api.themoviedb.org/3/${lists[j].content[i].type}/${lists[j].content[i].id}?api_key=${apiKeyTMDP}&language=en-US`)
                         .then(response => response.json()).then((data) => {
                         $(`#listCardImages_${lists[j].id}`).append(`
-                            <img src="https://image.tmdb.org/t/p/original/${data.poster_path}" class="border border-1" alt="Movie Poster" style="position: absolute; left: ${i * 17}%; height: 8em; z-index: ${500 - (5 * i)}">
+                            <img src="https://image.tmdb.org/t/p/original/${data.poster_path}" class="border border-1" alt="Movie Poster" style="position: absolute; left: ${i * 19}%; height: 8em; z-index: ${500 - (5 * i)}">
                         `)
                     })
                 }
@@ -663,22 +665,19 @@ $(document).ready(() => {
         $(`#${location}`).html('');
         lists.forEach((list) => {
             $(`#${location}`).append(`
-                <div class="card col-9 m-1 border-0 bg-primary p-3 rounded-3 divGlow" id="listCard_${list.id}_${location}" data-bs-toggle="modal" data-bs-target="#listModal" data-id="${list.id}">
+                <div class="card col-9 m-1 border-0 bg-primary p-3 rounded-3 divGlow listCard" id="listCard_${list.id}_${location}" data-bs-toggle="modal" data-bs-target="#listModal" data-id="${list.id}">
                   <div class="row g-0">
                     <div class="col-6 listCardPopular listCardImages" id="listCardImages_${list.id}_${location}">
                     </div>
                     <div class="col-6">
                       <div>
                         <h5>${list.list_name}</h5>
-                        <p><img class="profilePicture" src="img/profilePictures/default.jpg" alt="Profile Picture" id="popularListProfilePicture_${list.id}_${location}"> ${list.creator}  |  <span id="popularListLastEdited_${list.id}_${location}"></span> | <i class="fa-solid fa-heart"></i> <span id="listCardLikes_${list.id}_${location}">${list.likes}</span>  |  <i class="fa-solid fa-comment"></i> <span id="listCardComments_${list.id}_${location}">${list.comments.length}</span></p>
-                        <p class="" id="listCard_desc${list.id}_${location}"></p>
+                        <p class="mb-0 cardFontSize"><img class="profilePicture" src="img/profilePictures/default.jpg" alt="Profile Picture" id="popularListProfilePicture_${list.id}_${location}"> ${list.creator}  |  <span id="popularListLastEdited_${list.id}_${location}"></span> | <i class="fa-solid fa-heart"></i> <span id="listCardLikes_${list.id}_${location}">${list.likes}</span>  |  <i class="fa-solid fa-comment"></i> <span id="listCardComments_${list.id}_${location}">${list.comments.length}</span></p>
+                        <p class="mb-0 cardFontSize" id="listCard_desc${list.id}_${location}"></p>
                       </div>
                     </div>
                   </div>
                 </div>
-<!--            <div class="col-9">-->
-<!--            <hr>-->
-<!--            </div>-->
         `)
             $(`#popularListLastEdited_${list.id}_${location}`).html(`Updated ${time_ago(list.last_edited)}`)
             fetch(`https://wave-kaput-giant.glitch.me/users/${list.creator}`)
@@ -695,7 +694,7 @@ $(document).ready(() => {
                         .then(response => response.json())
                         .then((data) => {
                             $(`#listCardImages_${list.id}_${location}`).append(`
-                            <img src="https://image.tmdb.org/t/p/original/${data.poster_path}" class="border border-1" alt="Movie Poster" style="position: absolute; left: ${1 + (i * 15)}%; height: 8em; z-index: ${500 - (5 * i)}">
+                            <img src="https://image.tmdb.org/t/p/original/${data.poster_path}" class="border border-1" alt="Movie Poster" style="position: absolute; left: ${1 + (i * 15)}%; height: 5em; z-index: ${500 - (5 * i)}">
                         `)
                         })
                 }
@@ -705,7 +704,7 @@ $(document).ready(() => {
                         .then(response => response.json())
                         .then((data) => {
                             $(`#listCardImages_${list.id}_${location}`).append(`
-                            <img src="https://image.tmdb.org/t/p/original/${data.poster_path}" class="border border-1" alt="Movie Poster" style="position: absolute; left: ${1 + (i * 15)}%; height: 8em; z-index: ${500 - (5 * i)}">
+                            <img src="https://image.tmdb.org/t/p/original/${data.poster_path}" class="border border-1" alt="Movie Poster" style="position: absolute; left: ${1 + (i * 15)}%; height: 5em; z-index: ${500 - (5 * i)}">
                         `)
                         })
                 }
@@ -1161,7 +1160,7 @@ $(document).ready(() => {
         $(`#${location}`).html('');
         lists.forEach((list) => {
             $(`#${location}`).append(`
-                <div class="card col-12 m-1 border-0 bg-primary p-3 rounded-3 divGlow" id="listCard_${list.id}_${location}" data-bs-toggle="modal" data-bs-target="#listModal" data-id="${list.id}">
+                <div class="card col-12 m-1 border-0 bg-primary p-3 rounded-3 divGlow listCard" id="listCard_${list.id}_${location}" data-bs-toggle="modal" data-bs-target="#listModal" data-id="${list.id}">
                   <div class="row g-0">
                     <div class="col-12">
                       <div>
@@ -1171,9 +1170,6 @@ $(document).ready(() => {
                       </div>
                     </div>
                   </div>
-<!--                  <div class="row col-9 justify-content-center">-->
-<!--                  <hr>-->
-<!--                  </div>-->
                 </div>
         `)
             $(`#popularListLastEdited_${list.id}_${location}`).html(`Updated ${time_ago(list.last_edited)}`)

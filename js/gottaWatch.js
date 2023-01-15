@@ -1175,21 +1175,19 @@ $(document).ready(() => {
                 $(`#${location}`).append(`
                 <div class="row justify-content-center">
                 <p class="text-muted">${time_ago(sortedActivity[i].date)}</p>
-                <p>${userData.id} commented on <span class="profilePageRecentActivityListLink" data-id="${commentedList[0].id}" data-bs-toggle="modal" data-bs-target="#listModal">${commentedList[0].list_name}</span></p>
-                    <div class="col-10">
-                        <hr>
-                    </div>
-                    <div class="row col-8 justify-content-center p-0 m-0">
+                <p>${userData.id} commented on <a class="profilePageRecentActivityListLink" data-id="${commentedList[0].id}" data-bs-toggle="modal" data-bs-target="#listModal">${commentedList[0].list_name}</a></p>
+                    <div class="row col-8 p-0 m-0 bg-info p-3 rounded-3 divGlow">
                         <div class="col-3 listComment" data-commenterId="${userData.id}">
-                            <p class="mb-1"><img class="profilePictureListComment comment_${userData.id}" src="img/profilePictures/default.jpg" alt="Profile Picture"> ${userData.id}</p>
+                            <img class="profilePictureListComment comment_${userData.id}" src="img/profilePictures/default.jpg" alt="Profile Picture">
+                            <div class="d-flex flex-column justify-content-center">
+                                <p class="mb-1" ${userData.id}</p>
+                            </div>
                         </div>
                         <div class="col-8">
                             <p>${sortedActivity[i].comment}</p>
                         </div>
                     </div>
-                    <div class="col-10">
-                        <hr>
-                    </div>
+                <hr class="mt-4 col-10 text-center">
                 </div>
                 `)
             } else if (sortedActivity[i].type === "like") {

@@ -33,10 +33,14 @@ body {
 }
 
 #profilePageProfilePicture {
-    width: 13em;
-    height: 13em;
+    width: 12em;
+    height: 12em;
     border: black 1px solid;
     border-radius: 50%;
+}
+
+.bg-custom1 {
+    background-color: #0c204c;
 }
 
 .smallCard {

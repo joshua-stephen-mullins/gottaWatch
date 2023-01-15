@@ -623,7 +623,7 @@ $(document).ready(() => {
                 </div>
                 <div class="col-12">
                   <div class="d-flex flex-column">
-                    <h5>${lists[j].list_name}</h5>
+                    <h5 class="listTitle">${lists[j].list_name}</h5>
                     <p class="mb-0 cardFontSize align-self-end"><img class="profilePicture" src="img/profilePictures/default.jpg" alt="Profile Picture" id="featuredListProfilePicture_${lists[j].id}"> ${lists[j].creator}  |  <span id="featuredListLastEdited_${lists[j].id}"></span> | <i class="fa-solid fa-heart"></i> <span id="listCardLikes_${lists[j].id}">${lists[j].likes}</span>  |  <i class="fa-solid fa-comment"></i> <span id="listCardComments_${lists[j].id}">${lists[j].comments.length}</span> </p>
                   </div>
                 </div>
@@ -667,11 +667,11 @@ $(document).ready(() => {
             $(`#${location}`).append(`
                 <div class="card col-9 m-1 border-0 bg-primary p-3 rounded-3 divGlow listCard" id="listCard_${list.id}_${location}" data-bs-toggle="modal" data-bs-target="#listModal" data-id="${list.id}">
                   <div class="row g-0">
-                    <div class="col-6 listCardPopular listCardImages" id="listCardImages_${list.id}_${location}">
+                    <div class="col-5 listCardPopular listCardImages" id="listCardImages_${list.id}_${location}">
                     </div>
-                    <div class="col-6">
+                    <div class="col-7">
                       <div>
-                        <h5>${list.list_name}</h5>
+                        <h5 class="listTitle mb-1">${list.list_name}</h5>
                         <p class="mb-0 cardFontSize"><img class="profilePicture" src="img/profilePictures/default.jpg" alt="Profile Picture" id="popularListProfilePicture_${list.id}_${location}"> ${list.creator}  |  <span id="popularListLastEdited_${list.id}_${location}"></span> | <i class="fa-solid fa-heart"></i> <span id="listCardLikes_${list.id}_${location}">${list.likes}</span>  |  <i class="fa-solid fa-comment"></i> <span id="listCardComments_${list.id}_${location}">${list.comments.length}</span></p>
                         <p class="mb-0 cardFontSize" id="listCard_desc${list.id}_${location}"></p>
                       </div>
@@ -1166,15 +1166,14 @@ $(document).ready(() => {
             allPopularLists.forEach((list) => {
                 allLists.push(list);
             })
-            console.log("all lists", allLists)
             let activitiedList = allLists.filter((list) => {
                 return sortedActivity[i].listId === list.id
             })
             if (sortedActivity[i].type === "comment") {
                 $(`#${location}`).append(`
                 <div class="row justify-content-center">
-                <p class="text-muted">${time_ago(sortedActivity[i].date)}</p>
-                <p>${userData.id} commented on <a class="profilePageRecentActivityListLink" data-id="${activitiedList[0].id}" data-bs-toggle="modal" data-bs-target="#listModal">${activitiedList[0].list_name}</a></p>
+                    <p class="text-muted">${time_ago(sortedActivity[i].date)}</p>
+                    <p>${userData.id} commented on <a class="profilePageRecentActivityListLink listTitle" data-id="${activitiedList[0].id}" data-bs-toggle="modal" data-bs-target="#listModal">${activitiedList[0].list_name}</a></p>
                     <div class="row col-8 p-0 m-0 bg-info p-3 rounded-3 divGlow">
                         <div class="col-3 listComment" data-commenterId="${userData.id}">
                             <img class="profilePictureListComment comment_${userData.id}" src="img/profilePictures/default.jpg" alt="Profile Picture">
@@ -1186,16 +1185,29 @@ $(document).ready(() => {
                             <p>${sortedActivity[i].comment}</p>
                         </div>
                     </div>
-                <hr class="mt-4 col-10 text-center">
+                    <hr class="mt-4 col-10 text-center">
                 </div>
                 `)
             } else if (sortedActivity[i].type === "like") {
                 $(`#${location}`).append(`
                 <div class="row justify-content-center">
                     <p class="text-muted">${time_ago(sortedActivity[i].date)}</p>
-                        <p>${userData.id} liked <a class="profilePageRecentActivityListLink" data-id="${sortedActivity[i].listId}" data-bs-toggle="modal" data-bs-target="#listModal">${activitiedList[0].list_name}</a></p>
+                    <p>${userData.id} liked <a class="profilePageRecentActivityListLink listTitle" data-id="${sortedActivity[i].listId}" data-bs-toggle="modal" data-bs-target="#listModal">${activitiedList[0].list_name}</a></p>
+                    <div class="row justify-content-center col-8 p-0 m-0 bg-info p-3 rounded-3 divGlow">
+                        <div>
+                            <h5 class="listTitle mb-1">${activitiedList[0].list_name}</h5>
+                            <p class="mb-2 cardFontSize"><img class="profilePicture" src="img/profilePictures/default.jpg" alt="Profile Picture" id="popularListProfilePicture_${activitiedList[0].id}_${location}"> ${activitiedList[0].creator}  |  <span id="popularListLastEdited_${activitiedList[0].id}_${location}">${time_ago(activitiedList[0].last_edited)}</span> | <i class="fa-solid fa-heart"></i> <span id="listCardLikes_${activitiedList[0].id}_${location}">${activitiedList[0].likes}</span>  |  <i class="fa-solid fa-comment"></i> <span id="listCardComments_${activitiedList[0].id}_${location}">${activitiedList[0].comments.length}</span></p>
+                            <p class="mb-0 cardFontSize" id="listCard_desc${activitiedList[0].id}_${location}"></p>
+                        </div>
+                    </div>
                     <hr class="mt-4 col-10 text-center">
-                </div>`)
+                </div>
+                `)
+                if (activitiedList[0].list_desc.length > 100){
+                    $(`#listCard_desc${activitiedList[0].id}_${location}`).html(activitiedList[0].list_desc.slice(0, 100) + "...");
+                } else {
+                    $(`#listCard_desc${activitiedList[0].id}_${location}`).html(activitiedList[0].list_desc);
+                }
             } else if (sortedActivity[i].type === "listAdd") {
 
             } else if (sortedActivity[i].type === "newList") {
@@ -1205,7 +1217,6 @@ $(document).ready(() => {
             }
         }
         $(`.profilePageRecentActivityListLink`).click(function () {
-            console.log($(this));
             populateListModal($(this).data('id'))
         });
     }
@@ -1218,7 +1229,7 @@ $(document).ready(() => {
                   <div class="row g-0">
                     <div class="col-12">
                       <div>
-                        <h5>${list.list_name}</h5>
+                        <h5 class="listTitle">${list.list_name}</h5>
                         <p class="mb-0"><span id="popularListLastEdited_${list.id}_${location}"></span> | <i class="fa-solid fa-heart"></i> <span id="listCardLikes_${list.id}_${location}">${list.likes}</span>  |  <i class="fa-solid fa-comment"></i> <span id="listCardComments_${list.id}_${location}">${list.comments.length}</span></p>
                         <p class="mb-0" id="listCard_desc${list.id}_${location}"></p>
                       </div>

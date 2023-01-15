@@ -66,6 +66,12 @@ body {
     box-shadow: black 0 0 20px;
 }
 
+.listTitle {
+    text-shadow: black 0 0 15px !important;
+    font-weight: bold !important;
+    color: #3bf281 !important;
+}
+
 .cardFontSize {
     font-size: .85em;
 }

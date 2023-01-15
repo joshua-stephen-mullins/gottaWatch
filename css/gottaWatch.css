@@ -33,12 +33,12 @@ body {
 }
 
 .smallCard {
-    font-size: .6em !important;
-    width: 15%;
+    font-size: .8em !important;
+    width: 20%;
 }
 
 .smallCard h5 {
-    font-size: 1.2em !important;
+    font-size: 1.4em !important;
 }
 
 .smallCardImg {

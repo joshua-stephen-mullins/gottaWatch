@@ -121,13 +121,15 @@
                     <div class="d-flex justify-content-center">
                         <ul class="nav nav-pills mb-3 justify-content-center discoverContentButtons" role="tablist">
                             <li class="nav-item m-1 mb-0" role="presentation">
-                                <button class="btn btn-warning rounded-1 w-100 btn-sm active" id="popularMovieResultsTabButton" data-bs-toggle="pill"
+                                <button class="btn btn-warning rounded-1 w-100 btn-sm active"
+                                        id="popularMovieResultsTabButton" data-bs-toggle="pill"
                                         data-bs-target="#popularMovieResultsTab"
                                         type="button" role="tab" aria-controls="pills-home" aria-selected="true">Movies
                                 </button>
                             </li>
                             <li class="nav-item m-1 mb-0" role="presentation">
-                                <button class="btn btn-warning rounded-1 w-100 btn-sm" id="popularTVResultsTabButton" data-bs-toggle="pill"
+                                <button class="btn btn-warning rounded-1 w-100 btn-sm" id="popularTVResultsTabButton"
+                                        data-bs-toggle="pill"
                                         data-bs-target="#popularTVResultsTab"
                                         type="button" role="tab" aria-controls="pills-profile" aria-selected="false">TV
                                     Shows
@@ -149,18 +151,20 @@
                 </div>
             </div>
             <div class="row justify-content-center" id="discoverTopRatedSection">
-                <div class="d-flex justify-content-between align-items-end" id="topRatedHeader">
+                <div class="d-flex justify-content-between align-items-end mt-5" id="topRatedHeader">
                     <h3 class="titleFont">TOP RATED</h3>
                     <div>
                         <ul class="nav nav-pills mb-3 discoverContentButtons" role="tablist">
-                            <li class="nav-item" role="presentation">
-                                <button class="btn btn-warning rounded-1 w-100 btn-sm active" id="topRatedMovieResultsTabButton" data-bs-toggle="pill"
+                            <li class="nav-item m-1" role="presentation">
+                                <button class="btn btn-warning rounded-1 w-100 btn-sm active"
+                                        id="topRatedMovieResultsTabButton" data-bs-toggle="pill"
                                         data-bs-target="#topRatedMovieResultsTab"
                                         type="button" role="tab" aria-controls="pills-home" aria-selected="true">Movies
                                 </button>
                             </li>
-                            <li class="nav-item" role="presentation">
-                                <button class="btn btn-warning rounded-1 w-100 btn-sm" id="topRatedTVResultsTabButton" data-bs-toggle="pill"
+                            <li class="nav-item m-1" role="presentation">
+                                <button class="btn btn-warning rounded-1 w-100 btn-sm" id="topRatedTVResultsTabButton"
+                                        data-bs-toggle="pill"
                                         data-bs-target="#topRatedTVResultsTab"
                                         type="button" role="tab" aria-controls="pills-profile" aria-selected="false">TV
                                     Shows
@@ -448,56 +452,55 @@
             </div>
         </div>
         <div class="row col-12 justify-content-center d-none" id="profilePage">
-            <div class="col-10 row justify-content-center ">
-                <div class="row m-5 mb-4 align-content-center" id="profilePageHeader">
-                    <img class="col-4" src="img/profilePictures/default.jpg" alt="Profile Picture"
-                         id="profilePageProfilePicture">
-                    <div class="row col-4 align-content-center p-3">
-                        <h1 class="col-6 m-0 p-0" id="profilePageUsername">USERNAME</h1>
-                        <button type="button" class="btn btn-info btn-sm" id="profilePageEditButton">EDIT
-                            PROFILE
-                        </button>
-                        <button type="button" class="btn btn-warning btn-sm" id="profilePageFollowButton">
-                            FOLLOW
-                        </button>
-                        <button type="button" class="btn btn-success btn-sm" id="profilePageFollowingButton">
-                            FOLLOWING
-                        </button>
-                        <p id="profilePageUserDesc">Bio about user here.</p>
-                    </div>
-                    <div class="row col-4 align-content-center flex-grow-1 text-center">
-                        <div class="col-5 d-flex flex-column align-content-end">
-                            <h4 class="mb-0" id="profilePageMemberDate">Date Here</h4>
-                            <p class="text-muted">Joined</p>
-                        </div>
-                        <div class="col-2 d-flex flex-column align-content-end">
-                            <h4 class="mb-0 text-center" id="profilePageListsCreated">0</h4>
-                            <p class="text-muted">Lists</p>
-                        </div>
-                        <div class="col-3 d-flex flex-column align-content-end">
-                            <h4 class="mb-0 text-center" id="profilePageFollowers">0</h4>
-                            <p class="text-muted">Followers</p>
-                        </div>
-                        <div class="col-2 d-flex flex-column align-content-end">
-                            <h4 class="mb-0 text-center" id="profilePageFollowing">0</h4>
-                            <p class="text-muted">Following</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="row justify-content-center">
-                    <hr>
-                </div>
-                <div class="row justify-content-evenly" id="profilePageContent">
-                    <div class="row justify-content-center col-7">
-                        <h1 class="text-center titleFont">ACTIVITY</h1>
-                        <div class="bg-dark p-3 rounded-3 divGlow" id="profilePageActivity">
 
-                        </div>
+            <div class="row m-5 mb-4 align-content-center" id="profilePageHeader">
+                <img class="col-4" src="img/profilePictures/default.jpg" alt="Profile Picture"
+                     id="profilePageProfilePicture">
+                <div class="row col-4 align-content-center p-3">
+                    <h1 class="col-6 m-0 p-0" id="profilePageUsername">USERNAME</h1>
+                    <button type="button" class="btn btn-info btn-sm" id="profilePageEditButton">EDIT
+                        PROFILE
+                    </button>
+                    <button type="button" class="btn btn-warning btn-sm" id="profilePageFollowButton">
+                        FOLLOW
+                    </button>
+                    <button type="button" class="btn btn-success btn-sm" id="profilePageFollowingButton">
+                        FOLLOWING
+                    </button>
+                    <p id="profilePageUserDesc">Bio about user here.</p>
+                </div>
+                <div class="row col-4 align-content-center flex-grow-1 text-center">
+                    <div class="col-5 d-flex flex-column align-content-end">
+                        <h4 class="mb-0" id="profilePageMemberDate">Date Here</h4>
+                        <p class="text-muted">Joined</p>
                     </div>
-                    <div class="row justify-content-center col-5">
-                        <h1 class="text-center titleFont">LISTS</h1>
-                        <div class="row justify-content-center" id="profilePageLists"></div>
+                    <div class="col-2 d-flex flex-column align-content-end">
+                        <h4 class="mb-0 text-center" id="profilePageListsCreated">0</h4>
+                        <p class="text-muted">Lists</p>
                     </div>
+                    <div class="col-3 d-flex flex-column align-content-end">
+                        <h4 class="mb-0 text-center" id="profilePageFollowers">0</h4>
+                        <p class="text-muted">Followers</p>
+                    </div>
+                    <div class="col-2 d-flex flex-column align-content-end">
+                        <h4 class="mb-0 text-center" id="profilePageFollowing">0</h4>
+                        <p class="text-muted">Following</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <hr>
+            </div>
+            <div class="row justify-content-evenly" id="profilePageContent">
+                <div class="row justify-content-center col-7">
+                    <h1 class="text-center titleFont">ACTIVITY</h1>
+                    <div class="bg-dark p-3 rounded-3 divGlow" id="profilePageActivity">
+
+                    </div>
+                </div>
+                <div class="row justify-content-center col-5">
+                    <h1 class="text-center titleFont">LISTS</h1>
+                    <div class="row justify-content-center" id="profilePageLists"></div>
                 </div>
             </div>
         </div>

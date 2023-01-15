@@ -477,7 +477,7 @@ $(document).ready(() => {
     function generateSmallCards(showInfo, numberOfCards, container, showType, cardType) {
         for (let i = 0; i < numberOfCards; i++) {
             $(container).append(`
-                <div class="p-0 text-white bg-secondary m-3 mb-3 smallCard rounded-3 divGlow discoverCard" id="showCard_${showInfo.results[i].id}_${cardType}" data-type="${showType}" data-showId="${showInfo.results[i].id}" data-bs-toggle="modal" data-bs-target="#moreInfoModal">
+                <div class="p-0 bg-secondary m-3 mb-3 smallCard rounded-3 divGlow discoverCard" id="showCard_${showInfo.results[i].id}_${cardType}" data-type="${showType}" data-showId="${showInfo.results[i].id}" data-bs-toggle="modal" data-bs-target="#moreInfoModal">
                     <div>
                         <img class="w-100 h-100 smallCardImg" src="https://image.tmdb.org/t/p/original/${showInfo.results[i].poster_path}" alt="Poster">
                     </div>
@@ -1114,6 +1114,8 @@ $(document).ready(() => {
                 $(`#profilePageFollowers`).html(`${profileUser.followers.length}`);
                 $(`#profilePageFollowing`).html(`${profileUser.following.length}`);
                 $(`#profilePageUserDesc`).html(`${profileUser.description}`);
+                $('#profilePageActivity').html('');
+                populateProfileRecentActivity(profileUser, "profilePageActivity");
                 if (user.id === username) {
                     $(`#profilePageEditButton`).removeClass('d-none');
                     $(`#profilePageFollowButton`).addClass('d-none');
@@ -1152,20 +1154,39 @@ $(document).ready(() => {
         $('#listModal').modal('hide');
     })
 
-    function populateRecentActivity(userData, location){
+    function populateProfileRecentActivity(userData, location) {
         let sortedActivity = userData.recentActivity.sort((a, b) => {
             return new Date(b.date).getTime() - new Date(a.date).getTime();
         })
-        for (let i = 0; i < sortedActivity.length; i++){
-            if (sortedActivity[i].type === "comment"){
+        for (let i = 0; i < sortedActivity.length; i++) {
+            if (sortedActivity[i].type === "comment") {
+                $(`#${location}`).append(`
+                <div class="row justify-content-center">
+                <p>${userData.id} commented on the list (insert list name here)</p>
+                    <div class="col-10">
+                        <hr>
+                    </div>
+                    <div class="row col-8 justify-content-center p-0 m-0">
+                        <div class="col-3 listComment" data-commenterId="${userData.id}">
+                            <p class="mb-1" data-bs-toggle="modal" data-bs-target="#listModal"><img class="profilePicture comment_${userData.id}" src="img/profilePictures/default.jpg" alt="Profile Picture"> ${userData.id}</p>
+                            <p class="text-muted">${time_ago(sortedActivity[i].date)}</p>
+                        </div>
+                        <div class="col-8">
+                            <p>${sortedActivity[i].comment}</p>
+                        </div>
+                    </div>
+                    <div class="col-10">
+                        <hr>
+                    </div>
+                </div>
+                `)
+            } else if (sortedActivity[i].type === "like") {
 
-            } else if (sortedActivity[i].type === "like"){
+            } else if (sortedActivity[i].type === "listAdd") {
 
-            } else if (sortedActivity[i].type === "listAdd"){
+            } else if (sortedActivity[i].type === "newList") {
 
-            } else if (sortedActivity[i].type === "newList"){
-
-            } else if (sortedActivity[i].type === "follow"){
+            } else if (sortedActivity[i].type === "follow") {
 
             }
         }
@@ -1357,8 +1378,6 @@ $(document).ready(() => {
 
 
 //TODOS:
-
-// remove unused or blank fields from showing in moreinfo modal
 //
 // fix formatting if there are two directors for a movie
 //
@@ -1375,5 +1394,3 @@ $(document).ready(() => {
 
 
 //BUGS
-
-// create new list populates a second set of lists on list home

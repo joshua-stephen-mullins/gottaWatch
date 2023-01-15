@@ -19,8 +19,15 @@ body {
 }
 
 .profilePicture {
-    width: 1.4em;
-    height: 1.4em;
+    width: 1.7em;
+    height: 1.7em;
+    border: black 1px solid;
+    border-radius: 50%;
+}
+
+.profilePictureListComment {
+    width: 5em;
+    height: 5em;
     border: black 1px solid;
     border-radius: 50%;
 }

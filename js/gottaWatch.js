@@ -762,7 +762,7 @@ $(document).ready(() => {
                         <div class="row col-7 p-0 m-0 justify-content-center">
                             <h1 class="text-center">Leave a Comment!</h1>
                         </div>
-                        <div class="col-6">
+                        <div class="col-7">
                             <hr>
                         </div>
                     `)
@@ -770,15 +770,18 @@ $(document).ready(() => {
                 list.comments.forEach((comment) => {
                     $(`#listModalComments`).append(`
                         <div class="row col-7 p-0 m-0">
-                            <div class="col-3 listComment" data-commenterId="${comment.user}">
-                                <p class="mb-1" data-bs-toggle="modal" data-bs-target="#listModal"><img class="profilePicture comment_${comment.user}" src="img/profilePictures/default.jpg" alt="Profile Picture"> ${comment.user}</p>
-                                <p class="text-muted">${time_ago(comment.date)}</p>
+                            <div class="d-flex col-4 listComment" data-commenterId="${comment.user}">
+                                <img class="profilePictureListComment comment_${comment.user} me-4" src="img/profilePictures/default.jpg" alt="Profile Picture">
+                                <div class="d-flex flex-column justify-content-center">
+                                    <p class="mb-1 text-center" data-bs-toggle="modal" data-bs-target="#listModal"> ${comment.user}</p>
+                                    <p class="text-muted text-center">${time_ago(comment.date)}</p>
+                                </div>
                             </div>
                             <div class="col-8">
                                 <p>${comment.comment}</p>
                             </div>
                         </div>
-                        <div class="col-6">
+                        <div class="col-7">
                         <hr>
                         </div>
                     `)
@@ -1160,16 +1163,25 @@ $(document).ready(() => {
         })
         for (let i = 0; i < sortedActivity.length; i++) {
             if (sortedActivity[i].type === "comment") {
+                let allLists = allFeaturedLists;
+                allPopularLists.forEach((list) => {
+                    allLists.push(list);
+                })
+                console.log("all lists", allLists)
+                let commentedList = allLists.filter((list) => {
+                    return sortedActivity[i].listId === list.id
+                })
+                console.log("commented list", commentedList);
                 $(`#${location}`).append(`
                 <div class="row justify-content-center">
-                <p>${userData.id} commented on the list (insert list name here)</p>
+                <p class="text-muted">${time_ago(sortedActivity[i].date)}</p>
+                <p>${userData.id} commented on <span class="profilePageRecentActivityListLink" data-id="${commentedList[0].id}" data-bs-toggle="modal" data-bs-target="#listModal">${commentedList[0].list_name}</span></p>
                     <div class="col-10">
                         <hr>
                     </div>
                     <div class="row col-8 justify-content-center p-0 m-0">
                         <div class="col-3 listComment" data-commenterId="${userData.id}">
-                            <p class="mb-1" data-bs-toggle="modal" data-bs-target="#listModal"><img class="profilePicture comment_${userData.id}" src="img/profilePictures/default.jpg" alt="Profile Picture"> ${userData.id}</p>
-                            <p class="text-muted">${time_ago(sortedActivity[i].date)}</p>
+                            <p class="mb-1"><img class="profilePictureListComment comment_${userData.id}" src="img/profilePictures/default.jpg" alt="Profile Picture"> ${userData.id}</p>
                         </div>
                         <div class="col-8">
                             <p>${sortedActivity[i].comment}</p>
@@ -1190,6 +1202,10 @@ $(document).ready(() => {
 
             }
         }
+        $(`.profilePageRecentActivityListLink`).click(function () {
+            console.log($(this));
+            populateListModal($(this).data('id'))
+        });
     }
 
     function generateProfileListsCards(lists, location) {

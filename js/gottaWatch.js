@@ -1162,20 +1162,19 @@ $(document).ready(() => {
             return new Date(b.date).getTime() - new Date(a.date).getTime();
         })
         for (let i = 0; i < sortedActivity.length; i++) {
+            let allLists = allFeaturedLists;
+            allPopularLists.forEach((list) => {
+                allLists.push(list);
+            })
+            console.log("all lists", allLists)
+            let activitiedList = allLists.filter((list) => {
+                return sortedActivity[i].listId === list.id
+            })
             if (sortedActivity[i].type === "comment") {
-                let allLists = allFeaturedLists;
-                allPopularLists.forEach((list) => {
-                    allLists.push(list);
-                })
-                console.log("all lists", allLists)
-                let commentedList = allLists.filter((list) => {
-                    return sortedActivity[i].listId === list.id
-                })
-                console.log("commented list", commentedList);
                 $(`#${location}`).append(`
                 <div class="row justify-content-center">
                 <p class="text-muted">${time_ago(sortedActivity[i].date)}</p>
-                <p>${userData.id} commented on <a class="profilePageRecentActivityListLink" data-id="${commentedList[0].id}" data-bs-toggle="modal" data-bs-target="#listModal">${commentedList[0].list_name}</a></p>
+                <p>${userData.id} commented on <a class="profilePageRecentActivityListLink" data-id="${activitiedList[0].id}" data-bs-toggle="modal" data-bs-target="#listModal">${activitiedList[0].list_name}</a></p>
                     <div class="row col-8 p-0 m-0 bg-info p-3 rounded-3 divGlow">
                         <div class="col-3 listComment" data-commenterId="${userData.id}">
                             <img class="profilePictureListComment comment_${userData.id}" src="img/profilePictures/default.jpg" alt="Profile Picture">
@@ -1191,7 +1190,12 @@ $(document).ready(() => {
                 </div>
                 `)
             } else if (sortedActivity[i].type === "like") {
-
+                $(`#${location}`).append(`
+                <div class="row justify-content-center">
+                    <p class="text-muted">${time_ago(sortedActivity[i].date)}</p>
+                        <p>${userData.id} liked <a class="profilePageRecentActivityListLink" data-id="${sortedActivity[i].listId}" data-bs-toggle="modal" data-bs-target="#listModal">${activitiedList[0].list_name}</a></p>
+                    <hr class="mt-4 col-10 text-center">
+                </div>`)
             } else if (sortedActivity[i].type === "listAdd") {
 
             } else if (sortedActivity[i].type === "newList") {

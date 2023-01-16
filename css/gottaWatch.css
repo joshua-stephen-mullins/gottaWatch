@@ -1,5 +1,5 @@
 .titleFont {
-    font-family: 'Audiowide', cursive;
+    /*font-family: 'Audiowide', cursive;*/
     text-shadow: black 5px 0 10px;
 }
 
@@ -14,8 +14,8 @@
 }
 
 body {
-    font-family: 'Lekton', sans-serif;
-    background-color: black;
+    /*font-family: 'Lekton', sans-serif;*/
+    /*background-color: black;*/
 }
 
 .profilePicture {
@@ -37,6 +37,7 @@ body {
     height: 12em;
     border: black 1px solid;
     border-radius: 50%;
+    box-shadow: black 0 0 20px;
 }
 
 .bg-custom1 {
@@ -69,7 +70,7 @@ body {
 .listTitle {
     text-shadow: black 0 0 15px !important;
     font-weight: bold !important;
-    color: #3bf281 !important;
+    /*color: #3bf281 !important;*/
 }
 
 .cardFontSize {

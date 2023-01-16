@@ -410,8 +410,8 @@ $(document).ready(() => {
             let userUpdate = {
                 recentActivity: recentActivityPush({
                     type: "listAdd",
-                    listId: listId,
-                    contentId: data[data.length - 1].id,
+                    listId: parseInt(listId),
+                    content: data[data.length - 1],
                     date: new Date()
                 })
             };
@@ -426,7 +426,6 @@ $(document).ready(() => {
                 user.recentActivity = userUpdate.recentActivity;
             })
                 .catch(error => console.error(error));
-            // generatePopularListsCards(randomizeLists(allPopularLists), "#popularListsContainer");
         })
     }
 
@@ -482,7 +481,7 @@ $(document).ready(() => {
                         <img class="w-100 h-100 smallCardImg" src="https://image.tmdb.org/t/p/original/${showInfo.results[i].poster_path}" alt="Poster">
                     </div>
                     <div class="card-footer p-3">
-                        <h5><span id="resultTitle_${showInfo.results[i].id}_${cardType}"></span> <span class="text-muted" id="resultDate_${showInfo.results[i].id}_${cardType}"></span></h5>
+                        <h5><span class="text-warning" id="resultTitle_${showInfo.results[i].id}_${cardType}"></span> <span class="text-muted" id="resultDate_${showInfo.results[i].id}_${cardType}"></span></h5>
                         <p><span class="badge bg-danger" id="smallCardRating_${showInfo.results[i].id}_${cardType}"></span> <span id="previewGenre_${showInfo.results[i].id}_${cardType}"></span></p>
                     </div>
                 </div>
@@ -1161,22 +1160,27 @@ $(document).ready(() => {
         let sortedActivity = userData.recentActivity.sort((a, b) => {
             return new Date(b.date).getTime() - new Date(a.date).getTime();
         })
+        let allLists = allFeaturedLists;
+        allPopularLists.forEach((list) => {
+            allLists.push(list);
+        })
         for (let i = 0; i < sortedActivity.length; i++) {
-            let allLists = allFeaturedLists;
-            allPopularLists.forEach((list) => {
-                allLists.push(list);
-            })
-            let activitiedList = allLists.filter((list) => {
+            let activitiedList = '';
+
+            activitiedList = allLists.filter((list) => {
                 return sortedActivity[i].listId === list.id
             })
+            console.log(i, activitiedList);
+            console.log("sorted", i, sortedActivity[i]);
             if (sortedActivity[i].type === "comment") {
+                // console.log("activitiedlist", activitiedList[0]);
                 $(`#${location}`).append(`
                 <div class="row justify-content-center">
                     <p class="text-muted">${time_ago(sortedActivity[i].date)}</p>
                     <p>${userData.id} commented on <a class="profilePageRecentActivityListLink listTitle" data-id="${activitiedList[0].id}" data-bs-toggle="modal" data-bs-target="#listModal">${activitiedList[0].list_name}</a></p>
                     <div class="row col-8 p-0 m-0 bg-info p-3 rounded-3 divGlow">
                         <div class="col-3 listComment" data-commenterId="${userData.id}">
-                            <img class="profilePictureListComment comment_${userData.id}" src="img/profilePictures/default.jpg" alt="Profile Picture">
+                            <img class="profilePictureListComment comment_${userData.id}" src="img/profilePictures/${userData.profilePic}.jpg" alt="Profile Picture">
                             <div class="d-flex flex-column justify-content-center">
                                 <p class="mb-1" ${userData.id}</p>
                             </div>
@@ -1189,6 +1193,7 @@ $(document).ready(() => {
                 </div>
                 `)
             } else if (sortedActivity[i].type === "like") {
+                console.log("activitiedlist", activitiedList[0]);
                 $(`#${location}`).append(`
                 <div class="row justify-content-center">
                     <p class="text-muted">${time_ago(sortedActivity[i].date)}</p>
@@ -1196,20 +1201,46 @@ $(document).ready(() => {
                     <div class="row justify-content-center col-8 p-0 m-0 bg-info p-3 rounded-3 divGlow">
                         <div>
                             <h5 class="listTitle mb-1">${activitiedList[0].list_name}</h5>
-                            <p class="mb-2 cardFontSize"><img class="profilePicture" src="img/profilePictures/default.jpg" alt="Profile Picture" id="popularListProfilePicture_${activitiedList[0].id}_${location}"> ${activitiedList[0].creator}  |  <span id="popularListLastEdited_${activitiedList[0].id}_${location}">${time_ago(activitiedList[0].last_edited)}</span> | <i class="fa-solid fa-heart"></i> <span id="listCardLikes_${activitiedList[0].id}_${location}">${activitiedList[0].likes}</span>  |  <i class="fa-solid fa-comment"></i> <span id="listCardComments_${activitiedList[0].id}_${location}">${activitiedList[0].comments.length}</span></p>
+                            <p class="mb-2 cardFontSize"><img class="profilePicture" src="img/profilePictures/default.jpg" alt="Profile Picture" id="popularListProfilePicture_${activitiedList[0].id}_${location}_${activitiedList[0].creator}"> ${activitiedList[0].creator}  |  <span id="popularListLastEdited_${activitiedList[0].id}_${location}">${time_ago(activitiedList[0].last_edited)}</span> | <i class="fa-solid fa-heart"></i> <span id="listCardLikes_${activitiedList[0].id}_${location}">${activitiedList[0].likes}</span>  |  <i class="fa-solid fa-comment"></i> <span id="listCardComments_${activitiedList[0].id}_${location}">${activitiedList[0].comments.length}</span></p>
                             <p class="mb-0 cardFontSize" id="listCard_desc${activitiedList[0].id}_${location}"></p>
                         </div>
                     </div>
                     <hr class="mt-4 col-10 text-center">
                 </div>
                 `)
+                fetch(`https://wave-kaput-giant.glitch.me/users/${activitiedList[0].creator}`)
+                    .then(response => response.json())
+                    .then((creator) => {
+                        $(`#popularListProfilePicture_${activitiedList[0].id}_${location}_${activitiedList[0].creator}`).attr('src', `img/profilePictures/${creator.profilePic }.jpg`);
+                    })
                 if (activitiedList[0].list_desc.length > 100){
                     $(`#listCard_desc${activitiedList[0].id}_${location}`).html(activitiedList[0].list_desc.slice(0, 100) + "...");
                 } else {
                     $(`#listCard_desc${activitiedList[0].id}_${location}`).html(activitiedList[0].list_desc);
                 }
             } else if (sortedActivity[i].type === "listAdd") {
-
+                $(`#${location}`).append(`
+                <div class="row justify-content-center">
+                    <p class="text-muted">${time_ago(sortedActivity[i].date)}</p>
+                    <p>${userData.id} added <span id="profilePageListAddName_${activitiedList[0].id}_${location}_${sortedActivity[i].content.id}"></span> to <a class="profilePageRecentActivityListLink listTitle" data-id="${sortedActivity[i].listId}" data-bs-toggle="modal" data-bs-target="#listModal">${activitiedList[0].list_name}</a></p>
+                    <div class="row justify-content-center col-8 p-0 m-0 bg-info p-3 rounded-3 divGlow">
+                        <div>
+                            <h5 class="listTitle mb-1">${activitiedList[0].list_name}</h5>
+                            <p class="mb-2 cardFontSize"><img class="profilePicture" src="img/profilePictures/default.jpg" alt="Profile Picture" id="popularListProfilePicture_${activitiedList[0].id}_${location}_${activitiedList[0].creator}"> ${activitiedList[0].creator}  |  <span id="popularListLastEdited_${activitiedList[0].id}_${location}">${time_ago(activitiedList[0].last_edited)}</span> | <i class="fa-solid fa-heart"></i> <span id="listCardLikes_${activitiedList[0].id}_${location}">${activitiedList[0].likes}</span>  |  <i class="fa-solid fa-comment"></i> <span id="listCardComments_${activitiedList[0].id}_${location}">${activitiedList[0].comments.length}</span></p>
+                            <p class="mb-0 cardFontSize" id="listCard_desc${activitiedList[0].id}_${location}"></p>
+                        </div>
+                    </div>
+                    <hr class="mt-4 col-10 text-center">
+                </div>
+                `)
+                fetch(`https://api.themoviedb.org/3/${sortedActivity[i].content.type}/${sortedActivity[i].content.id}?api_key=${apiKeyTMDP}&language=en-US`)
+                    .then(response => response.json()).then((data) => {
+                    if (data.hasOwnProperty("title")){
+                        $(`#profilePageListAddName_${activitiedList[0].id}_${location}_${sortedActivity[i].content.id}`).html(data.title)
+                    } else {
+                        $(`#profilePageListAddName_${activitiedList[0].id}_${location}_${sortedActivity[i].content.id}`).html(data.name)
+                    }
+                })
             } else if (sortedActivity[i].type === "newList") {
 
             } else if (sortedActivity[i].type === "follow") {

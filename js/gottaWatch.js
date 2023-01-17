@@ -1193,7 +1193,6 @@ $(document).ready(() => {
                 </div>
                 `)
             } else if (sortedActivity[i].type === "like") {
-                console.log("activitiedlist", activitiedList[0]);
                 $(`#${location}`).append(`
                 <div class="row justify-content-center">
                     <p class="text-muted">${time_ago(sortedActivity[i].date)}</p>
@@ -1242,7 +1241,20 @@ $(document).ready(() => {
                     }
                 })
             } else if (sortedActivity[i].type === "newList") {
-
+                $(`#${location}`).append(`
+                <div class="row justify-content-center">
+                    <p class="text-muted">${time_ago(sortedActivity[i].date)}</p>
+                    <p>${userData.id} created the list: <a class="profilePageRecentActivityListLink listTitle" data-id="${sortedActivity[i].listId}" data-bs-toggle="modal" data-bs-target="#listModal">${activitiedList[0].list_name}</a></p>
+                    <div class="row justify-content-center col-8 p-0 m-0 bg-info p-3 rounded-3 divGlow">
+                        <div>
+                            <h5 class="listTitle mb-1">${activitiedList[0].list_name}</h5>
+                            <p class="mb-2 cardFontSize"><img class="profilePicture" src="img/profilePictures/default.jpg" alt="Profile Picture" id="popularListProfilePicture_${activitiedList[0].id}_${location}_${activitiedList[0].creator}"> ${activitiedList[0].creator}  |  <span id="popularListLastEdited_${activitiedList[0].id}_${location}">${time_ago(activitiedList[0].last_edited)}</span> | <i class="fa-solid fa-heart"></i> <span id="listCardLikes_${activitiedList[0].id}_${location}">${activitiedList[0].likes}</span>  |  <i class="fa-solid fa-comment"></i> <span id="listCardComments_${activitiedList[0].id}_${location}">${activitiedList[0].comments.length}</span></p>
+                            <p class="mb-0 cardFontSize" id="listCard_desc${activitiedList[0].id}_${location}"></p>
+                        </div>
+                    </div>
+                    <hr class="mt-4 col-10 text-center">
+                </div>
+                `)
             } else if (sortedActivity[i].type === "follow") {
 
             }

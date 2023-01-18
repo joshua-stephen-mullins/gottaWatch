@@ -378,7 +378,7 @@ $(document).ready(() => {
                         $('#addListList').append(`<li><button class="dropdown-item" id="listName_${list.id}" href="#" value="${list.id}">${list.list_name}</button></li>`);
                         $(`#listName_${list.id}`).click(function () {
                             let newContent = {
-                                id: ($('#listAddBtn').val()),
+                                id: parseInt($('#listAddBtn').val()),
                                 type: searchType
                             };
                             content.push(newContent);
@@ -405,7 +405,11 @@ $(document).ready(() => {
         };
         fetch(url, options)
             .then(response => response.json()).then(data2 => {
-            console.log(data2);
+            let replacementIndex = allPopularLists.findIndex((list) => {
+                console.log(list);
+                return list.id === parseInt(listId);
+            })
+            allPopularLists[replacementIndex] = data2;
             let userUpdate = {
                 recentActivity: recentActivityPush({
                     type: "listAdd",
@@ -890,6 +894,7 @@ $(document).ready(() => {
             };
             fetch(url1, options1)
                 .then(response => response.json()).then(data => {
+                $('#listLike').html(updatedLikes.likes);
                 $(`#listCardLikes_${$('#listModal').data('data-list-id')}_popularListsContainer`).html(updatedLikes.likes);
                 $(`#listCardLikes_${$('#listModal').data('data-list-id')}_profilePageLists`).html(updatedLikes.likes);
                 $(`#listCardLikes_${$('#listModal').data('data-list-id')}`).html(updatedLikes.likes);
@@ -1423,7 +1428,6 @@ $(document).ready(() => {
     }
 
     function populateEditListModal(listId) {
-        console.log('ran populate edit list modal');
         $('#editListModalMovies').html('');
         $(`#editListModalComments`).html('');
         $(`#editListModal`).data('data-list-id', listId);
@@ -1440,9 +1444,6 @@ $(document).ready(() => {
                     $(`#editListModalProfilePicture`).attr('src', `img/profilePictures/${data.profilePic}.jpg`)
                 })
             $(`#editListCommentCounter`).html(`${list.comments.length}`);
-            commentsUpdate = {
-                comments: list.comments
-            };
             if (list.comments.length === 0) {
                 $(`#editListModalComments`).append(`
                         <div class="row col-7 p-0 m-0 justify-content-center">
@@ -1486,11 +1487,11 @@ $(document).ready(() => {
                     .then((data) => {
                             if (content.type === 'movie') {
                                 $(`#editListModalMovies`).append(`
-                                <img src="https://image.tmdb.org/t/p/original/${data.poster_path}" class="m-2 rounded-1 editListContent" alt="Movie Poster" id="editListContent_${content.id}" style="height: 20em" data-id="${content.id}" data-type="${content.type}">
+                                <div class="m-2" data-id="${content.id}" data-type="${content.type}" id="editListContent_${content.id}"><img src="https://image.tmdb.org/t/p/original/${data.poster_path}" class="rounded-1 editListContent" alt="Movie Poster" style="height: 20em"></div>
                             `)
                             } else {
                                 $(`#editListModalMovies`).append(`
-                                <img src="https://image.tmdb.org/t/p/original/${data.poster_path}" class="m-2 rounded-1 editListContent" alt="Movie Poster" id="editListContent_${content.id}" style="height: 20em" data-id="${content.id}" data-type="${content.type}">
+                                <div class="m-2" data-id="${content.id}" data-type="${content.type}" id="editListContent_${content.id}"><img src="https://image.tmdb.org/t/p/original/${data.poster_path}" class="rounded-1 editListContent" alt="Movie Poster" style="height: 20em"></div>
                             `)
                             }
                             $(`#editListContent_${content.id}`).hover(
@@ -1528,6 +1529,8 @@ $(document).ready(() => {
         return content;
     }
 
+    $(`#editListSaveChanges`).click(() => editListSave($(`#editListModal`).data('data-list-id')));
+
     function editListSave(listId) {
         let updateContent = {
             list_name: $(`#editListModalTitle`).val(),
@@ -1544,6 +1547,12 @@ $(document).ready(() => {
         fetch(url, options)
             .then(response => response.json()).then(data2 => {
             console.log(data2);
+            let replacementIndex = allPopularLists.findIndex((list) => {
+                return list.id === parseInt(listId);
+            })
+            allPopularLists[replacementIndex] = data2;
+            populateEditListModal($(`#editListModal`).data('data-list-id'));
+            populateProfilePage(user.id);
         })
     }
 

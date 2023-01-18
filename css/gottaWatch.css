@@ -97,6 +97,10 @@ body {
     display: none;
 }
 
+#editListLiked input[type="checkbox"][id^="editListLikeButton"] {
+    display: none;
+}
+
 .listLiked label {
     position: relative;
     cursor: pointer;

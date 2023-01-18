@@ -820,7 +820,6 @@ $(document).ready(() => {
                     )
             })
         })
-
     }
 
     $(`#listLikeButton`).click(function () {
@@ -943,12 +942,6 @@ $(document).ready(() => {
             })
                 .catch(error => console.error(error));
         })
-    }
-
-    function toHoursAndMinutes(totalMinutes) {
-        const hours = Math.floor(totalMinutes / 60);
-        const minutes = totalMinutes % 60;
-        return hours > 0 ? `${hours}h${minutes > 0 ? ` ${minutes}m` : ''}` : ` ${minutes}m`;
     }
 
     function genreIdToText(id) {
@@ -1139,7 +1132,7 @@ $(document).ready(() => {
                     let profileUserCreatedList = allPopularLists.filter((list) => {
                         return profileUser.createdLists.includes(list.id);
                     });
-                    generateProfileListsCards(profileUserCreatedList, "profilePageLists")
+                    generateProfileListsCards(username, profileUserCreatedList, "profilePageLists")
                 } else {
                     $('#profilePageLists').html("<h1 class='text-center'>No Lists Created</h1>")
                 }
@@ -1206,9 +1199,9 @@ $(document).ready(() => {
                 fetch(`https://wave-kaput-giant.glitch.me/users/${activitiedList[0].creator}`)
                     .then(response => response.json())
                     .then((creator) => {
-                        $(`#popularListProfilePicture_${activitiedList[0].id}_${location}_${activitiedList[0].creator}`).attr('src', `img/profilePictures/${creator.profilePic }.jpg`);
+                        $(`#popularListProfilePicture_${activitiedList[0].id}_${location}_${activitiedList[0].creator}`).attr('src', `img/profilePictures/${creator.profilePic}.jpg`);
                     })
-                if (activitiedList[0].list_desc.length > 100){
+                if (activitiedList[0].list_desc.length > 100) {
                     $(`#listCard_desc${activitiedList[0].id}_${location}`).html(activitiedList[0].list_desc.slice(0, 100) + "...");
                 } else {
                     $(`#listCard_desc${activitiedList[0].id}_${location}`).html(activitiedList[0].list_desc);
@@ -1228,7 +1221,7 @@ $(document).ready(() => {
                 `)
                 fetch(`https://api.themoviedb.org/3/${sortedActivity[i].content.type}/${sortedActivity[i].content.id}?api_key=${apiKeyTMDP}&language=en-US`)
                     .then(response => response.json()).then((data) => {
-                    if (data.hasOwnProperty("title")){
+                    if (data.hasOwnProperty("title")) {
                         $(`#profilePageListAddName_${activitiedList[0].id}_${location}_${sortedActivity[i].content.id}`).html(data.title)
                     } else {
                         $(`#profilePageListAddName_${activitiedList[0].id}_${location}_${sortedActivity[i].content.id}`).html(data.name)
@@ -1250,13 +1243,13 @@ $(document).ready(() => {
                     <hr class="mt-4 col-10 text-center">
                 </div>
                 `)
-                if (activitiedList[0].list_desc.length > 100){
+                if (activitiedList[0].list_desc.length > 100) {
                     $(`#listCard_desc${activitiedList[0].id}_${location}`).html(activitiedList[0].list_desc.slice(0, 100) + "...");
                 } else {
                     $(`#listCard_desc${activitiedList[0].id}_${location}`).html(activitiedList[0].list_desc);
                 }
             } else if (sortedActivity[i].type === "follow") {
-                    $(`#${location}`).append(`
+                $(`#${location}`).append(`
                     <div class="row justify-content-center">
                         <p class="text-muted">${time_ago(sortedActivity[i].date)}</p>
                         <p>${userData.id} began following ${sortedActivity[i].user}</p>
@@ -1288,16 +1281,16 @@ $(document).ready(() => {
                     `)
                 fetch(`https://wave-kaput-giant.glitch.me/users/${sortedActivity[i].user}`)
                     .then(response => response.json()).then((followedUser) => {
-                        $(`#followedUserProfilePic_${sortedActivity[i].user}_${location}`).attr('src', `img/profilePictures/${followedUser.profilePic}.jpg`);
-                        $(`#followedUserListsCreated_${sortedActivity[i].user}_${location}`).html(followedUser.createdLists.length);
-                        $(`#followedUserFollowers_${sortedActivity[i].user}`).html(followedUser.followers.length);
-                        $(`#followedUserFollowing_${sortedActivity[i].user}`).html(followedUser.following.length);
-                        if (followedUser.description.length > 100){
-                            $(`#userCard_desc_${sortedActivity[i].user}_${location}`).html(followedUser.description.slice(0, 100) + "...");
-                        } else {
-                            $(`#userCard_desc_${sortedActivity[i].user}_${location}`).html(followedUser.description);
-                        }
-                    });
+                    $(`#followedUserProfilePic_${sortedActivity[i].user}_${location}`).attr('src', `img/profilePictures/${followedUser.profilePic}.jpg`);
+                    $(`#followedUserListsCreated_${sortedActivity[i].user}_${location}`).html(followedUser.createdLists.length);
+                    $(`#followedUserFollowers_${sortedActivity[i].user}`).html(followedUser.followers.length);
+                    $(`#followedUserFollowing_${sortedActivity[i].user}`).html(followedUser.following.length);
+                    if (followedUser.description.length > 100) {
+                        $(`#userCard_desc_${sortedActivity[i].user}_${location}`).html(followedUser.description.slice(0, 100) + "...");
+                    } else {
+                        $(`#userCard_desc_${sortedActivity[i].user}_${location}`).html(followedUser.description);
+                    }
+                });
             }
         }
         $(`.profilePageRecentActivityListLink`).click(function () {
@@ -1305,7 +1298,7 @@ $(document).ready(() => {
         });
     }
 
-    function generateProfileListsCards(lists, location) {
+    function generateProfileListsCards(username, lists, location) {
         $(`#${location}`).html('');
         lists.forEach((list) => {
             $(`#${location}`).append(`
@@ -1315,7 +1308,7 @@ $(document).ready(() => {
                       <div>
                         <div class="d-flex justify-content-between">
                             <h5 class="listTitle">${list.list_name}</h5>
-                            <button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#editListModal" data-id="${list.id}"><i class="fa-solid fa-pen-to-square"></i></button>
+                            <button class="btn btn-dark d-none" data-bs-toggle="modal" data-bs-target="#editListModal" data-id="${list.id}" id="editListButton_${list.id}"><i class="fa-solid fa-pen-to-square"></i></button>
                         </div>
                         <p class="mb-0"><span id="popularListLastEdited_${list.id}_${location}"></span> | <i class="fa-solid fa-heart"></i> <span id="listCardLikes_${list.id}_${location}">${list.likes}</span>  |  <i class="fa-solid fa-comment"></i> <span id="listCardComments_${list.id}_${location}">${list.comments.length}</span></p>
                         <p class="mb-0" id="listCard_desc${list.id}_${location}"></p>
@@ -1325,6 +1318,12 @@ $(document).ready(() => {
                 </div>
         `)
             $(`#popularListLastEdited_${list.id}_${location}`).html(`Updated ${time_ago(list.last_edited)}`)
+            $(`#editListButton_${list.id}`).click(function () {
+                populateEditListModal($(this).data('id'));
+            })
+            if (user.id === username) {
+                $(`#editListButton_${list.id}`).removeClass('d-none');
+            }
             $(`#listCard_${list.id}_${location}`).click(function () {
                 populateListModal($(this).data("id"));
             });
@@ -1423,6 +1422,131 @@ $(document).ready(() => {
         return sortedActivity
     }
 
+    function populateEditListModal(listId) {
+        console.log('ran populate edit list modal');
+        $('#editListModalMovies').html('');
+        $(`#editListModalComments`).html('');
+        $(`#editListModal`).data('data-list-id', listId);
+        fetch(`https://daffy-tasteful-brownie.glitch.me/lists/${listId}`)
+            .then(response => response.json()).then((list) => {
+            $(`#editListModalTitle`).val(list.list_name);
+            $(`#editListModalCreator`).html(list.creator);
+            $(`#editListModalLastUpdated`).html(`Updated ${time_ago(list.last_edited)} | `)
+            $(`#editListModalDescription`).val(list.list_desc);
+            $(`#editListLike`).html(`${list.likes}`);
+            fetch(`https://wave-kaput-giant.glitch.me/users/${list.creator}`)
+                .then(response => response.json())
+                .then((data) => {
+                    $(`#editListModalProfilePicture`).attr('src', `img/profilePictures/${data.profilePic}.jpg`)
+                })
+            $(`#editListCommentCounter`).html(`${list.comments.length}`);
+            commentsUpdate = {
+                comments: list.comments
+            };
+            if (list.comments.length === 0) {
+                $(`#editListModalComments`).append(`
+                        <div class="row col-7 p-0 m-0 justify-content-center">
+                            <h1 class="text-center">No Comments Yet!</h1>
+                        </div>
+                        <div class="col-7">
+                            <hr>
+                        </div>
+                    `)
+            } else {
+                list.comments.forEach((comment) => {
+                    $(`#editListModalComments`).append(`
+                        <div class="row col-7 p-0 m-0">
+                            <div class="d-flex col-4 listComment" data-commenterId="${comment.user}">
+                                <img class="profilePictureListComment comment_${comment.user} me-4" src="img/profilePictures/default.jpg" alt="Profile Picture">
+                                <div class="d-flex flex-column justify-content-center">
+                                    <p class="mb-1 text-center" data-bs-toggle="modal" data-bs-target="#listModal"> ${comment.user}</p>
+                                    <p class="text-muted text-center">${time_ago(comment.date)}</p>
+                                </div>
+                            </div>
+                            <div class="col-8">
+                                <p>${comment.comment}</p>
+                            </div>
+                        </div>
+                        <div class="col-7">
+                        <hr>
+                        </div>
+                    `)
+                    $(`.listComment`).click(function () {
+                        populateProfilePage($(this).data('commenterid'));
+                    })
+                    fetch(`https://wave-kaput-giant.glitch.me/users/${comment.user}`)
+                        .then(response => response.json()).then((data) => {
+                        $(`.comment_${comment.user}`).attr('src', `img/profilePictures/${data.profilePic}.jpg`)
+                    })
+                })
+            }
+            list.content.forEach((content) => {
+                fetch(`https://api.themoviedb.org/3/${content.type}/${content.id}?api_key=${apiKeyTMDP}&language=en-US`)
+                    .then(response => response.json())
+                    .then((data) => {
+                            if (content.type === 'movie') {
+                                $(`#editListModalMovies`).append(`
+                                <img src="https://image.tmdb.org/t/p/original/${data.poster_path}" class="m-2 rounded-1 editListContent" alt="Movie Poster" id="editListContent_${content.id}" style="height: 20em" data-id="${content.id}" data-type="${content.type}">
+                            `)
+                            } else {
+                                $(`#editListModalMovies`).append(`
+                                <img src="https://image.tmdb.org/t/p/original/${data.poster_path}" class="m-2 rounded-1 editListContent" alt="Movie Poster" id="editListContent_${content.id}" style="height: 20em" data-id="${content.id}" data-type="${content.type}">
+                            `)
+                            }
+                            $(`#editListContent_${content.id}`).hover(
+                                function () {
+                                    $(`#editListContent_${content.id}`).addClass('border rounded border-danger border-5');
+                                },
+                                function () {
+                                    $(`#editListContent_${content.id}`).removeClass('border rounded border-danger border-5');
+                                }
+                            );
+                        }
+                    )
+            })
+        })
+    }
+
+    $('.sortable-list').sortable({
+        connectWith: '.sortable-list',
+        update: function (event, ui) {
+            let changedList = this.id;
+            let order = $('#editListModalMovies').sortable('toArray');
+            console.log({
+                id: changedList,
+                positions: order
+            });
+        }
+    });
+
+    function getContentOrder() {
+        let content = [];
+        $('#editListModalMovies').sortable('toArray').forEach((item) => {
+            content.push({id: $(`#${item}`).data('id'), type: $(`#${item}`).data('type')})
+        })
+        console.log("function", content);
+        return content;
+    }
+
+    function editListSave(listId) {
+        let updateContent = {
+            list_name: $(`#editListModalTitle`).val(),
+            list_desc: $(`#editListModalDescription`).val(),
+            content: getContentOrder(),
+            last_edited: new Date()
+        }
+        const url = `https://daffy-tasteful-brownie.glitch.me/lists/${listId}`;
+        const options = {
+            method: 'PATCH',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(updateContent)
+        };
+        fetch(url, options)
+            .then(response => response.json()).then(data2 => {
+            console.log(data2);
+        })
+    }
+
     function returnSmallest(a, b) {
         return a < b ? a : b;
     }
@@ -1478,6 +1602,12 @@ $(document).ready(() => {
                     return Math.floor(seconds / format[2]) + ' ' + format[1] + ' ' + token;
             }
         return time;
+    }
+
+    function toHoursAndMinutes(totalMinutes) {
+        const hours = Math.floor(totalMinutes / 60);
+        const minutes = totalMinutes % 60;
+        return hours > 0 ? `${hours}h${minutes > 0 ? ` ${minutes}m` : ''}` : ` ${minutes}m`;
     }
 
     function randomizeLists(lists) {

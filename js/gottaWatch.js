@@ -230,7 +230,7 @@ $(document).ready(() => {
         $(`#resultsContainer`).html('');
         for (let i = 0; i < data.length; i++) {
             $('#resultsContainer').append(`
-                <div class="card col-12 searchResultCard rounded border-1 border-primary bg-primary m-3 row flex-row divGlow" id="searchResult_${data[i].id}" data-bs-toggle="modal" data-bs-target="#moreInfoModal">
+                <div class="card col-12 searchResultCard rounded border-1 border-primary bg-primary m-3 row flex-row divGlow" id="searchResult_${data[i].id}">
                     <div class="row col-2 m-0 p-0">
                         <img class="col-12" src="" id="searchResult_${i}" alt="Search Result">
                     </div>
@@ -350,11 +350,20 @@ $(document).ready(() => {
         }
         fetch(`https://api.themoviedb.org/3/${searchType}/${id}/credits?api_key=${apiKeyTMDP}&language=en-US`)
             .then(response => response.json()).then((data) => {
+                let directors = [];
             data.crew.forEach(function (person) {
                 if (person.job === "Director") {
-                    $(`#moreInfoDirector`).append(`Director: <span class="fw-normal">${person.name}</span>`)
+                    directors.push(person);
                 }
             })
+            if (directors.length === 1){
+                $(`#moreInfoDirector`).append(`Director: <span class="fw-normal">${directors[0].name}</span>`)
+            } else if (directors.length > 1){
+                $(`#moreInfoDirector`).html(`Directors: <span class="fw-normal">${directors[0].name}</span>`);
+                for (let d = 1; d < directors.length; d++){
+                    $(`#moreInfoDirector`).append(`<span class="fw-normal">, ${directors[d].name}</span>`)
+                }
+            }
             if (data.cast.length > 5) {
                 for (let i = 0; i < 5; i++) {
                     $(`#moreInfoCastElement`).removeClass('d-none');
@@ -368,28 +377,29 @@ $(document).ready(() => {
                     (data.cast.indexOf(data.cast[i]) === data.cast.length - 1) ? $(`#moreInfoCast`).append(data.cast[i].name) : $(`#moreInfoCast`).append(`${data.cast[i].name}, &nbsp;`);
                 }
             }
-        })
-        if (user.hasOwnProperty('id')) {
-            fetch(`https://daffy-tasteful-brownie.glitch.me/lists`)
-                .then(response => response.json()).then((data) => {
-                data.forEach(function (list) {
-                    if (user.createdLists.includes(list.id)) {
-                        let content = list.content;
-                        $('#addListList').append(`<li><button class="dropdown-item" id="listName_${list.id}" href="#" value="${list.id}">${list.list_name}</button></li>`);
-                        $(`#listName_${list.id}`).click(function () {
-                            let newContent = {
-                                id: parseInt($('#listAddBtn').val()),
-                                type: searchType
-                            };
-                            content.push(newContent);
-                            addMovieToList(content, $(`#listName_${list.id}`).val());
-                        })
-                    }
+        }).then(() => {
+            if (user.hasOwnProperty('id')) {
+                fetch(`https://daffy-tasteful-brownie.glitch.me/lists`)
+                    .then(response => response.json()).then((data) => {
+                    data.forEach(function (list) {
+                        if (user.createdLists.includes(list.id)) {
+                            let content = list.content;
+                            $('#addListList').append(`<li><button class="dropdown-item" id="listName_${list.id}" href="#" value="${list.id}">${list.list_name}</button></li>`);
+                            $(`#listName_${list.id}`).click(function () {
+                                let newContent = {
+                                    id: parseInt($('#listAddBtn').val()),
+                                    type: searchType
+                                };
+                                content.push(newContent);
+                                addMovieToList(content, $(`#listName_${list.id}`).val());
+                            })
+                        }
+                    })
                 })
-            })
-        } else {
-            $('#addListList').append(`<li class="dropdown-item">Login or create an account to begin adding items to lists!</li>`);
-        }
+            } else {
+                $('#addListList').append(`<li class="dropdown-item">Login or create an account to begin adding items to lists!</li>`);
+            }
+        }).then($(`#moreInfoModal`).modal('show'));
     }
 
     function addMovieToList(data, listId) {
@@ -479,7 +489,7 @@ $(document).ready(() => {
     function generateSmallCards(showInfo, numberOfCards, container, showType, cardType) {
         for (let i = 0; i < numberOfCards; i++) {
             $(container).append(`
-                <div class="p-0 bg-secondary m-3 mb-3 smallCard rounded-3 divGlow discoverCard" id="showCard_${showInfo.results[i].id}_${cardType}" data-type="${showType}" data-showId="${showInfo.results[i].id}" data-bs-toggle="modal" data-bs-target="#moreInfoModal">
+                <div class="p-0 bg-secondary m-3 mb-3 smallCard rounded-3 divGlow discoverCard" id="showCard_${showInfo.results[i].id}_${cardType}" data-type="${showType}" data-showId="${showInfo.results[i].id}">
                     <div>
                         <img class="w-100 h-100 smallCardImg" src="https://image.tmdb.org/t/p/original/${showInfo.results[i].poster_path}" alt="Poster">
                     </div>
@@ -619,7 +629,7 @@ $(document).ready(() => {
     function generateFeaturedListsCards(lists) {
         for (let j = 0; j < 3; j++) {
             $('#featuredListsContainer').append(`
-            <div class="card m-1 mt-0 col-3 flex-grow-1 listCard border-0 bg-primary p-3 rounded-3 divGlow listCard" id="listCard_${lists[j].id}" data-bs-toggle="modal" data-bs-target="#listModal" data-id="${lists[j].id}">
+            <div class="card m-1 mt-0 col-3 flex-grow-1 listCard border-0 bg-primary p-3 rounded-3 divGlow listCard" id="listCard_${lists[j].id}" data-id="${lists[j].id}">
               <div class="row g-0">
                 <div class="listCardFeatured listCardImages" id="listCardImages_${lists[j].id}">
                 </div>
@@ -667,7 +677,7 @@ $(document).ready(() => {
         $(`#${location}`).html('');
         lists.forEach((list) => {
             $(`#${location}`).append(`
-                <div class="card col-9 m-1 border-0 bg-primary p-3 rounded-3 divGlow listCard" id="listCard_${list.id}_${location}" data-bs-toggle="modal" data-bs-target="#listModal" data-id="${list.id}">
+                <div class="card col-9 m-1 border-0 bg-primary p-3 rounded-3 divGlow listCard" id="listCard_${list.id}_${location}" data-id="${list.id}">
                   <div class="row g-0">
                     <div class="col-5 listCardPopular listCardImages" id="listCardImages_${list.id}_${location}">
                     </div>
@@ -730,6 +740,34 @@ $(document).ready(() => {
         $(`#listModal`).data('data-list-id', listId);
         fetch(`https://daffy-tasteful-brownie.glitch.me/lists/${listId}`)
             .then(response => response.json()).then((list) => {
+            list.content.forEach((content) => {
+                fetch(`https://api.themoviedb.org/3/${content.type}/${content.id}?api_key=${apiKeyTMDP}&language=en-US`)
+                    .then(response => response.json())
+                    .then((data) => {
+                            if (content.type === 'movie') {
+                                $(`#listModalMovies`).append(`
+                                <img src="https://image.tmdb.org/t/p/original/${data.poster_path}" class="m-2 rounded-1" alt="Movie Poster" id="listContent_${content.id}" style="height: 20em">
+                            `)
+                            } else {
+                                $(`#listModalMovies`).append(`
+                                <img src="https://image.tmdb.org/t/p/original/${data.poster_path}" class="m-2 rounded-1" alt="Movie Poster" id="listContent_${content.id}" style="height: 20em">
+                            `)
+                            }
+                            $(`#listContent_${content.id}`).click(function () {
+                                searchById(content.type, content.id);
+                                $(`#listModal`).modal('hide');
+                                showBackToListButton();
+                            }).hover(
+                                function () {
+                                    $(`#listContent_${content.id}`).addClass('border rounded border-danger border-5');
+                                },
+                                function () {
+                                    $(`#listContent_${content.id}`).removeClass('border rounded border-danger border-5');
+                                }
+                            );
+                        }
+                    )
+            })
             $(`#listModalTitle`).html(list.list_name);
             $(`#listModalCreator`).html(list.creator);
             $(`#listModalLastUpdated`).html(`Updated ${time_ago(list.last_edited)} | `)
@@ -775,7 +813,7 @@ $(document).ready(() => {
                             <div class="d-flex col-4 listComment" data-commenterId="${comment.user}">
                                 <img class="profilePictureListComment comment_${comment.user} me-4" src="img/profilePictures/default.jpg" alt="Profile Picture">
                                 <div class="d-flex flex-column justify-content-center">
-                                    <p class="mb-1 text-center" data-bs-toggle="modal" data-bs-target="#listModal"> ${comment.user}</p>
+                                    <p class="mb-1 text-center"> ${comment.user}</p>
                                     <p class="text-muted text-center">${time_ago(comment.date)}</p>
                                 </div>
                             </div>
@@ -796,34 +834,9 @@ $(document).ready(() => {
                     })
                 })
             }
-            list.content.forEach((content) => {
-                fetch(`https://api.themoviedb.org/3/${content.type}/${content.id}?api_key=${apiKeyTMDP}&language=en-US`)
-                    .then(response => response.json())
-                    .then((data) => {
-                            if (content.type === 'movie') {
-                                $(`#listModalMovies`).append(`
-                                <img src="https://image.tmdb.org/t/p/original/${data.poster_path}" class="m-2 rounded-1" alt="Movie Poster" id="listContent_${content.id}" style="height: 20em" data-bs-toggle="modal" data-bs-target="#moreInfoModal">
-                            `)
-                            } else {
-                                $(`#listModalMovies`).append(`
-                                <img src="https://image.tmdb.org/t/p/original/${data.poster_path}" class="m-2 rounded-1" alt="Movie Poster" id="listContent_${content.id}" style="height: 20em" data-bs-toggle="modal" data-bs-target="#moreInfoModal">
-                            `)
-                            }
-                            $(`#listContent_${content.id}`).click(function () {
-                                searchById(content.type, content.id);
-                                showBackToListButton();
-                            }).hover(
-                                function () {
-                                    $(`#listContent_${content.id}`).addClass('border rounded border-danger border-5');
-                                },
-                                function () {
-                                    $(`#listContent_${content.id}`).removeClass('border rounded border-danger border-5');
-                                }
-                            );
-                        }
-                    )
-            })
-        })
+        }).then(setTimeout(function() {
+            $(`#listModal`).modal('show');
+        }, 500));
     }
 
     $(`#listLikeButton`).click(function () {
@@ -1141,12 +1154,14 @@ $(document).ready(() => {
                 } else {
                     $('#profilePageLists').html("<h1 class='text-center'>No Lists Created</h1>")
                 }
-            })
-        $('#homePage').addClass('d-none');
-        $('#searchResults').addClass('d-none');
-        $('#listsPage').addClass('d-none');
-        $('#discoverPage').addClass('d-none');
-        $('#profilePage').removeClass('d-none');
+            }).then(() => {
+                $('#homePage').addClass('d-none');
+                $('#searchResults').addClass('d-none');
+                $('#listsPage').addClass('d-none');
+                $('#discoverPage').addClass('d-none');
+                $('#profilePage').removeClass('d-none')
+                $(`#listModal`).modal('hide');
+        })
     }
 
     $('#profilePageFollowButton').click(() => {
@@ -1190,7 +1205,7 @@ $(document).ready(() => {
                 $(`#${location}`).append(`
                 <div class="row justify-content-center">
                     <p class="text-muted">${time_ago(sortedActivity[i].date)}</p>
-                    <p>${userData.id} liked <a class="profilePageRecentActivityListLink listTitle" data-id="${sortedActivity[i].listId}" data-bs-toggle="modal" data-bs-target="#listModal">${activitiedList[0].list_name}</a></p>
+                    <p>${userData.id} liked <a class="profilePageRecentActivityListLink listTitle" data-id="${sortedActivity[i].listId}">${activitiedList[0].list_name}</a></p>
                     <div class="row justify-content-center col-8 p-0 m-0 bg-info p-3 rounded-3 divGlow">
                         <div>
                             <h5 class="listTitle mb-1">${activitiedList[0].list_name}</h5>
@@ -1215,7 +1230,7 @@ $(document).ready(() => {
                 $(`#${location}`).append(`
                 <div class="row justify-content-center">
                     <p class="text-muted">${time_ago(sortedActivity[i].date)}</p>
-                    <p>${userData.id} added <span id="profilePageListAddName_${activitiedList[0].id}_${location}_${sortedActivity[i].content.id}"></span> to <a class="profilePageRecentActivityListLink listTitle" data-id="${sortedActivity[i].listId}" data-bs-toggle="modal" data-bs-target="#listModal">${activitiedList[0].list_name}</a></p>
+                    <p>${userData.id} added <span id="profilePageListAddName_${activitiedList[0].id}_${location}_${sortedActivity[i].content.id}"></span> to <a class="profilePageRecentActivityListLink listTitle" data-id="${sortedActivity[i].listId}">${activitiedList[0].list_name}</a></p>
                     <div class="row justify-content-center p-0 m-0">
                         <div class="col-4 bg-info p-3 rounded-3 divGlow">
                             <img class="w-100" src="" alt="" id="profilePageActivityListAdd_${sortedActivity[i].content.id}">
@@ -1237,7 +1252,7 @@ $(document).ready(() => {
                 $(`#${location}`).append(`
                 <div class="row justify-content-center">
                     <p class="text-muted">${time_ago(sortedActivity[i].date)}</p>
-                    <p>${userData.id} created the list: <a class="profilePageRecentActivityListLink listTitle" data-id="${sortedActivity[i].listId}" data-bs-toggle="modal" data-bs-target="#listModal">${activitiedList[0].list_name}</a></p>
+                    <p>${userData.id} created the list: <a class="profilePageRecentActivityListLink listTitle" data-id="${sortedActivity[i].listId}">${activitiedList[0].list_name}</a></p>
                     <div class="row justify-content-center col-8 p-0 m-0 bg-info p-3 rounded-3 divGlow">
                         <div>
                             <h5 class="listTitle mb-1">${activitiedList[0].list_name}</h5>
@@ -1307,13 +1322,13 @@ $(document).ready(() => {
         $(`#${location}`).html('');
         lists.forEach((list) => {
             $(`#${location}`).append(`
-                <div class="card col-12 m-1 border-0 bg-primary p-3 rounded-3 divGlow listCard" id="listCard_${list.id}_${location}" data-bs-toggle="modal" data-bs-target="#listModal" data-id="${list.id}">
+                <div class="card col-12 m-1 border-0 bg-primary p-3 rounded-3 divGlow listCard">
                   <div class="row g-0">
                     <div class="col-12">
                       <div>
                         <div class="d-flex justify-content-between">
-                            <h5 class="listTitle">${list.list_name}</h5>
-                            <button class="btn btn-dark d-none" data-bs-toggle="modal" data-bs-target="#editListModal" data-id="${list.id}" id="editListButton_${list.id}"><i class="fa-solid fa-pen-to-square"></i></button>
+                            <h5 class="listTitle" id="listCard_${list.id}_${location}" data-id="${list.id}">${list.list_name}</h5>
+                            <button class="btn btn-dark d-none" data-id="${list.id}" id="editListButton_${list.id}"><i class="fa-solid fa-pen-to-square"></i></button>
                         </div>
                         <p class="mb-0"><span id="popularListLastEdited_${list.id}_${location}"></span> | <i class="fa-solid fa-heart"></i> <span id="listCardLikes_${list.id}_${location}">${list.likes}</span>  |  <i class="fa-solid fa-comment"></i> <span id="listCardComments_${list.id}_${location}">${list.comments.length}</span></p>
                         <p class="mb-0" id="listCard_desc${list.id}_${location}"></p>
@@ -1483,30 +1498,55 @@ $(document).ready(() => {
                     })
                 })
             }
-            list.content.forEach((content) => {
-                fetch(`https://api.themoviedb.org/3/${content.type}/${content.id}?api_key=${apiKeyTMDP}&language=en-US`)
+            // list.content.forEach((content) => {
+            //     fetch(`https://api.themoviedb.org/3/${content.type}/${content.id}?api_key=${apiKeyTMDP}&language=en-US`)
+            //         .then(response => response.json())
+            //         .then((data) => {
+            //                 if (content.type === 'movie') {
+            //                     $(`#editListModalMovies`).append(`
+            //                     <div class="m-2" data-id="${content.id}" data-type="${content.type}" id="editListContent_${content.id}"><img src="https://image.tmdb.org/t/p/original/${data.poster_path}" class="rounded-1 editListContent" alt="Movie Poster" style="height: 20em"></div>
+            //                 `)
+            //                 } else {
+            //                     $(`#editListModalMovies`).append(`
+            //                     <div class="m-2" data-id="${content.id}" data-type="${content.type}" id="editListContent_${content.id}"><img src="https://image.tmdb.org/t/p/original/${data.poster_path}" class="rounded-1 editListContent" alt="Movie Poster" style="height: 20em"></div>
+            //                 `)
+            //                 }
+            //                 $(`#editListContent_${content.id}`).hover(
+            //                     function () {
+            //                         $(`#editListContent_${content.id}`).addClass('border rounded border-danger border-5');
+            //                     },
+            //                     function () {
+            //                         $(`#editListContent_${content.id}`).removeClass('border rounded border-danger border-5');
+            //                     }
+            //                 );
+            //             }
+            //         )
+            // })
+            for (let i = 0; i < list.content.length; i++) {
+                fetch(`https://api.themoviedb.org/3/${list.content[i].type}/${list.content[i].id}?api_key=${apiKeyTMDP}&language=en-US`)
                     .then(response => response.json())
                     .then((data) => {
-                            if (content.type === 'movie') {
+                            if (list.content[i].type === 'movie') {
                                 $(`#editListModalMovies`).append(`
-                                <div class="m-2" data-id="${content.id}" data-type="${content.type}" id="editListContent_${content.id}"><img src="https://image.tmdb.org/t/p/original/${data.poster_path}" class="rounded-1 editListContent" alt="Movie Poster" style="height: 20em"></div>
+                                <div class="m-2" data-id="${list.content[i].id}" data-type="${list.content[i].type}" id="editListContent_${list.content[i].id}"><img src="https://image.tmdb.org/t/p/original/${data.poster_path}" class="rounded-1 editListContent" alt="Movie Poster" style="height: 20em"></div>
                             `)
                             } else {
                                 $(`#editListModalMovies`).append(`
-                                <div class="m-2" data-id="${content.id}" data-type="${content.type}" id="editListContent_${content.id}"><img src="https://image.tmdb.org/t/p/original/${data.poster_path}" class="rounded-1 editListContent" alt="Movie Poster" style="height: 20em"></div>
+                                <div class="m-2" data-id="${list.content[i].id}" data-type="${list.content[i].type}" id="editListContent_${list.content[i].id}"><img src="https://image.tmdb.org/t/p/original/${data.poster_path}" class="rounded-1 editListContent" alt="Movie Poster" style="height: 20em"></div>
                             `)
                             }
-                            $(`#editListContent_${content.id}`).hover(
+                            $(`#editListContent_${list.content[i].id}`).hover(
                                 function () {
-                                    $(`#editListContent_${content.id}`).addClass('border rounded border-danger border-5');
+                                    $(`#editListContent_${list.content[i].id}`).addClass('border rounded border-danger border-5');
                                 },
                                 function () {
-                                    $(`#editListContent_${content.id}`).removeClass('border rounded border-danger border-5');
+                                    $(`#editListContent_${list.content[i].id}`).removeClass('border rounded border-danger border-5');
                                 }
                             );
                         }
                     )
-            })
+                    .then($(`#editListModal`).modal('show'));
+            }
         })
     }
 

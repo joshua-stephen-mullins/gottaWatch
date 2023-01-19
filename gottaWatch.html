@@ -115,6 +115,9 @@
                     </button>
                 </div>
             </div>
+            <div class="d-flex justify-content-center col-12 text-center vh-100" id="userHomePage">
+                <h1 class="titleFont homeScreenText m-1">DISCOVER NEW SHOWS.</h1>
+            </div>
         </section>
         <section class="d-none" id="discoverPage">
             <div>
@@ -462,15 +465,17 @@
                      id="profilePageProfilePicture">
                 <div class="row col-4 align-content-center p-3">
                     <h1 class="col-6 m-0 p-0" id="profilePageUsername">USERNAME</h1>
-                    <button type="button" class="btn btn-info btn-sm" id="profilePageEditButton">EDIT
-                        PROFILE
-                    </button>
-                    <button type="button" class="btn btn-warning btn-sm" id="profilePageFollowButton">
-                        FOLLOW
-                    </button>
-                    <button type="button" class="btn btn-success btn-sm" id="profilePageFollowingButton">
-                        FOLLOWING
-                    </button>
+                    <div class="col-2">
+                        <button type="button" class="btn btn-info btn-sm" id="profilePageEditButton">EDIT
+                            PROFILE
+                        </button>
+                        <button type="button" class="btn btn-warning btn-sm" id="profilePageFollowButton">
+                            FOLLOW
+                        </button>
+                        <button type="button" class="btn btn-success btn-sm" id="profilePageFollowingButton">
+                            FOLLOWING
+                        </button>
+                    </div>
                     <p id="profilePageUserDesc">Bio about user here.</p>
                 </div>
                 <div class="row col-4 align-content-center flex-grow-1 text-center">
@@ -514,7 +519,7 @@
 
 <div class="modal modal-xl fade" id="moreInfoModal">
     <div class="modal-dialog modal-dialog-centered" id="moreInfoModalDialog" role="document">
-        <div class="modal-content justify-content-around bg-dark">
+        <div class="modal-content justify-content-around bg-dark rounded-3">
             <div class="modal-header">
                 <button type="button" class="" id="backToListButton" data-bs-toggle="modal" data-bs-target="#listModal">
                     <i class="fa-solid fa-left-long"></i> BACK TO LIST
@@ -553,7 +558,7 @@
 <!--list modal-->
 <div class="modal modal-xl fade" id="listModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog" id="listModalDialog">
-        <div class="row modal-content m-0 p-0 bg-dark">
+        <div class="row modal-content m-0 p-0 bg-dark rounded-3">
             <div class="col-12 modal-header">
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
                         aria-label="Close"></button>
@@ -607,27 +612,29 @@
 <div class="modal modal-xl fade" id="editListModal" tabindex="-1"
      aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" id="editListModalDialog">
-        <div class="row modal-content m-0 p-0 bg-dark">
+        <div class="row modal-content m-0 p-0 bg-dark rounded-3">
             <div class="col-12 modal-header">
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
                         aria-label="Close"></button>
             </div>
             <div class="row modal-body m-0 p-0">
-<!--                <h1 class="modal-title ps-5 pe-5 ms-2 me-2 listTitle" id="listModalTitle"></h1>-->
                 <div class="col-5 modal-title ps-5 pe-5 ms-2 me-2 mb-1 listTitle form-group">
-                    <input class="form-control form-control-lg titleFont border rounded border-danger border-5" type="text" id="editListModalTitle">
+                    <input class="form-control form-control-lg titleFont border rounded border-danger border-5"
+                           type="text" id="editListModalTitle">
                 </div>
                 <h3 class="ps-5 pe-5 ms-2 me-2 text-muted listLiked"><img class="profilePicture"
                                                                           src="img/profilePictures/default.jpg"
                                                                           alt="Profile Picture"
                                                                           id="editListModalProfilePicture"> <span
                         data-bs-toggle="modal" data-bs-target="#listModal"
-                        id="editListModalCreator"></span> | <span id="editListModalLastUpdated"></span> <i class="fa-solid fa-heart"></i> <span id="editListLike"></span> Likes | <a href="#editListModalComments"><i class="fa-solid fa-comment"></i>
-                        <span id="editListCommentCounter"></span> Comments</a>
+                        id="editListModalCreator"></span> | <span id="editListModalLastUpdated"></span> <i
+                        class="fa-solid fa-heart"></i> <span id="editListLike"></span> Likes | <a
+                        href="#editListModalComments"><i class="fa-solid fa-comment"></i>
+                    <span id="editListCommentCounter"></span> Comments</a>
                 </h3>
-<!--                <h3 class="ps-5 pe-5 ms-2 me-2" id="listModalDescription"></h3>-->
                 <div class="col-9 form-group pe-5 ps-5 me-2 ms-2">
-                    <textarea class="form-control border rounded border-danger border-5" rows="3" id="editListModalDescription"></textarea>
+                    <textarea class="form-control border rounded border-danger border-5" rows="3"
+                              id="editListModalDescription"></textarea>
                 </div>
             </div>
             <div class="p-5 d-flex flex-wrap justify-content-evenly sortable-list" id="editListModalMovies">
@@ -641,8 +648,12 @@
                 </div>
             </div>
             <div class="d-flex justify-content-end">
-                <button type="button" class="btn btn-danger btn-lg m-3" id="editListDiscardChanges" data-bs-dismiss="modal">DISCARD CHANGES</button>
-                <button type="button" class="btn btn-success btn-lg m-3" id="editListSaveChanges" data-bs-dismiss="modal">SAVE CHANGES</button>
+                <button type="button" class="btn btn-danger btn-lg m-3" id="editListDiscardChanges"
+                        data-bs-dismiss="modal">DISCARD CHANGES
+                </button>
+                <button type="button" class="btn btn-success btn-lg m-3" id="editListSaveChanges"
+                        data-bs-dismiss="modal">SAVE CHANGES
+                </button>
             </div>
         </div>
     </div>

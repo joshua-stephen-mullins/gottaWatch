@@ -295,6 +295,7 @@ $(document).ready(() => {
     }
 
     function moreInfo(data, searchType, id) {
+        console.log(data);
         $(`#moreInfoOverview`).html('');
         $('#moreInfoGenre').html('');
         $('#moreInfoCast').html('');
@@ -311,95 +312,102 @@ $(document).ready(() => {
         } else if (data.hasOwnProperty('overview')) {
             $('#moreInfoOverview').html(data.overview);
         }
-        (data.hasOwnProperty('release_date')) ? $(`#moreInfoYear`).html("(" + data.release_date.slice(0, 4) + ")") : $(`#moreInfoYear`).html("(" + data.last_air_date.slice(0, 4) + ")");
+        if (data.hasOwnProperty('release_date')) {
+            $(`#moreInfoYear`).html("(" + data.release_date.slice(0, 4) + ")")
+        } else if (data.hasOwnProperty('last_air_date') && (data.last_air_date !== null)) {
+            console.log(data);
+            $(`#moreInfoYear`).html("(" + data.last_air_date.slice(0, 4) + ")");
+        }
         $('#listAddBtn').val(data.id);
         for (let i = 0; i < data.genres.length; i++) {
             (i === (data.genres.length - 1)) ? $('#moreInfoGenre').append(`${data.genres[i].name}`) : $('#moreInfoGenre').append(data.genres[i].name + ', &nbsp;');
         }
-        if ((data.hasOwnProperty('runtime') && (toHoursAndMinutes(data.runtime) !== '0m'))) {
+        if ((data.hasOwnProperty('runtime') && (toHoursAndMinutes(data.runtime) !== '0m') && (data.runtime !== null))) {
             $('#moreInfoRuntime').html(toHoursAndMinutes(data.runtime))
         } else if (data.hasOwnProperty('episode_run_time') && (typeof data.episode_run_time[0] === 'number')) {
             $('#moreInfoRuntime').html(toHoursAndMinutes(data.episode_run_time[0]));
-        } else if ((data.hasOwnProperty('last_episode_to_air') && (toHoursAndMinutes(data.last_episode_to_air.runtime) !== '0m'))) {
+        } else if ((data.hasOwnProperty('last_episode_to_air')) && (data.last_episode_to_air !== null) && (toHoursAndMinutes(data.last_episode_to_air.runtime) !== '0m')) {
             $('#moreInfoRuntime').html(toHoursAndMinutes(data.last_episode_to_air.runtime));
+        } else if ((data.hasOwnProperty('next_episode_to_air')) && (data.next_episode_to_air !== null) && (toHoursAndMinutes(data.next_episode_to_air.runtime) !== '0m')) {
+            $('#moreInfoRuntime').html(toHoursAndMinutes(data.next_episode_to_air.runtime));
         }
-        if (searchType === 'movie') {
-            $('#moreInfoRating').html('');
-            fetch(`https://api.themoviedb.org/3/movie/${id}/release_dates?api_key=${apiKeyTMDP}`)
-                .then(response => response.json()).then((data) => {
-                data.results.forEach(function (country) {
-                    if (country.iso_3166_1 === "US") {
-                        country.release_dates.forEach(function (result) {
-                            if (result.certification !== '') {
-                                $('#moreInfoRating').html(result.certification);
-                            }
-                        })
-                    }
-                })
-            })
-        } else {
-            $('#moreInfoRating').html('');
-            fetch(`https://api.themoviedb.org/3/tv/${id}/content_ratings?api_key=${apiKeyTMDP}&language=en-US`)
-                .then(response => response.json()).then((data) => {
-                data.results.forEach(function (country) {
-                    if (country.iso_3166_1 === "US") {
-                        $('#moreInfoRating').html(country.rating);
-                    }
-                })
-            })
-        }
-        fetch(`https://api.themoviedb.org/3/${searchType}/${id}/credits?api_key=${apiKeyTMDP}&language=en-US`)
-            .then(response => response.json()).then((data) => {
-                let directors = [];
-            data.crew.forEach(function (person) {
-                if (person.job === "Director") {
-                    directors.push(person);
-                }
-            })
-            if (directors.length === 1){
-                $(`#moreInfoDirector`).append(`Director: <span class="fw-normal">${directors[0].name}</span>`)
-            } else if (directors.length > 1){
-                $(`#moreInfoDirector`).html(`Directors: <span class="fw-normal">${directors[0].name}</span>`);
-                for (let d = 1; d < directors.length; d++){
-                    $(`#moreInfoDirector`).append(`<span class="fw-normal">, ${directors[d].name}</span>`)
-                }
-            }
-            if (data.cast.length > 5) {
-                for (let i = 0; i < 5; i++) {
-                    $(`#moreInfoCastElement`).removeClass('d-none');
-                    (data.cast[i] === data.cast[4]) ? $(`#moreInfoCast`).append(data.cast[i].name) : $(`#moreInfoCast`).append(`${data.cast[i].name}, &nbsp;`);
-                }
-            } else if (data.cast.length === 0) {
-                $(`#moreInfoCastElement`).addClass('d-none');
-            } else {
-                for (let i = 0; i < data.cast.length; i++) {
-                    $(`#moreInfoCastElement`).removeClass('d-none');
-                    (data.cast.indexOf(data.cast[i]) === data.cast.length - 1) ? $(`#moreInfoCast`).append(data.cast[i].name) : $(`#moreInfoCast`).append(`${data.cast[i].name}, &nbsp;`);
-                }
-            }
-        }).then(() => {
-            if (user.hasOwnProperty('id')) {
-                fetch(`https://daffy-tasteful-brownie.glitch.me/lists`)
+            if (searchType === 'movie') {
+                $('#moreInfoRating').html('');
+                fetch(`https://api.themoviedb.org/3/movie/${id}/release_dates?api_key=${apiKeyTMDP}`)
                     .then(response => response.json()).then((data) => {
-                    data.forEach(function (list) {
-                        if (user.createdLists.includes(list.id)) {
-                            let content = list.content;
-                            $('#addListList').append(`<li><button class="dropdown-item" id="listName_${list.id}" href="#" value="${list.id}">${list.list_name}</button></li>`);
-                            $(`#listName_${list.id}`).click(function () {
-                                let newContent = {
-                                    id: parseInt($('#listAddBtn').val()),
-                                    type: searchType
-                                };
-                                content.push(newContent);
-                                addMovieToList(content, $(`#listName_${list.id}`).val());
+                    data.results.forEach(function (country) {
+                        if (country.iso_3166_1 === "US") {
+                            country.release_dates.forEach(function (result) {
+                                if (result.certification !== '') {
+                                    $('#moreInfoRating').html(result.certification);
+                                }
                             })
                         }
                     })
                 })
             } else {
-                $('#addListList').append(`<li class="dropdown-item">Login or create an account to begin adding items to lists!</li>`);
+                $('#moreInfoRating').html('');
+                fetch(`https://api.themoviedb.org/3/tv/${id}/content_ratings?api_key=${apiKeyTMDP}&language=en-US`)
+                    .then(response => response.json()).then((data) => {
+                    data.results.forEach(function (country) {
+                        if (country.iso_3166_1 === "US") {
+                            $('#moreInfoRating').html(country.rating);
+                        }
+                    })
+                })
             }
-        }).then($(`#moreInfoModal`).modal('show'));
+            fetch(`https://api.themoviedb.org/3/${searchType}/${id}/credits?api_key=${apiKeyTMDP}&language=en-US`)
+                .then(response => response.json()).then((data) => {
+                let directors = [];
+                data.crew.forEach(function (person) {
+                    if (person.job === "Director") {
+                        directors.push(person);
+                    }
+                })
+                if (directors.length === 1) {
+                    $(`#moreInfoDirector`).append(`Director: <span class="fw-normal">${directors[0].name}</span>`)
+                } else if (directors.length > 1) {
+                    $(`#moreInfoDirector`).html(`Directors: <span class="fw-normal">${directors[0].name}</span>`);
+                    for (let d = 1; d < directors.length; d++) {
+                        $(`#moreInfoDirector`).append(`<span class="fw-normal">, ${directors[d].name}</span>`)
+                    }
+                }
+                if (data.cast.length > 5) {
+                    for (let i = 0; i < 5; i++) {
+                        $(`#moreInfoCastElement`).removeClass('d-none');
+                        (data.cast[i] === data.cast[4]) ? $(`#moreInfoCast`).append(data.cast[i].name) : $(`#moreInfoCast`).append(`${data.cast[i].name}, &nbsp;`);
+                    }
+                } else if (data.cast.length === 0) {
+                    $(`#moreInfoCastElement`).addClass('d-none');
+                } else {
+                    for (let i = 0; i < data.cast.length; i++) {
+                        $(`#moreInfoCastElement`).removeClass('d-none');
+                        (data.cast.indexOf(data.cast[i]) === data.cast.length - 1) ? $(`#moreInfoCast`).append(data.cast[i].name) : $(`#moreInfoCast`).append(`${data.cast[i].name}, &nbsp;`);
+                    }
+                }
+            }).then(() => {
+                if (user.hasOwnProperty('id')) {
+                    fetch(`https://daffy-tasteful-brownie.glitch.me/lists`)
+                        .then(response => response.json()).then((data) => {
+                        data.forEach(function (list) {
+                            if (user.createdLists.includes(list.id)) {
+                                let content = list.content;
+                                $('#addListList').append(`<li><button class="dropdown-item" id="listName_${list.id}" href="#" value="${list.id}">${list.list_name}</button></li>`);
+                                $(`#listName_${list.id}`).click(function () {
+                                    let newContent = {
+                                        id: parseInt($('#listAddBtn').val()),
+                                        type: searchType
+                                    };
+                                    content.push(newContent);
+                                    addMovieToList(content, $(`#listName_${list.id}`).val());
+                                })
+                            }
+                        })
+                    })
+                } else {
+                    $('#addListList').append(`<li class="dropdown-item">Login or create an account to begin adding items to lists!</li>`);
+                }
+            }).then($(`#moreInfoModal`).modal('show'));
     }
 
     function addMovieToList(data, listId) {
@@ -484,6 +492,32 @@ $(document).ready(() => {
                 .catch(error => console.error(error));
         })
             .catch(error => console.error(error));
+    }
+
+    function trendingContent(contentType) {
+        fetch(`https://api.themoviedb.org/3/trending/${contentType}/day?api_key=${apiKeyTMDP}`)
+            .then(response => response.json()).then((data) => {
+            return data;
+        })
+    }
+
+    function generateTrendingPosterCards(numberOfCards, container, contentType) {
+        fetch(`https://api.themoviedb.org/3/trending/${contentType}/day?api_key=${apiKeyTMDP}`)
+            .then(response => response.json()).then((showInfo) => {
+            for (let i = 0; i < numberOfCards; i++) {
+                $(container).append(`
+            <div class="p-0 m-2 mb-3 smallPoster"
+                <div>
+                    <img src="https://image.tmdb.org/t/p/original/${showInfo.results[i].poster_path}" class="w-100 h-100 rounded-3 divGlow" alt="Movie Poster" data-id="${showInfo.results[i].id}" data-type="${contentType}" id="smallPosterCard_${showInfo.results[i].id}_trending">
+                </div>
+            </div>
+            `)
+                $(`#smallPosterCard_${showInfo.results[i].id}_trending`).click(function () {
+                    hideBackToListButton();
+                    searchById($(this).data('type'), $(this).data('id'));
+                })
+            }
+        })
     }
 
     function generateSmallCards(showInfo, numberOfCards, container, showType, cardType) {
@@ -746,11 +780,11 @@ $(document).ready(() => {
                     .then((data) => {
                             if (content.type === 'movie') {
                                 $(`#listModalMovies`).append(`
-                                <img src="https://image.tmdb.org/t/p/original/${data.poster_path}" class="m-2 rounded-1" alt="Movie Poster" id="listContent_${content.id}" style="height: 20em">
+                                <img src="https://image.tmdb.org/t/p/original/${data.poster_path}" class="m-2 rounded-3" alt="Movie Poster" id="listContent_${content.id}" style="height: 20em">
                             `)
                             } else {
                                 $(`#listModalMovies`).append(`
-                                <img src="https://image.tmdb.org/t/p/original/${data.poster_path}" class="m-2 rounded-1" alt="Movie Poster" id="listContent_${content.id}" style="height: 20em">
+                                <img src="https://image.tmdb.org/t/p/original/${data.poster_path}" class="m-2 rounded-3" alt="Movie Poster" id="listContent_${content.id}" style="height: 20em">
                             `)
                             }
                             $(`#listContent_${content.id}`).click(function () {
@@ -834,7 +868,7 @@ $(document).ready(() => {
                     })
                 })
             }
-        }).then(setTimeout(function() {
+        }).then(setTimeout(function () {
             $(`#listModal`).modal('show');
         }, 500));
     }
@@ -887,7 +921,6 @@ $(document).ready(() => {
             updatedLikedList.likedLists = updatedLikedList.likedLists.filter(function (list) {
                 return list !== $(`#listModal`).data('data-list-id');
             })
-            console.log(updatedLikedList);
             const url = `https://wave-kaput-giant.glitch.me/users/${user.id}`;
             const options = {
                 method: 'PATCH',
@@ -1035,6 +1068,7 @@ $(document).ready(() => {
                     $(`.loggedInDropdown`).removeClass('d-none');
                     $(`#createNewListButton`).removeClass('disabled');
                     $('#incorrectPassword').addClass('d-none');
+                    populateUserHomePage(userInfo[usernameIndex]);
                 } else {
                     $('#incorrectPassword').removeClass('d-none');
                 }
@@ -1047,9 +1081,21 @@ $(document).ready(() => {
 
     $(`#logoutButton`).click(() => logout());
 
+    function populateUserHomePage(userData) {
+        generateTrendingPosterCards(6, '#homePageUserMovieTrendingContainer', 'movie');
+        generateTrendingPosterCards(6, '#homePageUserTVTrendingContainer', 'tv');
+        $(`#homePageUserUsername`).html(userData.id);
+        $(`#homePage`).removeClass('d-none');
+        $(`#homePageWelcome`).addClass('d-none');
+        $(`#homePageUser`).removeClass('d-none');
+        $('#searchResults').addClass('d-none');
+        $('#listsPage').addClass('d-none');
+        $('#profilePage').addClass('d-none');
+        $('#discoverPage').addClass('d-none');
+    }
+
     function logout() {
         user = {};
-        $(`#userName`).html(``);
         $(`.loggedInDropdown`).addClass('d-none');
         $(`#loginSection`).removeClass('d-none');
         $(`#createNewListButton`).addClass('disabled');
@@ -1058,6 +1104,9 @@ $(document).ready(() => {
         $('#listsPage').addClass('d-none');
         $('#profilePage').addClass('d-none');
         $('#discoverPage').addClass('d-none');
+        $(`#userName`).html(`&nbsp;LOGIN`);
+        $(`#homePageWelcome`).removeClass('d-none');
+        $(`#homePageUser`).addClass('d-none');
     }
 
     $(`#submitNewAccount`).submit((e) => {
@@ -1074,11 +1123,9 @@ $(document).ready(() => {
             } else {
                 createAccount();
                 $(`#offcanvasAccountCreate`).offcanvas('hide');
-                // $('.loginDropdown').toggle();
                 setTimeout(() => {
                     login($('#accountCreateUsername').val(), $('#accountCreatePassword').val());
                     $(`#submitNewAccount`)[0].reset();
-                    // $('.loginDropdown').find('button.dropdown-toggle').dropdown('toggle')
                 }, 500);
             }
         })
@@ -1155,12 +1202,12 @@ $(document).ready(() => {
                     $('#profilePageLists').html("<h1 class='text-center'>No Lists Created</h1>")
                 }
             }).then(() => {
-                $('#homePage').addClass('d-none');
-                $('#searchResults').addClass('d-none');
-                $('#listsPage').addClass('d-none');
-                $('#discoverPage').addClass('d-none');
-                $('#profilePage').removeClass('d-none')
-                $(`#listModal`).modal('hide');
+            $('#homePage').addClass('d-none');
+            $('#searchResults').addClass('d-none');
+            $('#listsPage').addClass('d-none');
+            $('#discoverPage').addClass('d-none');
+            $('#profilePage').removeClass('d-none')
+            $(`#listModal`).modal('hide');
         })
     }
 
@@ -1675,12 +1722,7 @@ $(document).ready(() => {
 
 
 //TODOS:
-//
-// fix formatting if there are two directors for a movie
-//
-// make ability to edit lists
-//
-//
+
 // responseive!
 //
 //highlight movies already on list in list modal dropdown

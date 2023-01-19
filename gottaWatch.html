@@ -115,9 +115,53 @@
                     </button>
                 </div>
             </div>
-            <div class="d-flex justify-content-center col-12 text-center vh-100" id="userHomePage">
-                <h1 class="titleFont homeScreenText m-1">DISCOVER NEW SHOWS.</h1>
-            </div>
+            <div class="d-flex flex-column justify-content-center col-12 text-center d-none" id="homePageUser">
+                <h1 class="homeScreenText m-1 fw-bold">Welcome, <span id="homePageUserUsername"></span>. Here is what is
+                    going on at gottaWatch.</h1>
+                <div class="mt-5" id="homePageUserTrending">
+                    <div class="d-flex flex-column">
+                        <div class="d-flex justify-content-between">
+                            <h3 class="align-self-start fw-bold titleFont mb-0">TRENDING TODAY</h3>
+                            <div class="d-flex justify-content-center">
+                                <ul class="nav nav-pills mb-3 justify-content-center discoverContentButtons"
+                                    role="tablist">
+                                    <li class="nav-item m-1 mb-0" role="presentation">
+                                        <button class="btn btn-warning rounded-1 w-100 btn-sm active"
+                                                id="trendingMovieResultsTabButton" data-bs-toggle="pill"
+                                                data-bs-target="#trendingMovieResultsTab"
+                                                type="button" role="tab" aria-controls="pills-home"
+                                                aria-selected="true">Movies
+                                        </button>
+                                    </li>
+                                    <li class="nav-item m-1 mb-0" role="presentation">
+                                        <button class="btn btn-warning rounded-1 w-100 btn-sm"
+                                                id="trendingTVResultsTabButton"
+                                                data-bs-toggle="pill"
+                                                data-bs-target="#trendingTVResultsTab"
+                                                type="button" role="tab" aria-controls="pills-profile"
+                                                aria-selected="false">TV
+                                            Shows
+                                        </button>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <hr class="mt-1">
+                        <div class="tab-content">
+                            <div class="tab-pane fade show active" id="trendingMovieResultsTab" role="tabpanel"
+                                 tabindex="0">
+                                <div class="d-flex justify-content-around flex-wrap"
+                                     id="homePageUserMovieTrendingContainer"></div>
+                            </div>
+                            <div class="tab-pane fade" id="trendingTVResultsTab" role="tabpanel"
+                                 tabindex="0">
+                                <div class="d-flex justify-content-around flex-wrap" id="homePageUserTVTrendingContainer">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
         </section>
         <section class="d-none" id="discoverPage">
             <div>

@@ -73,6 +73,12 @@ body {
     color: #3bf281 !important;
 }
 
+.smallPoster {
+    /*height: 4em;*/
+    width: 15%;
+    cursor: pointer;
+}
+
 .cardFontSize {
     font-size: .85em;
 }

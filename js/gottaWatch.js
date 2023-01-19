@@ -1288,8 +1288,8 @@ $(document).ready(() => {
                     .then(response => response.json()).then((followedUser) => {
                     $(`#followedUserProfilePic_${sortedActivity[i].user}_${location}`).attr('src', `img/profilePictures/${followedUser.profilePic}.jpg`);
                     $(`#followedUserListsCreated_${sortedActivity[i].user}_${location}`).html(followedUser.createdLists.length);
-                    $(`#followedUserFollowers_${sortedActivity[i].user}`).html(followedUser.followers.length);
-                    $(`#followedUserFollowing_${sortedActivity[i].user}`).html(followedUser.following.length);
+                    $(`#followedUserFollowers_${sortedActivity[i].user}_${location}`).html(followedUser.followers.length);
+                    $(`#followedUserFollowing_${sortedActivity[i].user}_${location}`).html(followedUser.following.length);
                     if (followedUser.description.length > 100) {
                         $(`#userCard_desc_${sortedActivity[i].user}_${location}`).html(followedUser.description.slice(0, 100) + "...");
                     } else {
@@ -1419,11 +1419,13 @@ $(document).ready(() => {
         let sortedActivity = user.recentActivity.sort((a, b) => {
             return new Date(b.date).getTime() - new Date(a.date).getTime();
         })
+        console.log("pre-add", sortedActivity)
         if (sortedActivity.length === 15) {
             sortedActivity[15] = newActivity;
         } else {
             sortedActivity.push(newActivity);
         }
+        console.log("post-add", sortedActivity)
         return sortedActivity
     }
 

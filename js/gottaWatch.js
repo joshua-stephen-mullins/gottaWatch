@@ -502,6 +502,8 @@ $(document).ready(() => {
     }
 
     function generateTrendingPosterCards(numberOfCards, container, contentType) {
+        $(container).html('');
+        $(container).html('');
         fetch(`https://api.themoviedb.org/3/trending/${contentType}/day?api_key=${apiKeyTMDP}`)
             .then(response => response.json()).then((showInfo) => {
             for (let i = 0; i < numberOfCards; i++) {

@@ -995,51 +995,6 @@ $(document).ready(() => {
         })
     }
 
-    function genreIdToText(id) {
-        let genres = [
-            {id: 28, name: 'Action'},
-            {id: 12, name: 'Adventure'},
-            {id: 16, name: 'Animation'},
-            {id: 35, name: 'Comedy'},
-            {id: 80, name: 'Crime'},
-            {id: 99, name: 'Documentary'},
-            {id: 18, name: 'Drama'},
-            {id: 10751, name: 'Family'},
-            {id: 14, name: 'Fantasy'},
-            {id: 36, name: 'History'},
-            {id: 27, name: 'Horror'},
-            {id: 10402, name: 'Music'},
-            {id: 9648, name: 'Mystery'},
-            {id: 10749, name: 'Romance'},
-            {id: 878, name: 'Science Fiction'},
-            {id: 10770, name: 'TV Movie'},
-            {id: 53, name: 'Thriller'},
-            {id: 10752, name: 'War'},
-            {id: 37, name: 'Western'},
-            {id: 10759, name: 'Action & Adventure'},
-            {id: 16, name: 'Animation'},
-            {id: 35, name: 'Comedy'},
-            {id: 80, name: 'Crime'},
-            {id: 99, name: 'Documentary'},
-            {id: 18, name: 'Drama'},
-            {id: 10751, name: 'Family'},
-            {id: 10762, name: 'Kids'},
-            {id: 9648, name: 'Mystery'},
-            {id: 10763, name: 'News'},
-            {id: 10764, name: 'Reality'},
-            {id: 10765, name: 'Sci-Fi & Fantasy'},
-            {id: 10766, name: 'Soap'},
-            {id: 10767, name: 'Talk'},
-            {id: 10768, name: 'War & Politics'},
-            {id: 37, name: 'Western'}
-        ];
-        for (let i = 0; i < genres.length; i++) {
-            if (id === genres[i].id) {
-                return genres[i].name;
-            }
-        }
-    }
-
     $(`#loginSubmitButton`).click(function (e) {
         e.stopPropagation();
         $('#loginSubmit').submit((e) => {
@@ -1481,13 +1436,11 @@ $(document).ready(() => {
         let sortedActivity = user.recentActivity.sort((a, b) => {
             return new Date(b.date).getTime() - new Date(a.date).getTime();
         })
-        console.log("pre-add", sortedActivity)
         if (sortedActivity.length === 15) {
             sortedActivity[15] = newActivity;
         } else {
             sortedActivity.push(newActivity);
         }
-        console.log("post-add", sortedActivity)
         return sortedActivity
     }
 
@@ -1497,6 +1450,41 @@ $(document).ready(() => {
         $(`#editListModal`).data('data-list-id', listId);
         fetch(`https://daffy-tasteful-brownie.glitch.me/lists/${listId}`)
             .then(response => response.json()).then((list) => {
+            for (let i = 0; i < list.content.length; i++) {
+                fetch(`https://api.themoviedb.org/3/${list.content[i].type}/${list.content[i].id}?api_key=${apiKeyTMDP}&language=en-US`)
+                    .then(response => response.json())
+                    .then((data) => {
+                            if (list.content[i].type === 'movie') {
+                                $(`#editListModalMovies`).append(`
+                                <div class="rounded-3 m-2" data-id="${list.content[i].id}" data-type="${list.content[i].type}" id="editListContent_${list.content[i].id}">
+                                    <button class="editListDeleteButton btn-danger btn d-none"><i class="fa-solid fa-trash"></i></button>
+                                    <img src="https://image.tmdb.org/t/p/original/${data.poster_path}" class="rounded-2 editListContent" alt="Movie Poster" style="height: 20em">
+                                </div>
+                            `)
+                            } else {
+                                $(`#editListModalMovies`).append(`
+                                <div class="rounded-3 m-2" data-id="${list.content[i].id}" data-type="${list.content[i].type}" id="editListContent_${list.content[i].id}">
+                                    <button class="editListDeleteButton btn-danger btn d-none"><i class="fa-solid fa-trash"></i></button>
+                                    <img src="https://image.tmdb.org/t/p/original/${data.poster_path}" class="rounded-2 editListContent" alt="Movie Poster" style="height: 20em">
+                                </div>
+                            `)
+                            }
+                            $(`#editListContent_${list.content[i].id}`).hover(
+                                function () {
+                                    $(`#editListContent_${list.content[i].id}`).children().addClass('border border-danger border-5');
+                                },
+                                function () {
+                                    $(`#editListContent_${list.content[i].id}`).children().removeClass('border border-danger border-5');
+                                }
+                            ).click(function(){
+                                $(`#editListContent_${list.content[i].id}`).children(":button").toggleClass('d-none');
+                            });
+                            $('.editListDeleteButton').click(function(){
+                                $(this).parent().remove();
+                            })
+                        }
+                    )
+            }
             $(`#editListModalTitle`).val(list.list_name);
             $(`#editListModalCreator`).html(list.creator);
             $(`#editListModalLastUpdated`).html(`Updated ${time_ago(list.last_edited)} | `)
@@ -1545,56 +1533,7 @@ $(document).ready(() => {
                     })
                 })
             }
-            // list.content.forEach((content) => {
-            //     fetch(`https://api.themoviedb.org/3/${content.type}/${content.id}?api_key=${apiKeyTMDP}&language=en-US`)
-            //         .then(response => response.json())
-            //         .then((data) => {
-            //                 if (content.type === 'movie') {
-            //                     $(`#editListModalMovies`).append(`
-            //                     <div class="m-2" data-id="${content.id}" data-type="${content.type}" id="editListContent_${content.id}"><img src="https://image.tmdb.org/t/p/original/${data.poster_path}" class="rounded-1 editListContent" alt="Movie Poster" style="height: 20em"></div>
-            //                 `)
-            //                 } else {
-            //                     $(`#editListModalMovies`).append(`
-            //                     <div class="m-2" data-id="${content.id}" data-type="${content.type}" id="editListContent_${content.id}"><img src="https://image.tmdb.org/t/p/original/${data.poster_path}" class="rounded-1 editListContent" alt="Movie Poster" style="height: 20em"></div>
-            //                 `)
-            //                 }
-            //                 $(`#editListContent_${content.id}`).hover(
-            //                     function () {
-            //                         $(`#editListContent_${content.id}`).addClass('border rounded border-danger border-5');
-            //                     },
-            //                     function () {
-            //                         $(`#editListContent_${content.id}`).removeClass('border rounded border-danger border-5');
-            //                     }
-            //                 );
-            //             }
-            //         )
-            // })
-            for (let i = 0; i < list.content.length; i++) {
-                fetch(`https://api.themoviedb.org/3/${list.content[i].type}/${list.content[i].id}?api_key=${apiKeyTMDP}&language=en-US`)
-                    .then(response => response.json())
-                    .then((data) => {
-                            if (list.content[i].type === 'movie') {
-                                $(`#editListModalMovies`).append(`
-                                <div class="m-2" data-id="${list.content[i].id}" data-type="${list.content[i].type}" id="editListContent_${list.content[i].id}"><img src="https://image.tmdb.org/t/p/original/${data.poster_path}" class="rounded-1 editListContent" alt="Movie Poster" style="height: 20em"></div>
-                            `)
-                            } else {
-                                $(`#editListModalMovies`).append(`
-                                <div class="m-2" data-id="${list.content[i].id}" data-type="${list.content[i].type}" id="editListContent_${list.content[i].id}"><img src="https://image.tmdb.org/t/p/original/${data.poster_path}" class="rounded-1 editListContent" alt="Movie Poster" style="height: 20em"></div>
-                            `)
-                            }
-                            $(`#editListContent_${list.content[i].id}`).hover(
-                                function () {
-                                    $(`#editListContent_${list.content[i].id}`).addClass('border rounded border-danger border-5');
-                                },
-                                function () {
-                                    $(`#editListContent_${list.content[i].id}`).removeClass('border rounded border-danger border-5');
-                                }
-                            );
-                        }
-                    )
-                    .then($(`#editListModal`).modal('show'));
-            }
-        })
+        }).then($(`#editListModal`).modal('show'));
     }
 
     $('.sortable-list').sortable({
@@ -1614,7 +1553,6 @@ $(document).ready(() => {
         $('#editListModalMovies').sortable('toArray').forEach((item) => {
             content.push({id: $(`#${item}`).data('id'), type: $(`#${item}`).data('type')})
         })
-        console.log("function", content);
         return content;
     }
 
@@ -1717,6 +1655,51 @@ $(document).ready(() => {
                 lists[randomIndex], lists[currentIndex]];
         }
         return lists;
+    }
+
+    function genreIdToText(id) {
+        let genres = [
+            {id: 28, name: 'Action'},
+            {id: 12, name: 'Adventure'},
+            {id: 16, name: 'Animation'},
+            {id: 35, name: 'Comedy'},
+            {id: 80, name: 'Crime'},
+            {id: 99, name: 'Documentary'},
+            {id: 18, name: 'Drama'},
+            {id: 10751, name: 'Family'},
+            {id: 14, name: 'Fantasy'},
+            {id: 36, name: 'History'},
+            {id: 27, name: 'Horror'},
+            {id: 10402, name: 'Music'},
+            {id: 9648, name: 'Mystery'},
+            {id: 10749, name: 'Romance'},
+            {id: 878, name: 'Science Fiction'},
+            {id: 10770, name: 'TV Movie'},
+            {id: 53, name: 'Thriller'},
+            {id: 10752, name: 'War'},
+            {id: 37, name: 'Western'},
+            {id: 10759, name: 'Action & Adventure'},
+            {id: 16, name: 'Animation'},
+            {id: 35, name: 'Comedy'},
+            {id: 80, name: 'Crime'},
+            {id: 99, name: 'Documentary'},
+            {id: 18, name: 'Drama'},
+            {id: 10751, name: 'Family'},
+            {id: 10762, name: 'Kids'},
+            {id: 9648, name: 'Mystery'},
+            {id: 10763, name: 'News'},
+            {id: 10764, name: 'Reality'},
+            {id: 10765, name: 'Sci-Fi & Fantasy'},
+            {id: 10766, name: 'Soap'},
+            {id: 10767, name: 'Talk'},
+            {id: 10768, name: 'War & Politics'},
+            {id: 37, name: 'Western'}
+        ];
+        for (let i = 0; i < genres.length; i++) {
+            if (id === genres[i].id) {
+                return genres[i].name;
+            }
+        }
     }
 })
 

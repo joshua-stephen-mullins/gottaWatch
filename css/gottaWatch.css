@@ -1,21 +1,29 @@
+colors {
+    color: #00887A;
+    color: #FFCCBC;
+    color: #FFFFFF;
+    color: #D3E3FC;
+    color: #77A6F7;
+}
+
 .titleFont {
-    font-family: 'Audiowide', cursive;
-    text-shadow: black 5px 0 10px;
+    /*font-family: 'Audiowide', cursive;*/
+    /*text-shadow: black 5px 0 10px;*/
 }
 
 .homeScreenText {
-    font-size: 4em;
-    text-shadow: black 5px 0 10px;
+    /*font-size: 4em;*/
+    /*text-shadow: black 5px 0 10px;*/
 }
 
 #getStartedButton {
-    text-shadow: black 5px 0 10px;
-    box-shadow: black 5px 0 10px;
+    /*text-shadow: black 5px 0 10px;*/
+    /*box-shadow: black 5px 0 10px;*/
 }
 
 body {
-    font-family: 'Lekton', sans-serif;
-    background-color: black;
+    /*font-family: 'Lekton', sans-serif;*/
+    /*background-color: black;*/
 }
 
 .profilePicture {
@@ -37,11 +45,11 @@ body {
     height: 12em;
     border: black 1px solid;
     border-radius: 50%;
-    box-shadow: black 0 0 20px;
+    /*box-shadow: black 0 0 20px;*/
 }
 
 .bg-custom1 {
-    background-color: #0c204c;
+    /*background-color: #0c204c;*/
 }
 
 .smallCard {
@@ -64,13 +72,13 @@ body {
 }
 
 .divGlow {
-    box-shadow: black 0 0 20px;
+    /*box-shadow: black 0 0 20px;*/
 }
 
 .listTitle {
-    text-shadow: black 0 0 15px !important;
-    font-weight: bold !important;
-    color: #3bf281 !important;
+    /*text-shadow: black 0 0 15px !important;*/
+    /*font-weight: bold !important;*/
+    /*color: #3bf281 !important;*/
 }
 
 .smallPoster {

@@ -6,9 +6,9 @@
     <title>gotta Watch</title>
     <link rel="icon" href="img/gotta-watch-website-favicon-color.png">
     <!--    bootswatch-->
-    <link rel="stylesheet" href="css/vapor-bootstrap.css">
+<!--    <link rel="stylesheet" href="css/vapor-bootstrap.css">-->
     <!--    bootstrap-->
-<!--        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">-->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
     <!--  custom CSS-->
     <link rel="stylesheet" href="css/gottaWatch.css">
     <!--jquery ui-->
@@ -25,9 +25,9 @@
 <body>
 <!--NAVBAR-->
 <main class="row justify-content-center p-0 m-0" id="mainPageBody">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg">
         <div class="container-fluid">
-            <img src="img/logo-no-background.png" alt="gotta Watch logo" id="navbarLogo">
+<!--            <img src="img/logo-no-background.png" alt="gotta Watch logo" id="navbarLogo">-->
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01"
                     aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -160,6 +160,8 @@
                         </div>
                     </div>
                 </div>
+                <h3 class="align-self-start fw-bold titleFont mb-0">FRIENDS ACTIVITY</h3>
+                <hr class="mt-1">
                 <div id="homePageUserFeed">
 
                 </div>
@@ -431,7 +433,7 @@
         <section class="row justify-content-center d-none" id="searchResults">
             <div class="col-11 input-group m-3">
                 <input class="form-control form-control-lg" type="text"
-                       placeholder="Search Movies, TV Shows, and People" id="movieSearchInput">
+                       placeholder="Search Movies and TV Shows" id="movieSearchInput">
                 <button class="btn btn-outline-secondary" type="button" id="movieSearchInputButton"><i
                         class="fa-solid fa-magnifying-glass"></i></button>
             </div>
@@ -452,11 +454,11 @@
                             <label class="btn btn-lg btn-primary filterBtn" for="filterTV">TV Shows <span
                                     class="badge rounded-pill bg-success" id="numberTVResults"></span>
                             </label>
-                            <input class="btn-check" type="radio" name="filterRadio" id="filterPeople"
-                                   autocomplete="off" value="person">
-                            <label class="btn btn-lg btn-primary filterBtn" for="filterPeople">People <span
-                                    class="badge rounded-pill bg-success" id="numberPeopleResults"></span>
-                            </label>
+<!--                            <input class="btn-check" type="radio" name="filterRadio" id="filterPeople"-->
+<!--                                   autocomplete="off" value="person">-->
+<!--                            <label class="btn btn-lg btn-primary filterBtn" for="filterPeople">People <span-->
+<!--                                    class="badge rounded-pill bg-success" id="numberPeopleResults"></span>-->
+<!--                            </label>-->
                         </div>
                     </div>
                 </div>
@@ -549,7 +551,7 @@
             <div class="row justify-content-evenly mb-3" id="profilePageContent">
                 <div class="row justify-content-center col-7">
                     <h1 class="text-center titleFont">ACTIVITY</h1>
-                    <div class="bg-dark p-3 rounded-3 divGlow" id="profilePageActivity">
+                    <div class="p-3 rounded-3 divGlow" id="profilePageActivity">
                     </div>
                 </div>
                 <div class="row justify-content-center col-5 align-content-start">
@@ -565,7 +567,7 @@
 
 <div class="modal modal-xl fade" id="moreInfoModal">
     <div class="modal-dialog modal-dialog-centered" id="moreInfoModalDialog" role="document">
-        <div class="modal-content justify-content-around bg-dark rounded-3">
+        <div class="modal-content justify-content-around rounded-3">
             <div class="modal-header">
                 <button type="button" class="btn btn-danger" id="backToListButton" data-bs-toggle="modal" data-bs-target="#listModal">
                     <i class="fa-solid fa-left-long"></i> BACK TO LIST
@@ -604,7 +606,7 @@
 <!--list modal-->
 <div class="modal modal-xl fade" id="listModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog" id="listModalDialog">
-        <div class="row modal-content m-0 p-0 bg-dark rounded-3">
+        <div class="row modal-content m-0 p-0 rounded-3">
             <div class="col-12 modal-header">
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
                         aria-label="Close"></button>
@@ -658,7 +660,7 @@
 <div class="modal modal-xl fade" id="editListModal" tabindex="-1"
      aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" id="editListModalDialog">
-        <div class="row modal-content m-0 p-0 bg-dark rounded-3">
+        <div class="row modal-content m-0 p-0 rounded-3">
             <div class="col-12 modal-header">
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
                         aria-label="Close"></button>

@@ -295,7 +295,6 @@ $(document).ready(() => {
     }
 
     function moreInfo(data, searchType, id) {
-        console.log(data);
         $(`#moreInfoOverview`).html('');
         $('#moreInfoGenre').html('');
         $('#moreInfoCast').html('');
@@ -315,7 +314,6 @@ $(document).ready(() => {
         if (data.hasOwnProperty('release_date')) {
             $(`#moreInfoYear`).html("(" + data.release_date.slice(0, 4) + ")")
         } else if (data.hasOwnProperty('last_air_date') && (data.last_air_date !== null)) {
-            console.log(data);
             $(`#moreInfoYear`).html("(" + data.last_air_date.slice(0, 4) + ")");
         }
         $('#listAddBtn').val(data.id);
@@ -331,83 +329,83 @@ $(document).ready(() => {
         } else if ((data.hasOwnProperty('next_episode_to_air')) && (data.next_episode_to_air !== null) && (toHoursAndMinutes(data.next_episode_to_air.runtime) !== '0m')) {
             $('#moreInfoRuntime').html(toHoursAndMinutes(data.next_episode_to_air.runtime));
         }
-            if (searchType === 'movie') {
-                $('#moreInfoRating').html('');
-                fetch(`https://api.themoviedb.org/3/movie/${id}/release_dates?api_key=${apiKeyTMDP}`)
+        if (searchType === 'movie') {
+            $('#moreInfoRating').html('');
+            fetch(`https://api.themoviedb.org/3/movie/${id}/release_dates?api_key=${apiKeyTMDP}`)
+                .then(response => response.json()).then((data) => {
+                data.results.forEach(function (country) {
+                    if (country.iso_3166_1 === "US") {
+                        country.release_dates.forEach(function (result) {
+                            if (result.certification !== '') {
+                                $('#moreInfoRating').html(result.certification);
+                            }
+                        })
+                    }
+                })
+            })
+        } else {
+            $('#moreInfoRating').html('');
+            fetch(`https://api.themoviedb.org/3/tv/${id}/content_ratings?api_key=${apiKeyTMDP}&language=en-US`)
+                .then(response => response.json()).then((data) => {
+                data.results.forEach(function (country) {
+                    if (country.iso_3166_1 === "US") {
+                        $('#moreInfoRating').html(country.rating);
+                    }
+                })
+            })
+        }
+        fetch(`https://api.themoviedb.org/3/${searchType}/${id}/credits?api_key=${apiKeyTMDP}&language=en-US`)
+            .then(response => response.json()).then((data) => {
+            let directors = [];
+            data.crew.forEach(function (person) {
+                if (person.job === "Director") {
+                    directors.push(person);
+                }
+            })
+            if (directors.length === 1) {
+                $(`#moreInfoDirector`).append(`Director: <span class="fw-normal">${directors[0].name}</span>`)
+            } else if (directors.length > 1) {
+                $(`#moreInfoDirector`).html(`Directors: <span class="fw-normal">${directors[0].name}</span>`);
+                for (let d = 1; d < directors.length; d++) {
+                    $(`#moreInfoDirector`).append(`<span class="fw-normal">, ${directors[d].name}</span>`)
+                }
+            }
+            if (data.cast.length > 5) {
+                for (let i = 0; i < 5; i++) {
+                    $(`#moreInfoCastElement`).removeClass('d-none');
+                    (data.cast[i] === data.cast[4]) ? $(`#moreInfoCast`).append(data.cast[i].name) : $(`#moreInfoCast`).append(`${data.cast[i].name}, &nbsp;`);
+                }
+            } else if (data.cast.length === 0) {
+                $(`#moreInfoCastElement`).addClass('d-none');
+            } else {
+                for (let i = 0; i < data.cast.length; i++) {
+                    $(`#moreInfoCastElement`).removeClass('d-none');
+                    (data.cast.indexOf(data.cast[i]) === data.cast.length - 1) ? $(`#moreInfoCast`).append(data.cast[i].name) : $(`#moreInfoCast`).append(`${data.cast[i].name}, &nbsp;`);
+                }
+            }
+        }).then(() => {
+            if (user.hasOwnProperty('id')) {
+                fetch(`https://daffy-tasteful-brownie.glitch.me/lists`)
                     .then(response => response.json()).then((data) => {
-                    data.results.forEach(function (country) {
-                        if (country.iso_3166_1 === "US") {
-                            country.release_dates.forEach(function (result) {
-                                if (result.certification !== '') {
-                                    $('#moreInfoRating').html(result.certification);
-                                }
+                    data.forEach(function (list) {
+                        if (user.createdLists.includes(list.id)) {
+                            let content = list.content;
+                            $('#addListList').append(`<li><button class="dropdown-item" id="listName_${list.id}" href="#" value="${list.id}">${list.list_name}</button></li>`);
+                            $(`#listName_${list.id}`).click(function () {
+                                let newContent = {
+                                    id: parseInt($('#listAddBtn').val()),
+                                    type: searchType
+                                };
+                                content.push(newContent);
+                                addMovieToList(content, $(`#listName_${list.id}`).val());
                             })
                         }
                     })
                 })
             } else {
-                $('#moreInfoRating').html('');
-                fetch(`https://api.themoviedb.org/3/tv/${id}/content_ratings?api_key=${apiKeyTMDP}&language=en-US`)
-                    .then(response => response.json()).then((data) => {
-                    data.results.forEach(function (country) {
-                        if (country.iso_3166_1 === "US") {
-                            $('#moreInfoRating').html(country.rating);
-                        }
-                    })
-                })
+                $('#addListList').append(`<li class="dropdown-item">Login or create an account to begin adding items to lists!</li>`);
             }
-            fetch(`https://api.themoviedb.org/3/${searchType}/${id}/credits?api_key=${apiKeyTMDP}&language=en-US`)
-                .then(response => response.json()).then((data) => {
-                let directors = [];
-                data.crew.forEach(function (person) {
-                    if (person.job === "Director") {
-                        directors.push(person);
-                    }
-                })
-                if (directors.length === 1) {
-                    $(`#moreInfoDirector`).append(`Director: <span class="fw-normal">${directors[0].name}</span>`)
-                } else if (directors.length > 1) {
-                    $(`#moreInfoDirector`).html(`Directors: <span class="fw-normal">${directors[0].name}</span>`);
-                    for (let d = 1; d < directors.length; d++) {
-                        $(`#moreInfoDirector`).append(`<span class="fw-normal">, ${directors[d].name}</span>`)
-                    }
-                }
-                if (data.cast.length > 5) {
-                    for (let i = 0; i < 5; i++) {
-                        $(`#moreInfoCastElement`).removeClass('d-none');
-                        (data.cast[i] === data.cast[4]) ? $(`#moreInfoCast`).append(data.cast[i].name) : $(`#moreInfoCast`).append(`${data.cast[i].name}, &nbsp;`);
-                    }
-                } else if (data.cast.length === 0) {
-                    $(`#moreInfoCastElement`).addClass('d-none');
-                } else {
-                    for (let i = 0; i < data.cast.length; i++) {
-                        $(`#moreInfoCastElement`).removeClass('d-none');
-                        (data.cast.indexOf(data.cast[i]) === data.cast.length - 1) ? $(`#moreInfoCast`).append(data.cast[i].name) : $(`#moreInfoCast`).append(`${data.cast[i].name}, &nbsp;`);
-                    }
-                }
-            }).then(() => {
-                if (user.hasOwnProperty('id')) {
-                    fetch(`https://daffy-tasteful-brownie.glitch.me/lists`)
-                        .then(response => response.json()).then((data) => {
-                        data.forEach(function (list) {
-                            if (user.createdLists.includes(list.id)) {
-                                let content = list.content;
-                                $('#addListList').append(`<li><button class="dropdown-item" id="listName_${list.id}" href="#" value="${list.id}">${list.list_name}</button></li>`);
-                                $(`#listName_${list.id}`).click(function () {
-                                    let newContent = {
-                                        id: parseInt($('#listAddBtn').val()),
-                                        type: searchType
-                                    };
-                                    content.push(newContent);
-                                    addMovieToList(content, $(`#listName_${list.id}`).val());
-                                })
-                            }
-                        })
-                    })
-                } else {
-                    $('#addListList').append(`<li class="dropdown-item">Login or create an account to begin adding items to lists!</li>`);
-                }
-            }).then($(`#moreInfoModal`).modal('show'));
+        }).then($(`#moreInfoModal`).modal('show'));
     }
 
     function addMovieToList(data, listId) {
@@ -1041,6 +1039,7 @@ $(document).ready(() => {
     function populateUserHomePage(userData) {
         generateTrendingPosterCards(6, '#homePageUserMovieTrendingContainer', 'movie');
         generateTrendingPosterCards(6, '#homePageUserTVTrendingContainer', 'tv');
+        populateUserFeed();
         $(`#homePageUserUsername`).html(userData.id);
         $(`#homePage`).removeClass('d-none');
         $(`#homePageWelcome`).addClass('d-none');
@@ -1124,15 +1123,13 @@ $(document).ready(() => {
                 $(`#profilePageProfilePicture`).attr('src', `img/profilePictures/${profileUser.profilePic}.jpg`);
                 $(`#profilePageUsername`).html(`${profileUser.id}`);
                 let dateCreated = new Date(profileUser.userCreated);
-                for (let i = 0; i < profileUser.followers; i++) {
-                }
                 $(`#profilePageMemberDate`).html(dateCreated.toDateString().substring(4, dateCreated.toDateString().length));
                 $(`#profilePageListsCreated`).html(`${profileUser.createdLists.length}`);
                 $(`#profilePageFollowers`).html(`${profileUser.followers.length}`);
                 $(`#profilePageFollowing`).html(`${profileUser.following.length}`);
                 $(`#profilePageUserDesc`).html(`${profileUser.description}`);
                 $('#profilePageActivity').html('');
-                populateProfileRecentActivity(profileUser, "profilePageActivity");
+                populateRecentActivity(profileUser, "profilePageActivity");
                 if (user.id === username) {
                     $(`#profilePageEditButton`).removeClass('d-none');
                     $(`#profilePageFollowButton`).addClass('d-none');
@@ -1173,21 +1170,184 @@ $(document).ready(() => {
         $('#listModal').modal('hide');
     })
 
-    function populateProfileRecentActivity(userData, location) {
-        let sortedActivity = userData.recentActivity.sort((a, b) => {
-            return new Date(b.date).getTime() - new Date(a.date).getTime();
-        })
+    function populateUserFeed() {
+        let allActivity = [];
         let allLists = allFeaturedLists;
         allPopularLists.forEach((list) => {
             allLists.push(list);
         })
-        for (let i = 0; i < sortedActivity.length; i++) {
-            let activitiedList = '';
-            activitiedList = allLists.filter((list) => {
-                return sortedActivity[i].listId === list.id
+        fetch(`https://wave-kaput-giant.glitch.me/users/`)
+            .then(response => response.json())
+            .then((users) => {
+                users.forEach(function (siteUser) {
+                    if (user.following.includes(siteUser.id)) {
+                        siteUser.recentActivity.forEach((activity) => {
+                            allActivity.push({activity, userId: siteUser.id});
+                        })
+                    }
+                })
+            }).then(() => {
+            let sortedActivity = allActivity.sort((a, b) => {
+                return new Date(b.date).getTime() - new Date(a.date).getTime();
             })
-            if (sortedActivity[i].type === "comment") {
-                $(`#${location}`).append(`
+            console.log(sortedActivity);
+            sortedActivity.forEach((currentActivity) => {
+                let activitiedList = allLists.filter((list) => {
+                    return currentActivity.activity.listId === list.id;
+                })
+                fetch(`https://wave-kaput-giant.glitch.me/users/${currentActivity.userId}`)
+                    .then(response => response.json())
+                    .then((userData) => {
+                        if (currentActivity.activity.type === "comment") {
+                            $(`#homePageUserFeed`).append(`
+                                <div class="row justify-content-center">
+                                    <p class="text-muted">${time_ago(currentActivity.activity.date)}</p>
+                                    <p>${userData.id} commented on <a class="profilePageRecentActivityListLink listTitle" data-id="${activitiedList[0].id}">${activitiedList[0].list_name}</a></p>
+                                    <div class="row col-8 p-0 m-0 bg-info p-3 rounded-3 divGlow">
+                                        <div class="col-3 listComment" data-commenterId="${userData.id}">
+                                            <img class="profilePictureListComment comment_${userData.id}" src="img/profilePictures/${userData.profilePic}.jpg" alt="Profile Picture">
+                                            <div class="d-flex flex-column justify-content-center">
+                                                <p class="mb-1" ${userData.id}</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-8">
+                                            <p>${currentActivity.activity.comment}</p>
+                                        </div>
+                                    </div>
+                                    <hr class="mt-4 col-10 text-center">
+                                </div>
+                                `)
+                        } else if (currentActivity.activity.type === "like") {
+                            $(`#homePageUserFeed`).append(`
+                                <div class="row justify-content-center">
+                                    <p class="text-muted">${time_ago(currentActivity.activity.date)}</p>
+                                    <p>${userData.id} liked <a class="profilePageRecentActivityListLink listTitle" data-id="${currentActivity.activity.listId}">${activitiedList[0].list_name}</a></p>
+                                    <div class="row justify-content-center col-8 p-0 m-0 bg-info p-3 rounded-3 divGlow">
+                                        <div>
+                                            <h5 class="listTitle mb-1">${activitiedList[0].list_name}</h5>
+                                            <p class="mb-2 cardFontSize"><img class="profilePicture" src="img/profilePictures/default.jpg" alt="Profile Picture" id="popularListProfilePicture_${activitiedList[0].id}_homePageUserFeed_${activitiedList[0].creator}"> ${activitiedList[0].creator}  |  <span id="popularListLastEdited_${activitiedList[0].id}_homePageUserFeed">${time_ago(activitiedList[0].last_edited)}</span> | <i class="fa-solid fa-heart"></i> <span id="listCardLikes_${activitiedList[0].id}_homePageUserFeed">${activitiedList[0].likes}</span>  |  <i class="fa-solid fa-comment"></i> <span id="listCardComments_${activitiedList[0].id}_homePageUserFeed">${activitiedList[0].comments.length}</span></p>
+                                            <p class="mb-0 cardFontSize" id="listCard_desc${activitiedList[0].id}_homePageUserFeed"></p>
+                                        </div>
+                                    </div>
+                                    <hr class="mt-4 col-10 text-center">
+                                </div>
+                                `)
+                            fetch(`https://wave-kaput-giant.glitch.me/users/${activitiedList[0].creator}`)
+                                .then(response => response.json())
+                                .then((creator) => {
+                                    $(`#popularListProfilePicture_${activitiedList[0].id}_homePageUserFeed_${activitiedList[0].creator}`).attr('src', `img/profilePictures/${creator.profilePic}.jpg`);
+                                })
+                            if (activitiedList[0].list_desc.length > 100) {
+                                $(`#listCard_desc${activitiedList[0].id}_homePageUserFeed`).html(activitiedList[0].list_desc.slice(0, 100) + "...");
+                            } else {
+                                $(`#listCard_desc${activitiedList[0].id}_homePageUserFeed`).html(activitiedList[0].list_desc);
+                            }
+                        } else if (currentActivity.activity.type === "listAdd") {
+                            $(`#homePageUserFeed`).append(`
+                                <div class="row justify-content-center">
+                                    <p class="text-muted">${time_ago(currentActivity.activity.date)}</p>
+                                    <p>${userData.id} added <span id="profilePageListAddName_${activitiedList[0].id}_homePageUserFeed_${currentActivity.activity.content.id}"></span> to <a class="profilePageRecentActivityListLink listTitle" data-id="${currentActivity.activity.listId}">${activitiedList[0].list_name}</a></p>
+                                    <div class="row justify-content-center p-0 m-0">
+                                        <div class="col-4 bg-info p-3 rounded-3 divGlow">
+                                            <img class="w-100" src="" alt="" id="profilePageActivityListAdd_${currentActivity.activity.content.id}">
+                                        </div>
+                                    </div>
+                                    <hr class="mt-4 col-10 text-center">
+                                </div>
+                                `)
+                                            fetch(`https://api.themoviedb.org/3/${currentActivity.activity.content.type}/${currentActivity.activity.content.id}?api_key=${apiKeyTMDP}&language=en-US`)
+                                                .then(response => response.json()).then((data) => {
+                                                if (data.hasOwnProperty("title")) {
+                                                    $(`#profilePageListAddName_${activitiedList[0].id}_homePageUserFeed_${currentActivity.activity.content.id}`).html(data.title)
+                                                } else {
+                                                    $(`#profilePageListAddName_${activitiedList[0].id}_homePageUserFeed_${currentActivity.activity.content.id}`).html(data.name)
+                                                }
+                                                $(`#profilePageActivityListAdd_${currentActivity.activity.content.id}`).attr('src', `https://image.tmdb.org/t/p/original/${data.poster_path}`)
+                                            })
+                                        } else if (currentActivity.activity.type === "newList") {
+                                            $(`#homePageUserFeed`).append(`
+                                <div class="row justify-content-center">
+                                    <p class="text-muted">${time_ago(currentActivity.activity.date)}</p>
+                                    <p>${userData.id} created the list: <a class="profilePageRecentActivityListLink listTitle" data-id="${currentActivity.activity.listId}">${activitiedList[0].list_name}</a></p>
+                                    <div class="row justify-content-center col-8 p-0 m-0 bg-info p-3 rounded-3 divGlow">
+                                        <div>
+                                            <h5 class="listTitle mb-1">${activitiedList[0].list_name}</h5>
+                                            <p class="mb-2 cardFontSize"><img class="profilePicture" src="img/profilePictures/${userData.profilePic}.jpg" alt="Profile Picture" id="popularListProfilePicture_${activitiedList[0].id}_homePageUserFeed_${activitiedList[0].creator}"> ${activitiedList[0].creator}  |  <span id="popularListLastEdited_${activitiedList[0].id}_homePageUserFeed">${time_ago(activitiedList[0].last_edited)}</span> | <i class="fa-solid fa-heart"></i> <span id="listCardLikes_${activitiedList[0].id}_homePageUserFeed">${activitiedList[0].likes}</span>  |  <i class="fa-solid fa-comment"></i> <span id="listCardComments_${activitiedList[0].id}_homePageUserFeed">${activitiedList[0].comments.length}</span></p>
+                                            <p class="mb-0 cardFontSize" id="listCard_desc${activitiedList[0].id}_homePageUserFeed"></p>
+                                        </div>
+                                    </div>
+                                    <hr class="mt-4 col-10 text-center">
+                                </div>
+                                `)
+                            if (activitiedList[0].list_desc.length > 100) {
+                                $(`#listCard_desc${activitiedList[0].id}_homePageUserFeed`).html(activitiedList[0].list_desc.slice(0, 100) + "...");
+                            } else {
+                                $(`#listCard_desc${activitiedList[0].id}_homePageUserFeed`).html(activitiedList[0].list_desc);
+                            }
+                        } else if (currentActivity.activity.type === "follow") {
+                            $(`#homePageUserFeed`).append(`
+                                <div class="row justify-content-center">
+                                    <p class="text-muted">${time_ago(currentActivity.activity.date)}</p>
+                                    <p>${userData.id} began following ${currentActivity.activity.user}</p>
+                                    <div class="row justify-content-center col-8 p-0 m-0 bg-info p-3 rounded-3 divGlow">
+                                        <div class="row justify-content-center">
+                                            <div class="col-3">
+                                                <img class="profilePictureListComment p-0" src="img/profilePictures/default.jpg" alt="Profile Picture" id="followedUserProfilePic_${currentActivity.activity.user}_homePageUserFeed">
+                                            </div>
+                                            <div class="row col-9">
+                                                <h5 class="mb-1">${currentActivity.activity.user}</h5>
+                                                <div class="col-4 d-flex flex-column align-content-end align-items-center">
+                                                    <h4 class="mb-0 text-center cardFontSize" id="followedUserListsCreated_${currentActivity.activity.user}_homePageUserFeed">0</h4>
+                                                    <p class="text-muted cardFontSize">Lists</p>
+                                                </div>
+                                                <div class="col-4 d-flex flex-column align-content-end align-items-center">
+                                                    <h4 class="mb-0 text-center cardFontSize" id="followedUserFollowers_${currentActivity.activity.user}_homePageUserFeed">0</h4>
+                                                    <p class="text-muted cardFontSize">Followers</p>
+                                                </div>
+                                                <div class="col-4 d-flex flex-column align-content-end align-items-center">
+                                                    <h4 class="mb-0 text-center cardFontSize" id="followedUserFollowing_${currentActivity.activity.user}_homePageUserFeed">0</h4>
+                                                    <p class="text-muted cardFontSize">Following</p>
+                                                </div>
+                                                <p class="mb-0 cardFontSize" id="userCard_desc_${currentActivity.activity.user}_homePageUserFeed"></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr class="mt-4 col-10 text-center">
+                                </div>
+                                `)
+                            fetch(`https://wave-kaput-giant.glitch.me/users/${currentActivity.activity.user}`)
+                                .then(response => response.json()).then((followedUser) => {
+                                $(`#followedUserProfilePic_${currentActivity.activity.user}_homePageUserFeed`).attr('src', `img/profilePictures/${followedUser.profilePic}.jpg`);
+                                $(`#followedUserListsCreated_${currentActivity.activity.user}_homePageUserFeed`).html(followedUser.createdLists.length);
+                                $(`#followedUserFollowers_${currentActivity.activity.user}_homePageUserFeed`).html(followedUser.followers.length);
+                                $(`#followedUserFollowing_${currentActivity.activity.user}_homePageUserFeed`).html(followedUser.following.length);
+                                if (followedUser.description.length > 100) {
+                                    $(`#userCard_desc_${currentActivity.activity.user}_homePageUserFeed`).html(followedUser.description.slice(0, 100) + "...");
+                                } else {
+                                    $(`#userCard_desc_${currentActivity.activity.user}_homePageUserFeed`).html(followedUser.description);
+                                }
+                            });
+                        }
+                    })
+            })
+        })
+    }
+
+        function populateRecentActivity(userData, location) {
+            let sortedActivity = userData.recentActivity.sort((a, b) => {
+                return new Date(b.date).getTime() - new Date(a.date).getTime();
+            })
+            let allLists = allFeaturedLists;
+            allPopularLists.forEach((list) => {
+                allLists.push(list);
+            })
+            for (let i = 0; i < sortedActivity.length; i++) {
+                let activitiedList = '';
+                activitiedList = allLists.filter((list) => {
+                    return sortedActivity[i].listId === list.id
+                })
+                if (sortedActivity[i].type === "comment") {
+                    $(`#${location}`).append(`
                 <div class="row justify-content-center">
                     <p class="text-muted">${time_ago(sortedActivity[i].date)}</p>
                     <p>${userData.id} commented on <a class="profilePageRecentActivityListLink listTitle" data-id="${activitiedList[0].id}" data-bs-toggle="modal" data-bs-target="#listModal">${activitiedList[0].list_name}</a></p>
@@ -1205,8 +1365,8 @@ $(document).ready(() => {
                     <hr class="mt-4 col-10 text-center">
                 </div>
                 `)
-            } else if (sortedActivity[i].type === "like") {
-                $(`#${location}`).append(`
+                } else if (sortedActivity[i].type === "like") {
+                    $(`#${location}`).append(`
                 <div class="row justify-content-center">
                     <p class="text-muted">${time_ago(sortedActivity[i].date)}</p>
                     <p>${userData.id} liked <a class="profilePageRecentActivityListLink listTitle" data-id="${sortedActivity[i].listId}">${activitiedList[0].list_name}</a></p>
@@ -1220,18 +1380,18 @@ $(document).ready(() => {
                     <hr class="mt-4 col-10 text-center">
                 </div>
                 `)
-                fetch(`https://wave-kaput-giant.glitch.me/users/${activitiedList[0].creator}`)
-                    .then(response => response.json())
-                    .then((creator) => {
-                        $(`#popularListProfilePicture_${activitiedList[0].id}_${location}_${activitiedList[0].creator}`).attr('src', `img/profilePictures/${creator.profilePic}.jpg`);
-                    })
-                if (activitiedList[0].list_desc.length > 100) {
-                    $(`#listCard_desc${activitiedList[0].id}_${location}`).html(activitiedList[0].list_desc.slice(0, 100) + "...");
-                } else {
-                    $(`#listCard_desc${activitiedList[0].id}_${location}`).html(activitiedList[0].list_desc);
-                }
-            } else if (sortedActivity[i].type === "listAdd") {
-                $(`#${location}`).append(`
+                    fetch(`https://wave-kaput-giant.glitch.me/users/${activitiedList[0].creator}`)
+                        .then(response => response.json())
+                        .then((creator) => {
+                            $(`#popularListProfilePicture_${activitiedList[0].id}_${location}_${activitiedList[0].creator}`).attr('src', `img/profilePictures/${creator.profilePic}.jpg`);
+                        })
+                    if (activitiedList[0].list_desc.length > 100) {
+                        $(`#listCard_desc${activitiedList[0].id}_${location}`).html(activitiedList[0].list_desc.slice(0, 100) + "...");
+                    } else {
+                        $(`#listCard_desc${activitiedList[0].id}_${location}`).html(activitiedList[0].list_desc);
+                    }
+                } else if (sortedActivity[i].type === "listAdd") {
+                    $(`#${location}`).append(`
                 <div class="row justify-content-center">
                     <p class="text-muted">${time_ago(sortedActivity[i].date)}</p>
                     <p>${userData.id} added <span id="profilePageListAddName_${activitiedList[0].id}_${location}_${sortedActivity[i].content.id}"></span> to <a class="profilePageRecentActivityListLink listTitle" data-id="${sortedActivity[i].listId}">${activitiedList[0].list_name}</a></p>
@@ -1243,17 +1403,17 @@ $(document).ready(() => {
                     <hr class="mt-4 col-10 text-center">
                 </div>
                 `)
-                fetch(`https://api.themoviedb.org/3/${sortedActivity[i].content.type}/${sortedActivity[i].content.id}?api_key=${apiKeyTMDP}&language=en-US`)
-                    .then(response => response.json()).then((data) => {
-                    if (data.hasOwnProperty("title")) {
-                        $(`#profilePageListAddName_${activitiedList[0].id}_${location}_${sortedActivity[i].content.id}`).html(data.title)
-                    } else {
-                        $(`#profilePageListAddName_${activitiedList[0].id}_${location}_${sortedActivity[i].content.id}`).html(data.name)
-                    }
-                    $(`#profilePageActivityListAdd_${sortedActivity[i].content.id}`).attr('src', `https://image.tmdb.org/t/p/original/${data.poster_path}`)
-                })
-            } else if (sortedActivity[i].type === "newList") {
-                $(`#${location}`).append(`
+                    fetch(`https://api.themoviedb.org/3/${sortedActivity[i].content.type}/${sortedActivity[i].content.id}?api_key=${apiKeyTMDP}&language=en-US`)
+                        .then(response => response.json()).then((data) => {
+                        if (data.hasOwnProperty("title")) {
+                            $(`#profilePageListAddName_${activitiedList[0].id}_${location}_${sortedActivity[i].content.id}`).html(data.title)
+                        } else {
+                            $(`#profilePageListAddName_${activitiedList[0].id}_${location}_${sortedActivity[i].content.id}`).html(data.name)
+                        }
+                        $(`#profilePageActivityListAdd_${sortedActivity[i].content.id}`).attr('src', `https://image.tmdb.org/t/p/original/${data.poster_path}`)
+                    })
+                } else if (sortedActivity[i].type === "newList") {
+                    $(`#${location}`).append(`
                 <div class="row justify-content-center">
                     <p class="text-muted">${time_ago(sortedActivity[i].date)}</p>
                     <p>${userData.id} created the list: <a class="profilePageRecentActivityListLink listTitle" data-id="${sortedActivity[i].listId}">${activitiedList[0].list_name}</a></p>
@@ -1267,13 +1427,13 @@ $(document).ready(() => {
                     <hr class="mt-4 col-10 text-center">
                 </div>
                 `)
-                if (activitiedList[0].list_desc.length > 100) {
-                    $(`#listCard_desc${activitiedList[0].id}_${location}`).html(activitiedList[0].list_desc.slice(0, 100) + "...");
-                } else {
-                    $(`#listCard_desc${activitiedList[0].id}_${location}`).html(activitiedList[0].list_desc);
-                }
-            } else if (sortedActivity[i].type === "follow") {
-                $(`#${location}`).append(`
+                    if (activitiedList[0].list_desc.length > 100) {
+                        $(`#listCard_desc${activitiedList[0].id}_${location}`).html(activitiedList[0].list_desc.slice(0, 100) + "...");
+                    } else {
+                        $(`#listCard_desc${activitiedList[0].id}_${location}`).html(activitiedList[0].list_desc);
+                    }
+                } else if (sortedActivity[i].type === "follow") {
+                    $(`#${location}`).append(`
                     <div class="row justify-content-center">
                         <p class="text-muted">${time_ago(sortedActivity[i].date)}</p>
                         <p>${userData.id} began following ${sortedActivity[i].user}</p>
@@ -1303,29 +1463,29 @@ $(document).ready(() => {
                         <hr class="mt-4 col-10 text-center">
                     </div>
                     `)
-                fetch(`https://wave-kaput-giant.glitch.me/users/${sortedActivity[i].user}`)
-                    .then(response => response.json()).then((followedUser) => {
-                    $(`#followedUserProfilePic_${sortedActivity[i].user}_${location}`).attr('src', `img/profilePictures/${followedUser.profilePic}.jpg`);
-                    $(`#followedUserListsCreated_${sortedActivity[i].user}_${location}`).html(followedUser.createdLists.length);
-                    $(`#followedUserFollowers_${sortedActivity[i].user}_${location}`).html(followedUser.followers.length);
-                    $(`#followedUserFollowing_${sortedActivity[i].user}_${location}`).html(followedUser.following.length);
-                    if (followedUser.description.length > 100) {
-                        $(`#userCard_desc_${sortedActivity[i].user}_${location}`).html(followedUser.description.slice(0, 100) + "...");
-                    } else {
-                        $(`#userCard_desc_${sortedActivity[i].user}_${location}`).html(followedUser.description);
-                    }
-                });
+                    fetch(`https://wave-kaput-giant.glitch.me/users/${sortedActivity[i].user}`)
+                        .then(response => response.json()).then((followedUser) => {
+                        $(`#followedUserProfilePic_${sortedActivity[i].user}_${location}`).attr('src', `img/profilePictures/${followedUser.profilePic}.jpg`);
+                        $(`#followedUserListsCreated_${sortedActivity[i].user}_${location}`).html(followedUser.createdLists.length);
+                        $(`#followedUserFollowers_${sortedActivity[i].user}_${location}`).html(followedUser.followers.length);
+                        $(`#followedUserFollowing_${sortedActivity[i].user}_${location}`).html(followedUser.following.length);
+                        if (followedUser.description.length > 100) {
+                            $(`#userCard_desc_${sortedActivity[i].user}_${location}`).html(followedUser.description.slice(0, 100) + "...");
+                        } else {
+                            $(`#userCard_desc_${sortedActivity[i].user}_${location}`).html(followedUser.description);
+                        }
+                    });
+                }
             }
+            $(`.profilePageRecentActivityListLink`).click(function () {
+                populateListModal($(this).data('id'))
+            });
         }
-        $(`.profilePageRecentActivityListLink`).click(function () {
-            populateListModal($(this).data('id'))
-        });
-    }
 
-    function generateProfileListsCards(username, lists, location) {
-        $(`#${location}`).html('');
-        lists.forEach((list) => {
-            $(`#${location}`).append(`
+        function generateProfileListsCards(username, lists, location) {
+            $(`#${location}`).html('');
+            lists.forEach((list) => {
+                $(`#${location}`).append(`
                 <div class="card col-12 m-1 border-0 bg-primary p-3 rounded-3 divGlow listCard">
                   <div class="row g-0">
                     <div class="col-12">
@@ -1341,165 +1501,165 @@ $(document).ready(() => {
                   </div>
                 </div>
         `)
-            $(`#popularListLastEdited_${list.id}_${location}`).html(`Updated ${time_ago(list.last_edited)}`)
-            $(`#editListButton_${list.id}`).click(function () {
-                populateEditListModal($(this).data('id'));
-            })
-            if (user.id === username) {
-                $(`#editListButton_${list.id}`).removeClass('d-none');
-            }
-            $(`#listCard_${list.id}_${location}`).click(function () {
-                populateListModal($(this).data("id"));
-            });
-            (list.list_desc.length > 100) ? $(`#listCard_desc${list.id}_${location}`).html(list.list_desc.slice(0, 100) + "...") : $(`#listCard_desc${list.id}_${location}`).html(list.list_desc);
-        })
-    }
-
-    function follow() {
-        let updatedFollowingList = {
-            following: user.following, recentActivity: recentActivityPush({
-                type: "follow",
-                user: $(`#profilePageUsername`).html(),
-                date: new Date()
-            })
-        };
-        updatedFollowingList.following.push($(`#profilePageUsername`).html());
-        const url = `https://wave-kaput-giant.glitch.me/users/${user.id}`;
-        const options = {
-            method: 'PATCH',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(updatedFollowingList)
-        };
-        fetch(url, options)
-            .then(response => response.json()).then(data => {
-            user.following = updatedFollowingList.following;
-            user.recentActivity = updatedFollowingList.recentActivity;
-            $(`#profilePageFollowButton`).addClass('d-none');
-            $(`#profilePageFollowingButton`).removeClass('d-none');
-        });
-        fetch(`https://wave-kaput-giant.glitch.me/users/${$(`#profilePageUsername`).html()}`)
-            .then(response => response.json())
-            .then((profileUser) => {
-                let updatedFollowersList = {followers: profileUser.followers};
-                updatedFollowersList.followers.push(user.id);
-                const url1 = `https://wave-kaput-giant.glitch.me/users/${$(`#profilePageUsername`).html()}`;
-                const options1 = {
-                    method: 'PATCH',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify(updatedFollowersList)
-                };
-                fetch(url1, options1)
-                    .then(response => response.json()).then(data => {
-                    $('#profilePageFollowers').html(updatedFollowersList.followers.length);
-                    $(`#profilePageFollowButton`).addClass('d-none');
-                    $(`#profilePageFollowingButton`).removeClass('d-none');
+                $(`#popularListLastEdited_${list.id}_${location}`).html(`Updated ${time_ago(list.last_edited)}`)
+                $(`#editListButton_${list.id}`).click(function () {
+                    populateEditListModal($(this).data('id'));
                 })
+                if (user.id === username) {
+                    $(`#editListButton_${list.id}`).removeClass('d-none');
+                }
+                $(`#listCard_${list.id}_${location}`).click(function () {
+                    populateListModal($(this).data("id"));
+                });
+                (list.list_desc.length > 100) ? $(`#listCard_desc${list.id}_${location}`).html(list.list_desc.slice(0, 100) + "...") : $(`#listCard_desc${list.id}_${location}`).html(list.list_desc);
             })
-    }
-
-    $('#profilePageFollowingButton').click(() => {
-        unfollow();
-    })
-
-    function unfollow() {
-        let updatedFollowingList = {following: user.following.filter(item => item !== $(`#profilePageUsername`).html())};
-        const url = `https://wave-kaput-giant.glitch.me/users/${user.id}`;
-        const options = {
-            method: 'PATCH',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(updatedFollowingList)
-        };
-        fetch(url, options)
-            .then(response => response.json()).then(data => {
-            user.following = updatedFollowingList.following;
-            $(`#profilePageFollowButton`).addClass('d-none');
-            $(`#profilePageFollowingButton`).removeClass('d-none');
-        });
-        fetch(`https://wave-kaput-giant.glitch.me/users/${$(`#profilePageUsername`).html()}`)
-            .then(response => response.json())
-            .then((profileUser) => {
-                let updatedFollowersList = {followers: profileUser.followers.filter(item => item !== user.id)};
-                const url1 = `https://wave-kaput-giant.glitch.me/users/${$(`#profilePageUsername`).html()}`;
-                const options1 = {
-                    method: 'PATCH',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify(updatedFollowersList)
-                };
-                fetch(url1, options1)
-                    .then(response => response.json()).then(data => {
-                    $('#profilePageFollowers').html(updatedFollowersList.followers.length);
-                    $(`#profilePageFollowButton`).removeClass('d-none');
-                    $(`#profilePageFollowingButton`).addClass('d-none');
-                })
-            })
-    }
-
-    function recentActivityPush(newActivity) {
-        let sortedActivity = user.recentActivity.sort((a, b) => {
-            return new Date(b.date).getTime() - new Date(a.date).getTime();
-        })
-        if (sortedActivity.length === 15) {
-            sortedActivity[15] = newActivity;
-        } else {
-            sortedActivity.push(newActivity);
         }
-        return sortedActivity
-    }
 
-    function populateEditListModal(listId) {
-        $('#editListModalMovies').html('');
-        $(`#editListModalComments`).html('');
-        $(`#editListModal`).data('data-list-id', listId);
-        fetch(`https://daffy-tasteful-brownie.glitch.me/lists/${listId}`)
-            .then(response => response.json()).then((list) => {
-            for (let i = 0; i < list.content.length; i++) {
-                fetch(`https://api.themoviedb.org/3/${list.content[i].type}/${list.content[i].id}?api_key=${apiKeyTMDP}&language=en-US`)
+        function follow() {
+            let updatedFollowingList = {
+                following: user.following, recentActivity: recentActivityPush({
+                    type: "follow",
+                    user: $(`#profilePageUsername`).html(),
+                    date: new Date()
+                })
+            };
+            updatedFollowingList.following.push($(`#profilePageUsername`).html());
+            const url = `https://wave-kaput-giant.glitch.me/users/${user.id}`;
+            const options = {
+                method: 'PATCH',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(updatedFollowingList)
+            };
+            fetch(url, options)
+                .then(response => response.json()).then(data => {
+                user.following = updatedFollowingList.following;
+                user.recentActivity = updatedFollowingList.recentActivity;
+                $(`#profilePageFollowButton`).addClass('d-none');
+                $(`#profilePageFollowingButton`).removeClass('d-none');
+            });
+            fetch(`https://wave-kaput-giant.glitch.me/users/${$(`#profilePageUsername`).html()}`)
+                .then(response => response.json())
+                .then((profileUser) => {
+                    let updatedFollowersList = {followers: profileUser.followers};
+                    updatedFollowersList.followers.push(user.id);
+                    const url1 = `https://wave-kaput-giant.glitch.me/users/${$(`#profilePageUsername`).html()}`;
+                    const options1 = {
+                        method: 'PATCH',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify(updatedFollowersList)
+                    };
+                    fetch(url1, options1)
+                        .then(response => response.json()).then(data => {
+                        $('#profilePageFollowers').html(updatedFollowersList.followers.length);
+                        $(`#profilePageFollowButton`).addClass('d-none');
+                        $(`#profilePageFollowingButton`).removeClass('d-none');
+                    })
+                })
+        }
+
+        $('#profilePageFollowingButton').click(() => {
+            unfollow();
+        })
+
+        function unfollow() {
+            let updatedFollowingList = {following: user.following.filter(item => item !== $(`#profilePageUsername`).html())};
+            const url = `https://wave-kaput-giant.glitch.me/users/${user.id}`;
+            const options = {
+                method: 'PATCH',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(updatedFollowingList)
+            };
+            fetch(url, options)
+                .then(response => response.json()).then(data => {
+                user.following = updatedFollowingList.following;
+                $(`#profilePageFollowButton`).addClass('d-none');
+                $(`#profilePageFollowingButton`).removeClass('d-none');
+            });
+            fetch(`https://wave-kaput-giant.glitch.me/users/${$(`#profilePageUsername`).html()}`)
+                .then(response => response.json())
+                .then((profileUser) => {
+                    let updatedFollowersList = {followers: profileUser.followers.filter(item => item !== user.id)};
+                    const url1 = `https://wave-kaput-giant.glitch.me/users/${$(`#profilePageUsername`).html()}`;
+                    const options1 = {
+                        method: 'PATCH',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify(updatedFollowersList)
+                    };
+                    fetch(url1, options1)
+                        .then(response => response.json()).then(data => {
+                        $('#profilePageFollowers').html(updatedFollowersList.followers.length);
+                        $(`#profilePageFollowButton`).removeClass('d-none');
+                        $(`#profilePageFollowingButton`).addClass('d-none');
+                    })
+                })
+        }
+
+        function recentActivityPush(newActivity) {
+            let sortedActivity = user.recentActivity.sort((a, b) => {
+                return new Date(b.date).getTime() - new Date(a.date).getTime();
+            })
+            if (sortedActivity.length === 15) {
+                sortedActivity[15] = newActivity;
+            } else {
+                sortedActivity.push(newActivity);
+            }
+            return sortedActivity
+        }
+
+        function populateEditListModal(listId) {
+            $('#editListModalMovies').html('');
+            $(`#editListModalComments`).html('');
+            $(`#editListModal`).data('data-list-id', listId);
+            fetch(`https://daffy-tasteful-brownie.glitch.me/lists/${listId}`)
+                .then(response => response.json()).then((list) => {
+                for (let i = 0; i < list.content.length; i++) {
+                    fetch(`https://api.themoviedb.org/3/${list.content[i].type}/${list.content[i].id}?api_key=${apiKeyTMDP}&language=en-US`)
+                        .then(response => response.json())
+                        .then((data) => {
+                                if (list.content[i].type === 'movie') {
+                                    $(`#editListModalMovies`).append(`
+                                <div class="rounded-3 m-2" data-id="${list.content[i].id}" data-type="${list.content[i].type}" id="editListContent_${list.content[i].id}">
+                                    <button class="editListDeleteButton btn-danger btn d-none"><i class="fa-solid fa-trash"></i></button>
+                                    <img src="https://image.tmdb.org/t/p/original/${data.poster_path}" class="rounded-2 editListContent" alt="Movie Poster" style="height: 20em">
+                                </div>
+                            `)
+                                } else {
+                                    $(`#editListModalMovies`).append(`
+                                <div class="rounded-3 m-2" data-id="${list.content[i].id}" data-type="${list.content[i].type}" id="editListContent_${list.content[i].id}">
+                                    <button class="editListDeleteButton btn-danger btn d-none"><i class="fa-solid fa-trash"></i></button>
+                                    <img src="https://image.tmdb.org/t/p/original/${data.poster_path}" class="rounded-2 editListContent" alt="Movie Poster" style="height: 20em">
+                                </div>
+                            `)
+                                }
+                                $(`#editListContent_${list.content[i].id}`).hover(
+                                    function () {
+                                        $(`#editListContent_${list.content[i].id}`).children().addClass('border border-danger border-5');
+                                    },
+                                    function () {
+                                        $(`#editListContent_${list.content[i].id}`).children().removeClass('border border-danger border-5');
+                                    }
+                                ).click(function () {
+                                    $(`#editListContent_${list.content[i].id}`).children(":button").toggleClass('d-none');
+                                });
+                                $('.editListDeleteButton').click(function () {
+                                    $(this).parent().remove();
+                                })
+                            }
+                        )
+                }
+                $(`#editListModalTitle`).val(list.list_name);
+                $(`#editListModalCreator`).html(list.creator);
+                $(`#editListModalLastUpdated`).html(`Updated ${time_ago(list.last_edited)} | `)
+                $(`#editListModalDescription`).val(list.list_desc);
+                $(`#editListLike`).html(`${list.likes}`);
+                fetch(`https://wave-kaput-giant.glitch.me/users/${list.creator}`)
                     .then(response => response.json())
                     .then((data) => {
-                            if (list.content[i].type === 'movie') {
-                                $(`#editListModalMovies`).append(`
-                                <div class="rounded-3 m-2" data-id="${list.content[i].id}" data-type="${list.content[i].type}" id="editListContent_${list.content[i].id}">
-                                    <button class="editListDeleteButton btn-danger btn d-none"><i class="fa-solid fa-trash"></i></button>
-                                    <img src="https://image.tmdb.org/t/p/original/${data.poster_path}" class="rounded-2 editListContent" alt="Movie Poster" style="height: 20em">
-                                </div>
-                            `)
-                            } else {
-                                $(`#editListModalMovies`).append(`
-                                <div class="rounded-3 m-2" data-id="${list.content[i].id}" data-type="${list.content[i].type}" id="editListContent_${list.content[i].id}">
-                                    <button class="editListDeleteButton btn-danger btn d-none"><i class="fa-solid fa-trash"></i></button>
-                                    <img src="https://image.tmdb.org/t/p/original/${data.poster_path}" class="rounded-2 editListContent" alt="Movie Poster" style="height: 20em">
-                                </div>
-                            `)
-                            }
-                            $(`#editListContent_${list.content[i].id}`).hover(
-                                function () {
-                                    $(`#editListContent_${list.content[i].id}`).children().addClass('border border-danger border-5');
-                                },
-                                function () {
-                                    $(`#editListContent_${list.content[i].id}`).children().removeClass('border border-danger border-5');
-                                }
-                            ).click(function(){
-                                $(`#editListContent_${list.content[i].id}`).children(":button").toggleClass('d-none');
-                            });
-                            $('.editListDeleteButton').click(function(){
-                                $(this).parent().remove();
-                            })
-                        }
-                    )
-            }
-            $(`#editListModalTitle`).val(list.list_name);
-            $(`#editListModalCreator`).html(list.creator);
-            $(`#editListModalLastUpdated`).html(`Updated ${time_ago(list.last_edited)} | `)
-            $(`#editListModalDescription`).val(list.list_desc);
-            $(`#editListLike`).html(`${list.likes}`);
-            fetch(`https://wave-kaput-giant.glitch.me/users/${list.creator}`)
-                .then(response => response.json())
-                .then((data) => {
-                    $(`#editListModalProfilePicture`).attr('src', `img/profilePictures/${data.profilePic}.jpg`)
-                })
-            $(`#editListCommentCounter`).html(`${list.comments.length}`);
-            if (list.comments.length === 0) {
-                $(`#editListModalComments`).append(`
+                        $(`#editListModalProfilePicture`).attr('src', `img/profilePictures/${data.profilePic}.jpg`)
+                    })
+                $(`#editListCommentCounter`).html(`${list.comments.length}`);
+                if (list.comments.length === 0) {
+                    $(`#editListModalComments`).append(`
                         <div class="row col-7 p-0 m-0 justify-content-center">
                             <h1 class="text-center">No Comments Yet!</h1>
                         </div>
@@ -1507,9 +1667,9 @@ $(document).ready(() => {
                             <hr>
                         </div>
                     `)
-            } else {
-                list.comments.forEach((comment) => {
-                    $(`#editListModalComments`).append(`
+                } else {
+                    list.comments.forEach((comment) => {
+                        $(`#editListModalComments`).append(`
                         <div class="row col-7 p-0 m-0">
                             <div class="d-flex col-4 listComment" data-commenterId="${comment.user}">
                                 <img class="profilePictureListComment comment_${comment.user} me-4" src="img/profilePictures/default.jpg" alt="Profile Picture">
@@ -1526,184 +1686,186 @@ $(document).ready(() => {
                         <hr>
                         </div>
                     `)
-                    $(`.listComment`).click(function () {
-                        populateProfilePage($(this).data('commenterid'));
+                        $(`.listComment`).click(function () {
+                            populateProfilePage($(this).data('commenterid'));
+                        })
+                        fetch(`https://wave-kaput-giant.glitch.me/users/${comment.user}`)
+                            .then(response => response.json()).then((data) => {
+                            $(`.comment_${comment.user}`).attr('src', `img/profilePictures/${data.profilePic}.jpg`)
+                        })
                     })
-                    fetch(`https://wave-kaput-giant.glitch.me/users/${comment.user}`)
-                        .then(response => response.json()).then((data) => {
-                        $(`.comment_${comment.user}`).attr('src', `img/profilePictures/${data.profilePic}.jpg`)
-                    })
-                })
+                }
+            }).then($(`#editListModal`).modal('show'));
+        }
+
+        $('.sortable-list').sortable({
+            connectWith: '.sortable-list',
+            update: function (event, ui) {
+                let changedList = this.id;
+                let order = $('#editListModalMovies').sortable('toArray');
+                console.log({
+                    id: changedList,
+                    positions: order
+                });
             }
-        }).then($(`#editListModal`).modal('show'));
-    }
+        });
 
-    $('.sortable-list').sortable({
-        connectWith: '.sortable-list',
-        update: function (event, ui) {
-            let changedList = this.id;
-            let order = $('#editListModalMovies').sortable('toArray');
-            console.log({
-                id: changedList,
-                positions: order
-            });
-        }
-    });
-
-    function getContentOrder() {
-        let content = [];
-        $('#editListModalMovies').sortable('toArray').forEach((item) => {
-            content.push({id: $(`#${item}`).data('id'), type: $(`#${item}`).data('type')})
-        })
-        return content;
-    }
-
-    $(`#editListSaveChanges`).click(() => editListSave($(`#editListModal`).data('data-list-id')));
-
-    function editListSave(listId) {
-        let updateContent = {
-            list_name: $(`#editListModalTitle`).val(),
-            list_desc: $(`#editListModalDescription`).val(),
-            content: getContentOrder(),
-            last_edited: new Date()
-        }
-        const url = `https://daffy-tasteful-brownie.glitch.me/lists/${listId}`;
-        const options = {
-            method: 'PATCH',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(updateContent)
-        };
-        fetch(url, options)
-            .then(response => response.json()).then(data2 => {
-            console.log(data2);
-            let replacementIndex = allPopularLists.findIndex((list) => {
-                return list.id === parseInt(listId);
+        function getContentOrder() {
+            let content = [];
+            $('#editListModalMovies').sortable('toArray').forEach((item) => {
+                content.push({id: $(`#${item}`).data('id'), type: $(`#${item}`).data('type')})
             })
-            allPopularLists[replacementIndex] = data2;
-            populateEditListModal($(`#editListModal`).data('data-list-id'));
-            populateProfilePage(user.id);
-        })
-    }
+            return content;
+        }
 
-    function returnSmallest(a, b) {
-        return a < b ? a : b;
-    }
+        $(`#editListSaveChanges`).click(() => editListSave($(`#editListModal`).data('data-list-id')));
 
-    function time_ago(time) {
-        switch (typeof time) {
-            case 'number':
-                break;
-            case 'string':
-                time = +new Date(time);
-                break;
-            case 'object':
-                if (time.constructor === Date) time = time.getTime();
-                break;
-            default:
-                time = +new Date();
-        }
-        let time_formats = [
-            [60, 'seconds', 1],
-            [120, '1 minute ago', '1 minute from now'],
-            [3600, 'minutes', 60],
-            [7200, '1 hour ago', '1 hour from now'],
-            [86400, 'hours', 3600],
-            [172800, 'Yesterday', 'Tomorrow'],
-            [604800, 'days', 86400],
-            [1209600, 'Last week', 'Next week'],
-            [2419200, 'weeks', 604800],
-            [4838400, 'Last month', 'Next month'],
-            [29030400, 'months', 2419200],
-            [58060800, 'Last year', 'Next year'],
-            [2903040000, 'years', 29030400],
-            [5806080000, 'Last century', 'Next century'],
-            [58060800000, 'centuries', 2903040000]
-        ];
-        let seconds = (+new Date() - time) / 1000,
-            token = 'ago',
-            list_choice = 1;
-        if (seconds === 0) {
-            return 'Just now'
-        }
-        if (seconds < 0) {
-            seconds = Math.abs(seconds);
-            token = 'from now';
-            list_choice = 2;
-        }
-        let i = 0,
-            format;
-        while (format = time_formats[i++])
-            if (seconds < format[0]) {
-                if (typeof format[2] == 'string')
-                    return format[list_choice];
-                else
-                    return Math.floor(seconds / format[2]) + ' ' + format[1] + ' ' + token;
+        function editListSave(listId) {
+            let updateContent = {
+                list_name: $(`#editListModalTitle`).val(),
+                list_desc: $(`#editListModalDescription`).val(),
+                content: getContentOrder(),
+                last_edited: new Date()
             }
-        return time;
-    }
-
-    function toHoursAndMinutes(totalMinutes) {
-        const hours = Math.floor(totalMinutes / 60);
-        const minutes = totalMinutes % 60;
-        return hours > 0 ? `${hours}h${minutes > 0 ? ` ${minutes}m` : ''}` : ` ${minutes}m`;
-    }
-
-    function randomizeLists(lists) {
-        let currentIndex = lists.length, randomIndex;
-        while (currentIndex !== 0) {
-            randomIndex = Math.floor(Math.random() * currentIndex);
-            currentIndex--;
-            [lists[currentIndex], lists[randomIndex]] = [
-                lists[randomIndex], lists[currentIndex]];
+            const url = `https://daffy-tasteful-brownie.glitch.me/lists/${listId}`;
+            const options = {
+                method: 'PATCH',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(updateContent)
+            };
+            fetch(url, options)
+                .then(response => response.json()).then(data2 => {
+                console.log(data2);
+                let replacementIndex = allPopularLists.findIndex((list) => {
+                    return list.id === parseInt(listId);
+                })
+                allPopularLists[replacementIndex] = data2;
+                populateEditListModal($(`#editListModal`).data('data-list-id'));
+                populateProfilePage(user.id);
+            })
         }
-        return lists;
-    }
 
-    function genreIdToText(id) {
-        let genres = [
-            {id: 28, name: 'Action'},
-            {id: 12, name: 'Adventure'},
-            {id: 16, name: 'Animation'},
-            {id: 35, name: 'Comedy'},
-            {id: 80, name: 'Crime'},
-            {id: 99, name: 'Documentary'},
-            {id: 18, name: 'Drama'},
-            {id: 10751, name: 'Family'},
-            {id: 14, name: 'Fantasy'},
-            {id: 36, name: 'History'},
-            {id: 27, name: 'Horror'},
-            {id: 10402, name: 'Music'},
-            {id: 9648, name: 'Mystery'},
-            {id: 10749, name: 'Romance'},
-            {id: 878, name: 'Science Fiction'},
-            {id: 10770, name: 'TV Movie'},
-            {id: 53, name: 'Thriller'},
-            {id: 10752, name: 'War'},
-            {id: 37, name: 'Western'},
-            {id: 10759, name: 'Action & Adventure'},
-            {id: 16, name: 'Animation'},
-            {id: 35, name: 'Comedy'},
-            {id: 80, name: 'Crime'},
-            {id: 99, name: 'Documentary'},
-            {id: 18, name: 'Drama'},
-            {id: 10751, name: 'Family'},
-            {id: 10762, name: 'Kids'},
-            {id: 9648, name: 'Mystery'},
-            {id: 10763, name: 'News'},
-            {id: 10764, name: 'Reality'},
-            {id: 10765, name: 'Sci-Fi & Fantasy'},
-            {id: 10766, name: 'Soap'},
-            {id: 10767, name: 'Talk'},
-            {id: 10768, name: 'War & Politics'},
-            {id: 37, name: 'Western'}
-        ];
-        for (let i = 0; i < genres.length; i++) {
-            if (id === genres[i].id) {
-                return genres[i].name;
+        function returnSmallest(a, b) {
+            return a < b ? a : b;
+        }
+
+        function time_ago(time) {
+            switch (typeof time) {
+                case 'number':
+                    break;
+                case 'string':
+                    time = +new Date(time);
+                    break;
+                case 'object':
+                    if (time.constructor === Date) time = time.getTime();
+                    break;
+                default:
+                    time = +new Date();
+            }
+            let time_formats = [
+                [60, 'seconds', 1],
+                [120, '1 minute ago', '1 minute from now'],
+                [3600, 'minutes', 60],
+                [7200, '1 hour ago', '1 hour from now'],
+                [86400, 'hours', 3600],
+                [172800, 'Yesterday', 'Tomorrow'],
+                [604800, 'days', 86400],
+                [1209600, 'Last week', 'Next week'],
+                [2419200, 'weeks', 604800],
+                [4838400, 'Last month', 'Next month'],
+                [29030400, 'months', 2419200],
+                [58060800, 'Last year', 'Next year'],
+                [2903040000, 'years', 29030400],
+                [5806080000, 'Last century', 'Next century'],
+                [58060800000, 'centuries', 2903040000]
+            ];
+            let seconds = (+new Date() - time) / 1000,
+                token = 'ago',
+                list_choice = 1;
+            if (seconds === 0) {
+                return 'Just now'
+            }
+            if (seconds < 0) {
+                seconds = Math.abs(seconds);
+                token = 'from now';
+                list_choice = 2;
+            }
+            let i = 0,
+                format;
+            while (format = time_formats[i++])
+                if (seconds < format[0]) {
+                    if (typeof format[2] == 'string')
+                        return format[list_choice];
+                    else
+                        return Math.floor(seconds / format[2]) + ' ' + format[1] + ' ' + token;
+                }
+            return time;
+        }
+
+        function toHoursAndMinutes(totalMinutes) {
+            const hours = Math.floor(totalMinutes / 60);
+            const minutes = totalMinutes % 60;
+            return hours > 0 ? `${hours}h${minutes > 0 ? ` ${minutes}m` : ''}` : ` ${minutes}m`;
+        }
+
+        function randomizeLists(lists) {
+            let currentIndex = lists.length, randomIndex;
+            while (currentIndex !== 0) {
+                randomIndex = Math.floor(Math.random() * currentIndex);
+                currentIndex--;
+                [lists[currentIndex], lists[randomIndex]] = [
+                    lists[randomIndex], lists[currentIndex]];
+            }
+            return lists;
+        }
+
+        function genreIdToText(id) {
+            let genres = [
+                {id: 28, name: 'Action'},
+                {id: 12, name: 'Adventure'},
+                {id: 16, name: 'Animation'},
+                {id: 35, name: 'Comedy'},
+                {id: 80, name: 'Crime'},
+                {id: 99, name: 'Documentary'},
+                {id: 18, name: 'Drama'},
+                {id: 10751, name: 'Family'},
+                {id: 14, name: 'Fantasy'},
+                {id: 36, name: 'History'},
+                {id: 27, name: 'Horror'},
+                {id: 10402, name: 'Music'},
+                {id: 9648, name: 'Mystery'},
+                {id: 10749, name: 'Romance'},
+                {id: 878, name: 'Science Fiction'},
+                {id: 10770, name: 'TV Movie'},
+                {id: 53, name: 'Thriller'},
+                {id: 10752, name: 'War'},
+                {id: 37, name: 'Western'},
+                {id: 10759, name: 'Action & Adventure'},
+                {id: 16, name: 'Animation'},
+                {id: 35, name: 'Comedy'},
+                {id: 80, name: 'Crime'},
+                {id: 99, name: 'Documentary'},
+                {id: 18, name: 'Drama'},
+                {id: 10751, name: 'Family'},
+                {id: 10762, name: 'Kids'},
+                {id: 9648, name: 'Mystery'},
+                {id: 10763, name: 'News'},
+                {id: 10764, name: 'Reality'},
+                {id: 10765, name: 'Sci-Fi & Fantasy'},
+                {id: 10766, name: 'Soap'},
+                {id: 10767, name: 'Talk'},
+                {id: 10768, name: 'War & Politics'},
+                {id: 37, name: 'Western'}
+            ];
+            for (let i = 0; i < genres.length; i++) {
+                if (id === genres[i].id) {
+                    return genres[i].name;
+                }
             }
         }
     }
-})
+
+)
 
 
 //TODOS:

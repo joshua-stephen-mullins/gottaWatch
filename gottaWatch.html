@@ -35,25 +35,13 @@
             <div class="collapse navbar-collapse" id="navbarColor01">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link active" href="#" id="homeButton">HOME
-                            <span class="visually-hidden">(current)</span>
-                        </a>
+                        <a class="btn rounded-3 nav-link active" href="#" id="homeButton">HOME</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#" id="discoverButton">DISCOVER</a>
+                        <a class="btn rounded-3 nav-link" href="#" id="discoverButton">DISCOVER</a>
                     </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                           aria-expanded="false">
-                            LISTS
-                        </a>
-                        <ul class="dropdown-menu bg-light">
-                            <li><a class="dropdown-item" id="listsButton">LISTS HOME</a></li>
-                            <li><a class="dropdown-item loginRequired disabled" data-bs-toggle="offcanvas"
-                                   href="#offcanvasListCreate"
-                                   role="button" aria-controls="offcanvasListCreate" id="createNewListButton">CREATE NEW
-                                LIST</a></li>
-                        </ul>
+                    <li class="nav-item">
+                        <a class="btn rounded-3 nav-link" href="#" id="listsButton">LISTS</a>
                     </li>
                 </ul>
                 <div class="d-flex dropdown">
@@ -469,6 +457,10 @@
         <section class="row col-12 justify-content-center d-none" id="listsPage">
             <div id="listPageHeader">
                 <h1 class="text-center titleFont homeScreenText m-1 mb-5">BUILD YOUR LIST.</h1>
+                <a class="btn loginRequired disabled" data-bs-toggle="offcanvas"
+                   href="#offcanvasListCreate"
+                   role="button" aria-controls="offcanvasListCreate" id="createNewListButton">CREATE NEW
+                    LIST</a>
             </div>
             <div id="featuredLists">
                 <h3 class="fw-bold titleFont mb-0">FEATURED LISTS</h3>

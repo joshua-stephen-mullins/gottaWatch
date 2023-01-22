@@ -174,32 +174,42 @@ $(document).ready(() => {
         $('#discoverPage').addClass('d-none');
     })
     $('#homeButton').click(() => {
+        showHomePage();
+    })
+    function showHomePage(){
         $('#homePage').removeClass('d-none');
         $('#searchResults').addClass('d-none');
         $('#listsPage').addClass('d-none');
         $('#profilePage').addClass('d-none');
         $('#discoverPage').addClass('d-none');
-    })
+    }
+
     $('#discoverButton').click((e) => {
-        e.preventDefault();
+        showDiscoverPage()
+    })
+    function showDiscoverPage(){
         $('#homePage').addClass('d-none');
         $('#searchResults').addClass('d-none');
         $('#listsPage').addClass('d-none');
         $('#profilePage').addClass('d-none');
         $('#discoverPage').removeClass('d-none');
-    })
+    }
+
     $('#movieSearchInputButton').click(function (e) {
-        e.preventDefault();
         $('#resultsContainer').html('');
         allSearch($('#movieSearchInput').val());
     })
     $('#listsButton').click(() => {
+        showListsPage();
+    })
+    function showListsPage(){
         $('#homePage').addClass('d-none');
         $('#searchResults').addClass('d-none');
         $('#listsPage').removeClass('d-none');
         $('#profilePage').addClass('d-none');
         $('#discoverPage').addClass('d-none');
-    })
+    }
+
     $('#profileButton').click(() => {
         $(`#usernameInput`).val('');
         $(`#passwordInput`).val('');
@@ -213,6 +223,9 @@ $(document).ready(() => {
         $('#listCreateDesc').html('');
     })
     $(`#myProfileButton`).click(() => {
+        showProfilePage();
+    })
+    function showProfilePage(){
         $('#homePage').addClass('d-none');
         $('#searchResults').addClass('d-none');
         $('#listsPage').addClass('d-none');
@@ -220,7 +233,7 @@ $(document).ready(() => {
         $('#discoverPage').addClass('d-none');
         $('#profilePage').removeClass('d-none');
         populateProfilePage(user.id);
-    })
+    }
 
     function searchById(searchType, id) {
         fetch(`https://api.themoviedb.org/3/${searchType}/${id}?api_key=${apiKeyTMDP}&language=en-US`)
@@ -1048,10 +1061,9 @@ $(document).ready(() => {
         $(`#homePage`).removeClass('d-none');
         $(`#homePageWelcome`).addClass('d-none');
         $(`#homePageUser`).removeClass('d-none');
-        $('#searchResults').addClass('d-none');
-        $('#listsPage').addClass('d-none');
-        $('#profilePage').addClass('d-none');
-        $('#discoverPage').addClass('d-none');
+        showHomePage();
+        $(`.nav-link`).removeClass('active');
+        $(`#homeButton`).addClass('active');
     }
 
     function logout() {
@@ -1059,11 +1071,9 @@ $(document).ready(() => {
         $(`.loggedInDropdown`).addClass('d-none');
         $(`#loginSection`).removeClass('d-none');
         $(`#createNewListButton`).addClass('disabled');
-        $('#homePage').removeClass('d-none');
-        $('#searchResults').addClass('d-none');
-        $('#listsPage').addClass('d-none');
-        $('#profilePage').addClass('d-none');
-        $('#discoverPage').addClass('d-none');
+        showHomePage();
+        $(`.nav-link`).removeClass('active');
+        $(`#homeButton`).addClass('active');
         $(`#userName`).html(`&nbsp;LOGIN`);
         $(`#homePageWelcome`).removeClass('d-none');
         $(`#homePageUser`).addClass('d-none');
@@ -1116,14 +1126,12 @@ $(document).ready(() => {
         })
     }
 
-    $('#listModalCreator').click(() => {
-        populateProfilePage($(`#listModalCreator`).html());
-    })
+    $('#listModalCreator').click(() => populateProfilePage($(`#listModalCreator`).html()));
 
     function populateProfilePage(username) {
+        $(`.nav-link`).removeClass('active');
         fetch(`https://wave-kaput-giant.glitch.me/users/${username}`)
-            .then(response => response.json())
-            .then((profileUser) => {
+            .then(response => response.json()).then((profileUser) => {
                 $(`#profilePageProfilePicture`).attr('src', `img/profilePictures/${profileUser.profilePic}.jpg`);
                 $(`#profilePageUsername`).html(`${profileUser.id}`);
                 let dateCreated = new Date(profileUser.userCreated);

@@ -5,8 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>gotta Watch</title>
     <link rel="icon" href="img/gotta-watch-website-favicon-color.png">
-    <!--    bootswatch-->
-<!--    <link rel="stylesheet" href="css/vapor-bootstrap.css">-->
     <!--    bootstrap-->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
     <!--  custom CSS-->
@@ -19,8 +17,7 @@
     <!--    google fonts-->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Lekton:ital,wght@0,400;0,700;1,400&display=swap"
-          rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Baskervville:ital@0;1&family=Epilogue:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
 </head>
 <body>
 <!--NAVBAR-->
@@ -32,10 +29,10 @@
                     aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarColor01">
+            <div class="collapse navbar-collapse">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="btn rounded-3 nav-link active" href="#" id="homeButton">HOME</a>
+                        <a class="btn btn-lg rounded-3 nav-link active" href="#" id="homeButton">HOME</a>
                     </li>
                     <li class="nav-item">
                         <a class="btn rounded-3 nav-link" href="#" id="discoverButton">DISCOVER</a>
@@ -455,9 +452,9 @@
             </div>
         </section>
         <section class="row col-12 justify-content-center d-none" id="listsPage">
-            <div id="listPageHeader">
-                <h1 class="text-center titleFont homeScreenText m-1 mb-5">BUILD YOUR LIST.</h1>
-                <a class="btn loginRequired disabled" data-bs-toggle="offcanvas"
+            <div class="row flex-column align-items-center mb-5" id="listPageHeader">
+                <h1 class="text-center titleFont homeScreenText m-1 mb-1">BUILD YOUR LIST.</h1>
+                <a class="col-2 btn loginRequired disabled" data-bs-toggle="offcanvas"
                    href="#offcanvasListCreate"
                    role="button" aria-controls="offcanvasListCreate" id="createNewListButton">CREATE NEW
                     LIST</a>

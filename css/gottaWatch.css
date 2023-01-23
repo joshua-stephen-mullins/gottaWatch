@@ -6,6 +6,10 @@ colors {
     color: #77A6F7;
 }
 
+/*font-family: 'Baskervville', serif;*/
+/*font-family: 'Epilogue', sans-serif;*/
+/*font-family: 'Space Mono', monospace;*/
+
 .titleFont {
     /*font-family: 'Audiowide', cursive;*/
     /*text-shadow: black 5px 0 10px;*/
@@ -22,8 +26,32 @@ colors {
 }
 
 body {
-    /*font-family: 'Lekton', sans-serif;*/
+    font-family: 'Epilogue', sans-serif;
     /*background-color: black;*/
+}
+
+.nav-item a {
+    transition-duration: 1.0s;
+    transform-origin: 50% 50%;
+    margin: 1rem;
+    background-color: #D3E3FC;
+    border: none;
+
+}
+
+.nav-item a:before {
+    transform-origin: 50% 50%;
+    transition-duration: 1.0s;
+    transform: scale(0);
+    border: none;
+}
+
+.nav-item .active {
+    transform-origin: 50% 50%;
+    transition-duration: 1.0s;
+    transform: scale(1.4);
+    background-color: #77A6F7 !important;
+    border: none;
 }
 
 .profilePicture {

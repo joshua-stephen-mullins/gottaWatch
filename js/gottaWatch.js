@@ -247,7 +247,7 @@ $(document).ready(() => {
         $(`#resultsContainer`).html('');
         for (let i = 0; i < data.length; i++) {
             $('#resultsContainer').append(`
-                <div class="card col-12 searchResultCard rounded border-1 border-primary bg-primary m-3 row flex-row divGlow" id="searchResult_${data[i].id}">
+                <div class="card col-12 searchResultCard rounded border-1 border-primary m-3 row flex-row" id="searchResult_${data[i].id}">
                     <div class="row col-2 m-0 p-0">
                         <img class="col-12" src="" id="searchResult_${i}" alt="Search Result">
                     </div>
@@ -540,7 +540,7 @@ $(document).ready(() => {
     function generateSmallCards(showInfo, numberOfCards, container, showType, cardType) {
         for (let i = 0; i < numberOfCards; i++) {
             $(container).append(`
-                <div class="p-0 bg-secondary m-3 mb-3 smallCard rounded-3 divGlow discoverCard" id="showCard_${showInfo.results[i].id}_${cardType}" data-type="${showType}" data-showId="${showInfo.results[i].id}">
+                <div class="p-0 m-3 mb-3 smallCard rounded-3 discoverCard" id="showCard_${showInfo.results[i].id}_${cardType}" data-type="${showType}" data-showId="${showInfo.results[i].id}">
                     <div>
                         <img class="w-100 h-100 smallCardImg" src="https://image.tmdb.org/t/p/original/${showInfo.results[i].poster_path}" alt="Poster">
                     </div>
@@ -680,7 +680,7 @@ $(document).ready(() => {
     function generateFeaturedListsCards(lists) {
         for (let j = 0; j < 3; j++) {
             $('#featuredListsContainer').append(`
-            <div class="card m-1 mt-0 col-3 flex-grow-1 listCard border-0 bg-primary p-3 rounded-3 divGlow listCard" id="listCard_${lists[j].id}" data-id="${lists[j].id}">
+            <div class="card m-1 mt-0 col-3 flex-grow-1 listCard border-0 p-3 rounded-3 listCard" id="listCard_${lists[j].id}" data-id="${lists[j].id}">
               <div class="row g-0">
                 <div class="listCardFeatured listCardImages" id="listCardImages_${lists[j].id}">
                 </div>
@@ -728,7 +728,7 @@ $(document).ready(() => {
         $(`#${location}`).html('');
         lists.forEach((list) => {
             $(`#${location}`).append(`
-                <div class="card col-9 m-1 border-0 bg-primary p-3 rounded-3 divGlow listCard" id="listCard_${list.id}_${location}" data-id="${list.id}">
+                <div class="card col-9 m-1 border-0 p-3 rounded-3 listCard" id="listCard_${list.id}_${location}" data-id="${list.id}">
                   <div class="row g-0">
                     <div class="col-5 listCardPopular listCardImages" id="listCardImages_${list.id}_${location}">
                     </div>
@@ -1214,7 +1214,7 @@ $(document).ready(() => {
                                 <div class="row justify-content-center">
                                     <p class="text-muted">${time_ago(currentActivity.activity.date)}</p>
                                     <p>${userData.id} commented on <span class="profilePageRecentActivityListLink listTitle" data-id="${activitiedList[0].id}">${activitiedList[0].list_name}</span></p>
-                                    <div class="row col-8 p-0 m-0 bg-info p-3 rounded-3 divGlow">
+                                    <div class="row col-8 p-0 m-0 p-3 rounded-3">
                                         <div class="col-3 listComment" data-commenterId="${userData.id}">
                                             <img class="profilePictureListComment comment_${userData.id}" src="img/profilePictures/${userData.profilePic}.jpg" alt="Profile Picture">
                                             <div class="d-flex flex-column justify-content-center">
@@ -1233,7 +1233,7 @@ $(document).ready(() => {
                                 <div class="row justify-content-center">
                                     <p class="text-muted">${time_ago(currentActivity.activity.date)}</p>
                                     <p>${userData.id} liked <span class="profilePageRecentActivityListLink listTitle" data-id="${currentActivity.activity.listId}">${activitiedList[0].list_name}</span></p>
-                                    <div class="row justify-content-center col-8 p-0 m-0 bg-info p-3 rounded-3 divGlow">
+                                    <div class="row justify-content-center col-8 p-0 m-0 p-3 rounded-3">
                                         <div>
                                             <h5 class="listTitle mb-1">${activitiedList[0].list_name}</h5>
                                             <p class="mb-2 cardFontSize"><img class="profilePicture" src="img/profilePictures/default.jpg" alt="Profile Picture" id="popularListProfilePicture_${activitiedList[0].id}_homePageUserFeed_${activitiedList[0].creator}"> ${activitiedList[0].creator}  |  <span id="popularListLastEdited_${activitiedList[0].id}_homePageUserFeed">${time_ago(activitiedList[0].last_edited)}</span> | <i class="fa-solid fa-heart"></i> <span id="listCardLikes_${activitiedList[0].id}_homePageUserFeed">${activitiedList[0].likes}</span>  |  <i class="fa-solid fa-comment"></i> <span id="listCardComments_${activitiedList[0].id}_homePageUserFeed">${activitiedList[0].comments.length}</span></p>
@@ -1258,7 +1258,7 @@ $(document).ready(() => {
                                     <p class="text-muted">${time_ago(currentActivity.activity.date)}</p>
                                     <p>${userData.id} added <span id="profilePageListAddName_${activitiedList[0].id}_homePageUserFeed_${currentActivity.activity.content.id}"></span> to <span class="profilePageRecentActivityListLink listTitle" data-id="${currentActivity.activity.listId}">${activitiedList[0].list_name}</span></p>
                                     <div class="row justify-content-center p-0 m-0">
-                                        <div class="col-4 bg-info p-3 rounded-3 divGlow">
+                                        <div class="col-4 p-3 rounded-3">
                                             <img class="w-100" src="" alt="" id="profilePageActivityListAdd_homePageUserFeed_${currentActivity.activity.content.id}_${currentActivity.activity.content.id}">
                                         </div>
                                     </div>
@@ -1279,7 +1279,7 @@ $(document).ready(() => {
                                 <div class="row justify-content-center">
                                     <p class="text-muted">${time_ago(currentActivity.activity.date)}</p>
                                     <p>${userData.id} created the list: <span class="profilePageRecentActivityListLink listTitle" data-id="${currentActivity.activity.listId}">${activitiedList[0].list_name}</span></p>
-                                    <div class="row justify-content-center col-8 p-0 m-0 bg-info p-3 rounded-3 divGlow">
+                                    <div class="row justify-content-center col-8 p-0 m-0 p-3 rounded-3">
                                         <div>
                                             <h5 class="listTitle mb-1">${activitiedList[0].list_name}</h5>
                                             <p class="mb-2 cardFontSize"><img class="profilePicture" src="img/profilePictures/${userData.profilePic}.jpg" alt="Profile Picture" id="popularListProfilePicture_${activitiedList[0].id}_homePageUserFeed_${activitiedList[0].creator}"> ${activitiedList[0].creator}  |  <span id="popularListLastEdited_${activitiedList[0].id}_homePageUserFeed">${time_ago(activitiedList[0].last_edited)}</span> | <i class="fa-solid fa-heart"></i> <span id="listCardLikes_${activitiedList[0].id}_homePageUserFeed">${activitiedList[0].likes}</span>  |  <i class="fa-solid fa-comment"></i> <span id="listCardComments_${activitiedList[0].id}_homePageUserFeed">${activitiedList[0].comments.length}</span></p>
@@ -1299,7 +1299,7 @@ $(document).ready(() => {
                                 <div class="row justify-content-center">
                                     <p class="text-muted">${time_ago(currentActivity.activity.date)}</p>
                                     <p>${userData.id} began following ${currentActivity.activity.user}</p>
-                                    <div class="row justify-content-center col-8 p-0 m-0 bg-info p-3 rounded-3 divGlow">
+                                    <div class="row justify-content-center col-8 p-0 m-0 p-3 rounded-3">
                                         <div class="row justify-content-center">
                                             <div class="col-3">
                                                 <img class="profilePictureListComment p-0" src="img/profilePictures/default.jpg" alt="Profile Picture" id="followedUserProfilePic_${currentActivity.activity.user}_homePageUserFeed">
@@ -1361,7 +1361,7 @@ $(document).ready(() => {
             <div class="row justify-content-center">
                 <p class="text-muted">${time_ago(sortedActivity[i].date)}</p>
                 <p>${userData.id} commented on <a class="profilePageRecentActivityListLink listTitle" data-id="${activitiedList[0].id}" data-bs-toggle="modal" data-bs-target="#listModal">${activitiedList[0].list_name}</a></p>
-                <div class="row col-8 p-0 m-0 bg-info p-3 rounded-3 divGlow">
+                <div class="row col-8 p-0 m-0 p-3 rounded-3">
                     <div class="col-3 listComment" data-commenterId="${userData.id}">
                         <img class="profilePictureListComment comment_${userData.id}" src="img/profilePictures/${userData.profilePic}.jpg" alt="Profile Picture">
                         <div class="d-flex flex-column justify-content-center">
@@ -1380,7 +1380,7 @@ $(document).ready(() => {
             <div class="row justify-content-center">
                 <p class="text-muted">${time_ago(sortedActivity[i].date)}</p>
                 <p>${userData.id} liked <a class="profilePageRecentActivityListLink listTitle" data-id="${sortedActivity[i].listId}">${activitiedList[0].list_name}</a></p>
-                <div class="row justify-content-center col-8 p-0 m-0 bg-info p-3 rounded-3 divGlow">
+                <div class="row justify-content-center col-8 p-0 m-0 p-3 rounded-3">
                     <div>
                         <h5 class="listTitle mb-1">${activitiedList[0].list_name}</h5>
                         <p class="mb-2 cardFontSize"><img class="profilePicture" src="img/profilePictures/default.jpg" alt="Profile Picture" id="popularListProfilePicture_${activitiedList[0].id}_${location}_${activitiedList[0].creator}"> ${activitiedList[0].creator}  |  <span id="popularListLastEdited_${activitiedList[0].id}_${location}">${time_ago(activitiedList[0].last_edited)}</span> | <i class="fa-solid fa-heart"></i> <span id="listCardLikes_${activitiedList[0].id}_${location}">${activitiedList[0].likes}</span>  |  <i class="fa-solid fa-comment"></i> <span id="listCardComments_${activitiedList[0].id}_${location}">${activitiedList[0].comments.length}</span></p>
@@ -1406,7 +1406,7 @@ $(document).ready(() => {
                 <p class="text-muted">${time_ago(sortedActivity[i].date)}</p>
                 <p>${userData.id} added <span id="profilePageListAddName_${activitiedList[0].id}_${location}_${sortedActivity[i].content.id}"></span> to <a class="profilePageRecentActivityListLink listTitle" data-id="${sortedActivity[i].listId}">${activitiedList[0].list_name}</a></p>
                 <div class="row justify-content-center p-0 m-0">
-                    <div class="col-4 bg-info p-3 rounded-3 divGlow">
+                    <div class="col-4 p-3 rounded-3">
                         <img class="w-100" src="" alt="Content Poster" id="profilePageActivityListAdd_${sortedActivity[i].content.id}">
                     </div>
                 </div>
@@ -1429,7 +1429,7 @@ $(document).ready(() => {
             <div class="row justify-content-center">
                 <p class="text-muted">${time_ago(sortedActivity[i].date)}</p>
                 <p>${userData.id} created the list: <a class="profilePageRecentActivityListLink listTitle" data-id="${sortedActivity[i].listId}">${activitiedList[0].list_name}</a></p>
-                <div class="row justify-content-center col-8 p-0 m-0 bg-info p-3 rounded-3 divGlow">
+                <div class="row justify-content-center col-8 p-0 m-0 p-3 rounded-3">
                     <div>
                         <h5 class="listTitle mb-1">${activitiedList[0].list_name}</h5>
                         <p class="mb-2 cardFontSize"><img class="profilePicture" src="img/profilePictures/${userData.profilePic}.jpg" alt="Profile Picture" id="popularListProfilePicture_${activitiedList[0].id}_${location}_${activitiedList[0].creator}"> ${activitiedList[0].creator}  |  <span id="popularListLastEdited_${activitiedList[0].id}_${location}">${time_ago(activitiedList[0].last_edited)}</span> | <i class="fa-solid fa-heart"></i> <span id="listCardLikes_${activitiedList[0].id}_${location}">${activitiedList[0].likes}</span>  |  <i class="fa-solid fa-comment"></i> <span id="listCardComments_${activitiedList[0].id}_${location}">${activitiedList[0].comments.length}</span></p>
@@ -1449,7 +1449,7 @@ $(document).ready(() => {
                 <div class="row justify-content-center">
                     <p class="text-muted">${time_ago(sortedActivity[i].date)}</p>
                     <p>${userData.id} began following ${sortedActivity[i].user}</p>
-                    <div class="row justify-content-center col-8 p-0 m-0 bg-info p-3 rounded-3 divGlow">
+                    <div class="row justify-content-center col-8 p-0 m-0 p-3 rounded-3">
                         <div class="row justify-content-center">
                             <div class="col-3">
                                 <img class="profilePictureListComment p-0" src="img/profilePictures/default.jpg" alt="Profile Picture" id="followedUserProfilePic_${sortedActivity[i].user}_${location}">
@@ -1498,7 +1498,7 @@ $(document).ready(() => {
         $(`#${location}`).html('');
         lists.forEach((list) => {
             $(`#${location}`).append(`
-                <div class="card col-12 m-1 border-0 bg-primary p-3 rounded-3 divGlow listCard">
+                <div class="card col-12 m-1 border-0 p-3 rounded-3 listCard">
                   <div class="row g-0">
                     <div class="col-12">
                       <div>

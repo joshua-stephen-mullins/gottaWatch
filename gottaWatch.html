@@ -44,10 +44,10 @@
                     </li>
                 </ul>
                 <div class="d-flex dropdown">
-                    <button class="btn btn-secondary me-2 my-2 my-sm-0 dropdown-toggle" data-bs-toggle="dropdown"
+                    <button class="btn me-2 my-2 my-sm-0 dropdown-toggle creamBG text-white fw-bold" data-bs-toggle="dropdown"
                             id="profileButton"><i
                             class="fa-solid fa-user"></i><span id="userName"> LOGIN</span></button>
-                    <ul class="dropdown-menu bg-secondary loginDropdown">
+                    <ul class="dropdown-menu creamBG loginDropdown">
                         <li id="loginSection">
                             <form id="loginSubmit">
                                 <div class="d-flex justify-content-center flex-column form-group m-1">
@@ -81,7 +81,7 @@
                         <li class="loggedInDropdown d-none"><a class="dropdown-item text-light"
                                                                id="logoutButton">Logout</a></li>
                     </ul>
-                    <button class="btn btn-secondary my-2 my-sm-0" id="movieSearchButton"><i
+                    <button class="btn creamBG my-2 my-sm-0 text-white fw-bold" id="movieSearchButton"><i
                             class="fa-solid fa-magnifying-glass"></i> SEARCH
                     </button>
                 </div>
@@ -156,13 +156,13 @@
         </section>
         <section class="d-none" id="discoverPage">
             <div>
-                <h1 class="text-center titleFont homeScreenText m-1 mb-5">DISCOVER NEW SHOWS.</h1>
+                <h1 class="text-center homeScreenText m-1 mb-5">DISCOVER NEW SHOWS.</h1>
             </div>
-            <div class="row justify-content-center" id="discoverPopularSection">
-                <div class="d-flex justify-content-between align-items-end">
-                    <h3 class="titleFont">POPULAR TODAY</h3>
+            <div class="row justify-content-center sectionDiv" id="discoverPopularSection">
+                <div class="d-flex justify-content-between align-items-end mb-0">
+                    <h3 class="mb-0 fw-bold">POPULAR TODAY</h3>
                     <div class="d-flex justify-content-center">
-                        <ul class="nav nav-pills mb-3 justify-content-center discoverContentButtons" role="tablist">
+                        <ul class="nav nav-pills mb-1 justify-content-center discoverContentButtons" role="tablist">
                             <li class="nav-item m-1 mb-0" role="presentation">
                                 <button class="btn btn-warning rounded-1 w-100 btn-sm active"
                                         id="popularMovieResultsTabButton" data-bs-toggle="pill"
@@ -193,11 +193,11 @@
                     </div>
                 </div>
             </div>
-            <div class="row justify-content-center" id="discoverTopRatedSection">
-                <div class="d-flex justify-content-between align-items-end mt-5" id="topRatedHeader">
-                    <h3 class="titleFont">TOP RATED</h3>
+            <div class="row justify-content-center mt-5 sectionDiv" id="discoverTopRatedSection">
+                <div class="d-flex justify-content-between align-items-end" id="topRatedHeader">
+                    <h3 class="mb-0 fw-bold">TOP RATED</h3>
                     <div>
-                        <ul class="nav nav-pills mb-3 discoverContentButtons" role="tablist">
+                        <ul class="nav nav-pills mb-1 discoverContentButtons" role="tablist">
                             <li class="nav-item m-1" role="presentation">
                                 <button class="btn btn-warning rounded-1 w-100 btn-sm active"
                                         id="topRatedMovieResultsTabButton" data-bs-toggle="pill"
@@ -220,7 +220,7 @@
                 <div class="tab-content">
                     <div class="row tab-pane fade show active" id="topRatedMovieResultsTab" role="tabpanel"
                          tabindex="0">
-                        <div class="row d-flex">
+                        <div class="row d-flex justify-content-between">
                             <div class="mt-3 flex-wrap col-1 flex-column btn-group topRatedFilter" role="group">
                                 <input class="topRatedFilterButtonMovie" type="checkbox" id="topRatedMovieFilterAction"
                                        value="28">
@@ -461,13 +461,13 @@
                    role="button" aria-controls="offcanvasListCreate" id="createNewListButton">CREATE NEW
                     LIST</a>
             </div>
-            <div id="featuredLists">
+            <div class="sectionDiv" id="featuredLists">
                 <h3 class="fw-bold titleFont mb-0">FEATURED LISTS</h3>
                 <hr class="mt-1">
                 <div class="row m-0 p-0 justify-content-around" id="featuredListsContainer">
                 </div>
             </div>
-            <div class="row justify-content-center m-0 mt-5 p-0" id="popularLists">
+            <div class="row justify-content-center m-0 mt-5 sectionDiv" id="popularLists">
                 <div class="d-flex justify-content-between align-items-end" id="popularListHeader">
                     <h3 class="fw-bold titleFont mb-0">POPULAR LISTS</h3>
                     <div class="d-flex">
@@ -563,7 +563,7 @@
                 <button type="button" class="btn btn-danger" id="backToListButton" data-bs-toggle="modal" data-bs-target="#listModal">
                     <i class="fa-solid fa-left-long"></i> BACK TO LIST
                 </button>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                <button type="button" class="btn-close" data-bs-dismiss="modal"
                         aria-label="Close"></button>
             </div>
             <div class="modal-body row">
@@ -599,7 +599,7 @@
     <div class="modal-dialog" id="listModalDialog">
         <div class="row modal-content m-0 p-0 rounded-3">
             <div class="col-12 modal-header">
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                <button type="button" class="btn-close" data-bs-dismiss="modal"
                         aria-label="Close"></button>
             </div>
             <div class="modal-body p-0">
@@ -653,7 +653,7 @@
     <div class="modal-dialog" id="editListModalDialog">
         <div class="row modal-content m-0 p-0 rounded-3">
             <div class="col-12 modal-header">
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                <button type="button" class="btn-close" data-bs-dismiss="modal"
                         aria-label="Close"></button>
             </div>
             <div class="row modal-body m-0 p-0">
@@ -700,7 +700,7 @@
 
 <!--off canvas create a list-->
 
-<div class="offcanvas offcanvas-start bg-danger" tabindex="-1" id="offcanvasListCreate">
+<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasListCreate">
     <div class="offcanvas-header">
         <h1 class="offcanvas-title text-center flex-grow-1" id="offcanvasListCreateTitle">Create New List</h1>
         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -729,7 +729,7 @@
 
 <!--off canvas create an account-->
 
-<div class="offcanvas offcanvas-start bg-danger" tabindex="-1" id="offcanvasAccountCreate">
+<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasAccountCreate">
     <button type="button" class="btn-close align-self-end" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     <div class="offcanvas-header pb-0">
         <h1 class="offcanvas-title text-center flex-grow-1" id="offcanvasAccountCreateTitle">Create New Account</h1>
@@ -741,16 +741,12 @@
                     <div class="form-group">
                         <label class="col-form-label col-form-label-lg mt-1"
                                for="accountCreateUsername">Username</label>
-                        <input class="form-control form-control-lg" type="text" placeholder=""
-                               id="accountCreateUsername"
-                               required>
+                        <input class="form-control form-control-lg" type="text" id="accountCreateUsername" required>
                         <small class="text-warning d-none" id="userNameTaken">Username taken! Please enter a new
                             username.</small>
                         <label class="col-form-label col-form-label-lg mt-1"
                                for="accountCreatePassword">Password</label>
-                        <input class="form-control form-control-lg" type="password" placeholder=""
-                               id="accountCreatePassword"
-                               required>
+                        <input class="form-control form-control-lg" type="password" id="accountCreatePassword" required>
                     </div>
                     <div class="form-group">
                         <label for="accountUserDesc" class="col-form-label col-form-label-lg mt-1">Tell everyone a

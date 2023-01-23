@@ -10,24 +10,14 @@ colors {
 /*font-family: 'Epilogue', sans-serif;*/
 /*font-family: 'Space Mono', monospace;*/
 
-.titleFont {
-    /*font-family: 'Audiowide', cursive;*/
-    /*text-shadow: black 5px 0 10px;*/
-}
-
 .homeScreenText {
-    /*font-size: 4em;*/
-    /*text-shadow: black 5px 0 10px;*/
-}
-
-#getStartedButton {
-    /*text-shadow: black 5px 0 10px;*/
-    /*box-shadow: black 5px 0 10px;*/
+    color: #00887A;
+    font-size: 4em;
+    font-weight: bold;
 }
 
 body {
     font-family: 'Epilogue', sans-serif;
-    /*background-color: black;*/
 }
 
 .nav-item a {
@@ -36,12 +26,15 @@ body {
     margin: 1rem;
     background-color: #D3E3FC;
     border: none;
+    border-radius: 2rem !important;
+    color: white !important
 }
 
 .nav-item a:before {
     transition-duration: 1.0s;
     transform: scale(0);
     border: none;
+    /*color: white !important;*/
 }
 
 .nav-item .active {
@@ -50,6 +43,18 @@ body {
     background-color: #77A6F7 !important;
     border: none;
     font-weight: bold;
+    color: white !important;
+}
+
+.sectionDiv {
+    background-color: #77A6F7;
+    border-radius: 2rem;
+    padding: 1.5rem;
+    color: white;
+}
+
+.creamBG {
+    background-color: #FFCCBC;
 }
 
 .profilePicture {

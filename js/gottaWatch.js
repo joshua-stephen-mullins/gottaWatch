@@ -169,7 +169,7 @@ $(document).ready(() => {
         e.preventDefault();
         $('#homePage').addClass('d-none');
         $('#listsPage').addClass('d-none');
-        $('#searchResults').removeClass('d-none');
+        // $('#searchResults').removeClass('d-none');
         $('#profilePage').addClass('d-none');
         $('#discoverPage').addClass('d-none');
     })
@@ -178,7 +178,7 @@ $(document).ready(() => {
     })
     function showHomePage(){
         $('#homePage').removeClass('d-none');
-        $('#searchResults').addClass('d-none');
+        // $('#searchResults').addClass('d-none');
         $('#listsPage').addClass('d-none');
         $('#profilePage').addClass('d-none');
         $('#discoverPage').addClass('d-none');
@@ -189,7 +189,7 @@ $(document).ready(() => {
     })
     function showDiscoverPage(){
         $('#homePage').addClass('d-none');
-        $('#searchResults').addClass('d-none');
+        // $('#searchResults').addClass('d-none');
         $('#listsPage').addClass('d-none');
         $('#profilePage').addClass('d-none');
         $('#discoverPage').removeClass('d-none');
@@ -197,6 +197,7 @@ $(document).ready(() => {
 
     $('#movieSearchInputButton').click(function (e) {
         $('#resultsContainer').html('');
+        $('#searchBody').removeClass('d-none');
         allSearch($('#movieSearchInput').val());
     })
     $('#listsButton').click(() => {
@@ -204,7 +205,7 @@ $(document).ready(() => {
     })
     function showListsPage(){
         $('#homePage').addClass('d-none');
-        $('#searchResults').addClass('d-none');
+        // $('#searchResults').addClass('d-none');
         $('#listsPage').removeClass('d-none');
         $('#profilePage').addClass('d-none');
         $('#discoverPage').addClass('d-none');
@@ -227,7 +228,7 @@ $(document).ready(() => {
     })
     function showProfilePage(){
         $('#homePage').addClass('d-none');
-        $('#searchResults').addClass('d-none');
+        // $('#searchResults').addClass('d-none');
         $('#listsPage').addClass('d-none');
         $('#profilePage').addClass('d-none');
         $('#discoverPage').addClass('d-none');
@@ -308,6 +309,13 @@ $(document).ready(() => {
                 searchById(data[i].media_type, data[i].id);
                 hideBackToListButton();
             });
+        }
+        if (data.length === 0) {
+            $('#resultsContainer').append(`
+                <div class="col-12"">
+                    <h2>No Results Found</h2>
+                </div>
+            `)
         }
     }
 
@@ -532,7 +540,14 @@ $(document).ready(() => {
                 $(`#smallPosterCard_${showInfo.results[i].id}_trending`).click(function () {
                     hideBackToListButton();
                     searchById($(this).data('type'), $(this).data('id'));
-                })
+                }).hover(
+                function () {
+                    $(`#smallPosterCard_${showInfo.results[i].id}_trending`).addClass('contentOutlineWhite');
+                },
+                function () {
+                    $(`#smallPosterCard_${showInfo.results[i].id}_trending`).removeClass('contentOutlineWhite');
+                }
+            );
             }
         })
     }
@@ -692,16 +707,14 @@ $(document).ready(() => {
         for (let j = 0; j < 3; j++) {
             $('#featuredListsContainer').append(`
             <div class="card m-1 mt-0 col-3 flex-grow-1 listCard border-0 p-3 rounded-3 listCard" id="listCard_${lists[j].id}" data-id="${lists[j].id}">
-              <div class="row g-0">
-                <div class="listCardFeatured listCardImages" id="listCardImages_${lists[j].id}">
+                <div class="row">
+                    <h5 class="fw-bold text-center">${lists[j].list_name}</h5>
+                    <div class="listCardFeatured listCardImages position-relative" id="listCardImages_${lists[j].id}">
+                    </div>
+                    <div class="d-flex col-12 m-1">
+                        <p class="mb-0 cardFontSize align-self-end"><img class="profilePicture" src="img/profilePictures/default.jpg" alt="Profile Picture" id="featuredListProfilePicture_${lists[j].id}"> <span class="fw-bold">${lists[j].creator}</span>  |  <span id="featuredListLastEdited_${lists[j].id}"></span> | <i class="fa-solid fa-heart"></i> <span id="listCardLikes_${lists[j].id}">${lists[j].likes}</span>  |  <i class="fa-solid fa-comment"></i><span id="listCardComments_${lists[j].id}"> ${lists[j].comments.length}</span> </p>
+                    </div>
                 </div>
-                <div class="col-12">
-                  <div class="d-flex flex-column">
-                    <h5 class="listTitle">${lists[j].list_name}</h5>
-                    <p class="mb-0 cardFontSize align-self-end"><img class="profilePicture" src="img/profilePictures/default.jpg" alt="Profile Picture" id="featuredListProfilePicture_${lists[j].id}"> ${lists[j].creator}  |  <span id="featuredListLastEdited_${lists[j].id}"></span> | <i class="fa-solid fa-heart"></i> <span id="listCardLikes_${lists[j].id}">${lists[j].likes}</span>  |  <i class="fa-solid fa-comment"></i> <span id="listCardComments_${lists[j].id}">${lists[j].comments.length}</span> </p>
-                  </div>
-                </div>
-              </div>
             </div>
         `)
             $(`#featuredListLastEdited_${lists[j].id}`).html(`Updated ${time_ago(lists[j].last_edited)}`)
@@ -740,17 +753,15 @@ $(document).ready(() => {
         lists.forEach((list) => {
             $(`#${location}`).append(`
                 <div class="card col-9 m-1 border-0 p-3 rounded-3 listCard" id="listCard_${list.id}_${location}" data-id="${list.id}">
-                  <div class="row g-0">
-                    <div class="col-5 listCardPopular listCardImages" id="listCardImages_${list.id}_${location}">
+                    <div class="row m-0 p-0">
+                        <div class="col-5 listCardPopular listCardImages" id="listCardImages_${list.id}_${location}">
+                        </div>
+                        <div class="col-7">
+                            <h5 class="fw-bold mb-1">${list.list_name}</h5>
+                            <p class="mb-0 cardFontSize"><img class="profilePicture" src="img/profilePictures/default.jpg" alt="Profile Picture" id="popularListProfilePicture_${list.id}_${location}"> <span class="fw-bold">${list.creator}</span>  |  <span id="popularListLastEdited_${list.id}_${location}"></span> | <i class="fa-solid fa-heart"></i> <span id="listCardLikes_${list.id}_${location}">${list.likes}</span>  |  <i class="fa-solid fa-comment"></i> <span id="listCardComments_${list.id}_${location}">${list.comments.length}</span></p>
+                            <p class="mb-0 mt-2 cardFontSize" id="listCard_desc${list.id}_${location}"></p>
+                        </div>
                     </div>
-                    <div class="col-7">
-                      <div>
-                        <h5 class="listTitle mb-1">${list.list_name}</h5>
-                        <p class="mb-0 cardFontSize"><img class="profilePicture" src="img/profilePictures/default.jpg" alt="Profile Picture" id="popularListProfilePicture_${list.id}_${location}"> ${list.creator}  |  <span id="popularListLastEdited_${list.id}_${location}"></span> | <i class="fa-solid fa-heart"></i> <span id="listCardLikes_${list.id}_${location}">${list.likes}</span>  |  <i class="fa-solid fa-comment"></i> <span id="listCardComments_${list.id}_${location}">${list.comments.length}</span></p>
-                        <p class="mb-0 cardFontSize" id="listCard_desc${list.id}_${location}"></p>
-                      </div>
-                    </div>
-                  </div>
                 </div>
         `)
             $(`#popularListLastEdited_${list.id}_${location}`).html(`Updated ${time_ago(list.last_edited)}`)
@@ -768,7 +779,7 @@ $(document).ready(() => {
                         .then(response => response.json())
                         .then((data) => {
                             $(`#listCardImages_${list.id}_${location}`).append(`
-                            <img src="https://image.tmdb.org/t/p/original/${data.poster_path}" class="border border-1" alt="Movie Poster" style="position: absolute; left: ${1 + (i * 15)}%; height: 5em; z-index: ${500 - (5 * i)}">
+                            <img src="https://image.tmdb.org/t/p/original/${data.poster_path}" class="border border-1" alt="Movie Poster" style="position: absolute; left: ${(i * 15)}%; height: 7em; z-index: ${500 - (5 * i)}">
                         `)
                         })
                 }
@@ -778,7 +789,7 @@ $(document).ready(() => {
                         .then(response => response.json())
                         .then((data) => {
                             $(`#listCardImages_${list.id}_${location}`).append(`
-                            <img src="https://image.tmdb.org/t/p/original/${data.poster_path}" class="border border-1" alt="Movie Poster" style="position: absolute; left: ${1 + (i * 15)}%; height: 5em; z-index: ${500 - (5 * i)}">
+                            <img src="https://image.tmdb.org/t/p/original/${data.poster_path}" class="border border-1" alt="Movie Poster" style="position: absolute; left: ${(i * 15)}%; height: 7em; z-index: ${500 - (5 * i)}">
                         `)
                         })
                 }
@@ -821,10 +832,10 @@ $(document).ready(() => {
                                 showBackToListButton();
                             }).hover(
                                 function () {
-                                    $(`#listContent_${content.id}`).addClass('border rounded border-danger border-5');
+                                    $(`#listContent_${content.id}`).addClass('contentOutlineWhite');
                                 },
                                 function () {
-                                    $(`#listContent_${content.id}`).removeClass('border rounded border-danger border-5');
+                                    $(`#listContent_${content.id}`).removeClass('contentOutlineWhite');
                                 }
                             );
                         }
@@ -1741,7 +1752,10 @@ $(document).ready(() => {
         return content;
     }
 
-    $(`#editListSaveChanges`).click(() => editListSave($(`#editListModal`).data('data-list-id')));
+    $(`#editListSaveChanges`).click(() => {
+        editListSave($(`#editListModal`).data('data-list-id'));
+        $(`#editListModal`).modal('hide');
+    });
 
     function editListSave(listId) {
         let updateContent = {

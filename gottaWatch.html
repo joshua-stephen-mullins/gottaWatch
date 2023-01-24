@@ -14,7 +14,6 @@
     <link rel="stylesheet" href="css/gottaWatch.css">
     <!--jquery ui-->
     <link rel="stylesheet" href="css/jquery-ui.min.css">
-
     <!--    font awesome icons-->
     <script src="https://kit.fontawesome.com/2a42ed463e.js" crossorigin="anonymous"></script>
     <!--    google fonts-->
@@ -28,13 +27,13 @@
 <main class="row justify-content-center p-0 m-0" id="mainPageBody">
     <nav class="navbar navbar-expand-lg">
         <div class="container-fluid">
-            <!--            <img src="img/logo-no-background.png" alt="gotta Watch logo" id="navbarLogo">-->
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01"
                     aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse">
-                <ul class="navbar-nav rounded-3 me-auto">
+            <img src="img/gotta-watch-website-favicon-color.png" alt="gotta Watch logo" id="navbarLogo">
+            <div class="collapse navbar-collapse justify-content-between">
+                <ul class="navbar-nav rounded-3">
                     <li class="nav-item">
                         <a class="nav-link active" href="#" id="homeButton">HOME</a>
                     </li>
@@ -84,19 +83,22 @@
                         <li class="loggedInDropdown d-none"><a class="dropdown-item text-light"
                                                                id="logoutButton">Logout</a></li>
                     </ul>
-                    <button class="btn creamBG my-2 my-sm-0 text-white fw-bold" id="movieSearchButton"><i
-                            class="fa-solid fa-magnifying-glass"></i> SEARCH
-                    </button>
+<!--                    <button class="btn creamBG my-2 my-sm-0 text-white fw-bold" id="movieSearchButton"><i-->
+<!--                            class="fa-solid fa-magnifying-glass"></i> SEARCH-->
+<!--                    </button>-->
                 </div>
             </div>
         </div>
     </nav>
     <main class="row justify-content-center col-10 m-0 p-0">
         <section class="row justify-content-center p-0 m-0" id="homePage">
-            <div class="d-flex flex-column justify-content-center col-12 text-center vh-100" id="homePageWelcome">
-                <h1 class="titleFont homeScreenText m-1">DISCOVER NEW SHOWS.</h1>
-                <h1 class="titleFont homeScreenText m-1">BUILD YOUR LIST.</h1>
-                <h1 class="titleFont homeScreenText m-1">SHOW YOUR FRIENDS.</h1>
+            <div class="d-flex flex-column justify-content-center col-12 text-center align-items-center"
+                 id="homePageWelcome">
+                <img id="homePageLogo" src="img/gotta-watch-high-resolution-logo-color-on-transparent-background.png"
+                     alt="Site Logo">
+                <h1 class="homeScreenText m-1">DISCOVER NEW SHOWS.</h1>
+                <h1 class="homeScreenText m-1">BUILD YOUR LIST.</h1>
+                <h1 class="homeScreenText m-1">SHOW YOUR FRIENDS.</h1>
                 <div class="col-12">
                     <button type="button" class="btn btn-danger btn-lg w-25" id="getStartedButton"
                             data-bs-toggle="offcanvas"
@@ -116,7 +118,7 @@
                                 <ul class="nav nav-pills mb-1 justify-content-center discoverContentButtons"
                                     role="tablist">
                                     <li class="nav-item m-1 mb-0" role="presentation">
-                                        <button class="btn btn-warning rounded-1 w-100 btn-sm active"
+                                        <button class="btn border-0 rounded-3 w-100 btn-sm active contentToggleButton"
                                                 id="trendingMovieResultsTabButton" data-bs-toggle="pill"
                                                 data-bs-target="#trendingMovieResultsTab"
                                                 type="button" role="tab" aria-controls="pills-home"
@@ -124,7 +126,7 @@
                                         </button>
                                     </li>
                                     <li class="nav-item m-1 mb-0" role="presentation">
-                                        <button class="btn btn-warning rounded-1 w-100 btn-sm"
+                                        <button class="btn border-0 rounded-3 w-100 btn-sm contentToggleButton"
                                                 id="trendingTVResultsTabButton"
                                                 data-bs-toggle="pill"
                                                 data-bs-target="#trendingTVResultsTab"
@@ -155,7 +157,6 @@
                     <h3 class="align-self-start fw-bold titleFont mb-0">FRIENDS ACTIVITY</h3>
                     <hr class="mt-1">
                     <div id="homePageUserFeed">
-
                     </div>
                 </div>
             </div>
@@ -164,20 +165,61 @@
             <div>
                 <h1 class="text-center homeScreenText m-1 mb-5">DISCOVER NEW SHOWS.</h1>
             </div>
-            <div class="row justify-content-center sectionDiv" id="discoverPopularSection">
+            <div class="row justify-content-center mt-2 sectionDiv" id="searchResults">
+                <h2 class="mb-0 fw-bold">SEARCH BY NAME</h2>
+                <hr>
+                <div class="col-8 input-group m-3">
+                    <input class="form-control form-control-lg" type="text"
+                           placeholder="Search Movies and TV Shows" id="movieSearchInput">
+                    <button class="btn btn-outline-secondary" type="button" id="movieSearchInputButton"><i
+                            class="fa-solid fa-magnifying-glass"></i></button>
+                </div>
+                <div class="row justify-content-center d-none" id="searchBody">
+                    <div class="col-3 p-0 m-3" id="searchResultFilter">
+                        <div class="card text-white bg-warning mb-3">
+                            <div class="card-header h3 text-center">Filter Results</div>
+                            <div class="card-body">
+                                <div class="d-grid gap-2">
+                                    <input class="btn-check" type="radio" name="filterRadio"
+                                           autocomplete="off" value="all" checked>
+                                    <input class="btn-check" type="radio" name="filterRadio" id="filterMovie"
+                                           autocomplete="off" value="movie">
+                                    <label class="btn btn-lg btn-primary filterBtn" for="filterMovie">Movies <span
+                                            class="badge rounded-pill bg-success" id="numberMovieResults"></span>
+                                    </label>
+                                    <input class="btn-check" type="radio" name="filterRadio" id="filterTV"
+                                           autocomplete="off"
+                                           value="tv">
+                                    <label class="btn btn-lg btn-primary filterBtn" for="filterTV">TV Shows <span
+                                            class="badge rounded-pill bg-success" id="numberTVResults"></span>
+                                    </label>
+                                    <!--                            <input class="btn-check" type="radio" name="filterRadio" id="filterPeople"-->
+                                    <!--                                   autocomplete="off" value="person">-->
+                                    <!--                            <label class="btn btn-lg btn-primary filterBtn" for="filterPeople">People <span-->
+                                    <!--                                    class="badge rounded-pill bg-success" id="numberPeopleResults"></span>-->
+                                    <!--                            </label>-->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-8 justify-content-end scroll rounded-3" id="resultsContainer">
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-center sectionDiv mt-5" id="discoverPopularSection">
                 <div class="d-flex justify-content-between align-items-end mb-0">
                     <h2 class="mb-0 fw-bold">POPULAR TODAY</h2>
                     <div class="d-flex justify-content-center">
                         <ul class="nav nav-pills mb-1 justify-content-center discoverContentButtons" role="tablist">
                             <li class="nav-item m-1 mb-0" role="presentation">
-                                <button class="btn btn-warning rounded-1 w-100 btn-sm active"
+                                <button class="btn border-0 rounded-1 w-100 btn-sm active contentToggleButton"
                                         id="popularMovieResultsTabButton" data-bs-toggle="pill"
                                         data-bs-target="#popularMovieResultsTab"
                                         type="button" role="tab" aria-controls="pills-home" aria-selected="true">Movies
                                 </button>
                             </li>
                             <li class="nav-item m-1 mb-0" role="presentation">
-                                <button class="btn btn-warning rounded-1 w-100 btn-sm" id="popularTVResultsTabButton"
+                                <button class="btn border-0 rounded-1 w-100 btn-sm contentToggleButton" id="popularTVResultsTabButton"
                                         data-bs-toggle="pill"
                                         data-bs-target="#popularTVResultsTab"
                                         type="button" role="tab" aria-controls="pills-profile" aria-selected="false">TV
@@ -205,14 +247,14 @@
                     <div>
                         <ul class="nav nav-pills mb-1 discoverContentButtons" role="tablist">
                             <li class="nav-item m-1" role="presentation">
-                                <button class="btn btn-warning rounded-1 w-100 btn-sm active"
+                                <button class="btn border-0 rounded-1 w-100 btn-sm active contentToggleButton"
                                         id="topRatedMovieResultsTabButton" data-bs-toggle="pill"
                                         data-bs-target="#topRatedMovieResultsTab"
                                         type="button" role="tab" aria-controls="pills-home" aria-selected="true">Movies
                                 </button>
                             </li>
                             <li class="nav-item m-1" role="presentation">
-                                <button class="btn btn-warning rounded-1 w-100 btn-sm" id="topRatedTVResultsTabButton"
+                                <button class="btn border-0 rounded-1 w-100 btn-sm contentToggleButton" id="topRatedTVResultsTabButton"
                                         data-bs-toggle="pill"
                                         data-bs-target="#topRatedTVResultsTab"
                                         type="button" role="tab" aria-controls="pills-profile" aria-selected="false">TV
@@ -231,101 +273,101 @@
                                 <input class="topRatedFilterButtonMovie" type="checkbox" id="topRatedMovieFilterAction"
                                        value="28">
                                 <label class="m-1 w-auto" for="topRatedMovieFilterAction"><span
-                                        class="btn btn-warning rounded-1 w-100 btn-sm">Action</span></label>
+                                        class="btn border-0 rounded-1 w-100 btn-sm text-white">Action</span></label>
 
                                 <input class="topRatedFilterButtonMovie" type="checkbox"
                                        id="topRatedMovieFilterAdventure"
                                        value="12">
                                 <label class="m-1 w-auto" for="topRatedMovieFilterAdventure"><span
-                                        class="btn btn-warning rounded-1 w-100 btn-sm">Adventure</span></label>
+                                        class="btn border-0 rounded-1 w-100 btn-sm text-white">Adventure</span></label>
 
                                 <input class="topRatedFilterButtonMovie" type="checkbox"
                                        id="topRatedMovieFilterAnimation"
                                        value="16">
                                 <label class="m-1" for="topRatedMovieFilterAnimation"><span
-                                        class="btn btn-warning rounded-1 w-100 btn-sm">Animation</span></label>
+                                        class="btn border-0 rounded-1 w-100 btn-sm text-white">Animation</span></label>
 
                                 <input class="topRatedFilterButtonMovie" type="checkbox" id="topRatedMovieFilterComedy"
                                        value="35">
                                 <label class="m-1" for="topRatedMovieFilterComedy"><span
-                                        class="btn btn-warning rounded-1 w-100 btn-sm">Comedy</span></label>
+                                        class="btn border-0 rounded-1 w-100 btn-sm text-white">Comedy</span></label>
 
                                 <input class="topRatedFilterButtonMovie" type="checkbox" id="topRatedMovieFilterCrime"
                                        value="80">
                                 <label class="m-1" for="topRatedMovieFilterCrime"><span
-                                        class="btn btn-warning rounded-1 w-100 btn-sm">Crime</span></label>
+                                        class="btn border-0 rounded-1 w-100 btn-sm text-white">Crime</span></label>
 
                                 <input class="topRatedFilterButtonMovie" type="checkbox"
                                        id="topRatedMovieFilterDocumentary"
                                        value="99">
                                 <label class="m-1" for="topRatedMovieFilterDocumentary"><span
-                                        class="btn btn-warning rounded-1 w-100 btn-sm">Documentary</span></label>
+                                        class="btn border-0 rounded-1 w-100 btn-sm text-white">Documentary</span></label>
 
                                 <input class="topRatedFilterButtonMovie" type="checkbox" id="topRatedMovieFilterDrama"
                                        value="18">
                                 <label class="m-1" for="topRatedMovieFilterDrama"><span
-                                        class="btn btn-warning rounded-1 w-100 btn-sm">Drama</span></label>
+                                        class="btn border-0 rounded-1 w-100 btn-sm text-white">Drama</span></label>
 
                                 <input class="topRatedFilterButtonMovie" type="checkbox" id="topRatedMovieFilterFamily"
                                        value="10751">
                                 <label class="m-1" for="topRatedMovieFilterFamily"><span
-                                        class="btn btn-warning rounded-1 w-100 btn-sm">Family</span></label>
+                                        class="btn border-0 rounded-1 w-100 btn-sm text-white">Family</span></label>
 
                                 <input class="topRatedFilterButtonMovie" type="checkbox" id="topRatedMovieFilterFantasy"
                                        value="14">
                                 <label class="m-1" for="topRatedMovieFilterFantasy"><span
-                                        class="btn btn-warning rounded-1 w-100 btn-sm">Fantasy</span></label>
+                                        class="btn border-0 rounded-1 w-100 btn-sm text-white">Fantasy</span></label>
 
                                 <input class="topRatedFilterButtonMovie" type="checkbox" id="topRatedMovieFilterHistory"
                                        value="36">
                                 <label class="m-1" for="topRatedMovieFilterHistory"><span
-                                        class="btn btn-warning rounded-1 w-100 btn-sm">History</span></label>
+                                        class="btn border-0 rounded-1 w-100 btn-sm text-white">History</span></label>
 
                                 <input class="topRatedFilterButtonMovie" type="checkbox" id="topRatedMovieFilterHorror"
                                        value="27">
                                 <label class="m-1" for="topRatedMovieFilterHorror"><span
-                                        class="btn btn-warning rounded-1 w-100 btn-sm">Horror</span></label>
+                                        class="btn border-0 rounded-1 w-100 btn-sm text-white">Horror</span></label>
 
                                 <input class="topRatedFilterButtonMovie" type="checkbox" id="topRatedMovieFilterMusic"
                                        value="10402">
                                 <label class="m-1" for="topRatedMovieFilterMusic"><span
-                                        class="btn btn-warning rounded-1 w-100 btn-sm">Music</span></label>
+                                        class="btn border-0 rounded-1 w-100 btn-sm text-white">Music</span></label>
 
                                 <input class="topRatedFilterButtonMovie" type="checkbox" id="topRatedMovieFilterMystery"
                                        value="9648">
                                 <label class="m-1" for="topRatedMovieFilterMystery"><span
-                                        class="btn btn-warning rounded-1 w-100 btn-sm">Mystery</span></label>
+                                        class="btn border-0 rounded-1 w-100 btn-sm text-white">Mystery</span></label>
 
                                 <input class="topRatedFilterButtonMovie" type="checkbox" id="topRatedMovieFilterRomance"
                                        value="10749">
                                 <label class="m-1" for="topRatedMovieFilterRomance"><span
-                                        class="btn btn-warning rounded-1 w-100 btn-sm">Romance</span></label>
+                                        class="btn border-0 rounded-1 w-100 btn-sm text-white">Romance</span></label>
 
                                 <input class="topRatedFilterButtonMovie" type="checkbox"
                                        id="topRatedMovieFilterScienceFiction" value="878">
                                 <label class="m-1" for="topRatedMovieFilterScienceFiction"><span
-                                        class="btn btn-warning rounded-1 w-100 btn-sm">Science Fiction</span></label>
+                                        class="btn border-0 rounded-1 w-100 btn-sm text-white">Science Fiction</span></label>
 
                                 <input class="topRatedFilterButtonMovie" type="checkbox" id="topRatedMovieFilterTVMovie"
                                        value="10770">
                                 <label class="m-1" for="topRatedMovieFilterTVMovie"><span
-                                        class="btn btn-warning rounded-1 w-100 btn-sm">TV Movie</span></label>
+                                        class="btn border-0 rounded-1 w-100 btn-sm text-white">TV Movie</span></label>
 
                                 <input class="topRatedFilterButtonMovie" type="checkbox"
                                        id="topRatedMovieFilterThriller"
                                        value="53">
                                 <label class="m-1" for="topRatedMovieFilterThriller"><span
-                                        class="btn btn-warning rounded-1 w-100 btn-sm">Thriller</span></label>
+                                        class="btn border-0 rounded-1 w-100 btn-sm text-white">Thriller</span></label>
 
                                 <input class="topRatedFilterButtonMovie" type="checkbox" id="topRatedMovieFilterWar"
                                        value="10752">
                                 <label class="m-1" for="topRatedMovieFilterWar"><span
-                                        class="btn btn-warning rounded-1 w-100 btn-sm">War</span></label>
+                                        class="btn border-0 rounded-1 w-100 btn-sm text-white">War</span></label>
 
                                 <input class="topRatedFilterButtonMovie" type="checkbox" id="topRatedMovieFilterWestern"
                                        value="37">
                                 <label class="m-1" for="topRatedMovieFilterWestern"><span
-                                        class="btn btn-warning rounded-1 w-100 btn-sm">Western</span></label>
+                                        class="btn border-0 rounded-1 w-100 btn-sm text-white">Western</span></label>
                             </div>
                             <div class="d-flex col-10 justify-content-center flex-wrap" id="topRatedMovieResults">
                             </div>
@@ -339,82 +381,82 @@
                                        id="topRatedTVFilterActionAdventure"
                                        value="10759">
                                 <label class="m-1 w-auto" for="topRatedTVFilterActionAdventure"><span
-                                        class="btn btn-warning rounded-1 w-100 btn-sm">Action & Adventure</span></label>
+                                        class="btn border-0 rounded-1 w-100 btn-sm text-white">Action & Adventure</span></label>
 
                                 <input class="topRatedFilterButtonTV" type="checkbox" id="topRatedTVFilterAnimation"
                                        value="16">
                                 <label class="m-1" for="topRatedTVFilterAnimation"><span
-                                        class="btn btn-warning rounded-1 w-100 btn-sm">Animation</span></label>
+                                        class="btn border-0 rounded-1 w-100 btn-sm text-white">Animation</span></label>
 
                                 <input class="topRatedFilterButtonTV" type="checkbox" id="topRatedTVFilterComedy"
                                        value="35">
                                 <label class="m-1" for="topRatedTVFilterComedy"><span
-                                        class="btn btn-warning rounded-1 w-100 btn-sm">Comedy</span></label>
+                                        class="btn border-0 rounded-1 w-100 btn-sm text-white">Comedy</span></label>
 
                                 <input class="topRatedFilterButtonTV" type="checkbox" id="topRatedTVFilterCrime"
                                        value="80">
                                 <label class="m-1" for="topRatedTVFilterCrime"><span
-                                        class="btn btn-warning rounded-1 w-100 btn-sm">Crime</span></label>
+                                        class="btn border-0 rounded-1 w-100 btn-sm text-white">Crime</span></label>
 
                                 <input class="topRatedFilterButtonTV" type="checkbox" id="topRatedTVFilterDocumentary"
                                        value="99">
                                 <label class="m-1" for="topRatedTVFilterDocumentary"><span
-                                        class="btn btn-warning rounded-1 w-100 btn-sm">Documentary</span></label>
+                                        class="btn border-0 rounded-1 w-100 btn-sm text-white">Documentary</span></label>
 
                                 <input class="topRatedFilterButtonTV" type="checkbox" id="topRatedTVFilterDrama"
                                        value="18">
                                 <label class="m-1" for="topRatedTVFilterDrama"><span
-                                        class="btn btn-warning rounded-1 w-100 btn-sm">Drama</span></label>
+                                        class="btn border-0 rounded-1 w-100 btn-sm text-white">Drama</span></label>
 
                                 <input class="topRatedFilterButtonTV" type="checkbox" id="topRatedTVFilterFamily"
                                        value="10751">
                                 <label class="m-1" for="topRatedTVFilterFamily"><span
-                                        class="btn btn-warning rounded-1 w-100 btn-sm">Family</span></label>
+                                        class="btn border-0 rounded-1 w-100 btn-sm text-white">Family</span></label>
 
                                 <input class="topRatedFilterButtonTV" type="checkbox" id="topRatedTVFilterKids"
                                        value="10762">
                                 <label class="m-1" for="topRatedTVFilterKids"><span
-                                        class="btn btn-warning rounded-1 w-100 btn-sm">Kids</span></label>
+                                        class="btn border-0 rounded-1 w-100 btn-sm text-white">Kids</span></label>
 
                                 <input class="topRatedFilterButtonTV" type="checkbox" id="topRatedTVFilterMystery"
                                        value="9648">
                                 <label class="m-1" for="topRatedTVFilterMystery"><span
-                                        class="btn btn-warning rounded-1 w-100 btn-sm">Mystery</span></label>
+                                        class="btn border-0 rounded-1 w-100 btn-sm text-white">Mystery</span></label>
 
                                 <input class="topRatedFilterButtonTV" type="checkbox" id="topRatedTVFilterNews"
                                        value="10763">
                                 <label class="m-1" for="topRatedTVFilterNews"><span
-                                        class="btn btn-warning rounded-1 w-100 btn-sm">News</span></label>
+                                        class="btn border-0 rounded-1 w-100 btn-sm text-white">News</span></label>
 
                                 <input class="topRatedFilterButtonTV" type="checkbox" id="topRatedTVFilterReality"
                                        value="10764">
                                 <label class="m-1" for="topRatedTVFilterReality"><span
-                                        class="btn btn-warning rounded-1 w-100 btn-sm">Reality</span></label>
+                                        class="btn border-0 rounded-1 w-100 btn-sm text-white">Reality</span></label>
 
                                 <input class="topRatedFilterButtonTV" type="checkbox" id="topRatedTVFilterSciFiFantasy"
                                        value="10765">
                                 <label class="m-1" for="topRatedTVFilterSciFiFantasy"><span
-                                        class="btn btn-warning rounded-1 w-100 btn-sm">Sci-Fi & Fantasy</span></label>
+                                        class="btn border-0 rounded-1 w-100 btn-sm text-white">Sci-Fi & Fantasy</span></label>
 
                                 <input class="topRatedFilterButtonTV" type="checkbox" id="topRatedTVFilterSoap"
                                        value="10766">
                                 <label class="m-1" for="topRatedTVFilterSoap"><span
-                                        class="btn btn-warning rounded-1 w-100 btn-sm">Soap</span></label>
+                                        class="btn border-0 rounded-1 w-100 btn-sm text-white">Soap</span></label>
 
                                 <input class="topRatedFilterButtonTV" type="checkbox" id="topRatedTVFilterTalk"
                                        value="10767">
                                 <label class="m-1" for="topRatedTVFilterTalk"><span
-                                        class="btn btn-warning rounded-1 w-100 btn-sm">Talk</span></label>
+                                        class="btn border-0 rounded-1 w-100 btn-sm text-white">Talk</span></label>
 
                                 <input class="topRatedFilterButtonTV" type="checkbox" id="topRatedTVFilterWarPolitics"
                                        value="10768">
                                 <label class="m-1" for="topRatedTVFilterWarPolitics"><span
-                                        class="btn btn-warning rounded-1 w-100 btn-sm">War & Politics</span></label>
+                                        class="btn border-0 rounded-1 w-100 btn-sm text-white">War & Politics</span></label>
 
                                 <input class="topRatedFilterButtonTV" type="checkbox" id="topRatedTVFilterWestern"
                                        value="37">
                                 <label class="m-1" for="topRatedTVFilterWestern"><span
-                                        class="btn btn-warning rounded-1 w-100 btn-sm">Western</span></label>
+                                        class="btn border-0 rounded-1 w-100 btn-sm text-white">Western</span></label>
                             </div>
                             <div class="d-flex col-10 justify-content-center flex-wrap" id="topRatedTVResults">
                             </div>
@@ -423,42 +465,42 @@
                 </div>
             </div>
         </section>
-        <section class="row justify-content-center d-none" id="searchResults">
-            <div class="col-11 input-group m-3">
-                <input class="form-control form-control-lg" type="text"
-                       placeholder="Search Movies and TV Shows" id="movieSearchInput">
-                <button class="btn btn-outline-secondary" type="button" id="movieSearchInputButton"><i
-                        class="fa-solid fa-magnifying-glass"></i></button>
-            </div>
-            <div class="col-3 p-0 m-3" id="searchResultFilter">
-                <div class="card text-white bg-warning mb-3">
-                    <div class="card-header h3 text-center">Filter Results</div>
-                    <div class="card-body">
-                        <div class="d-grid gap-2">
-                            <input class="btn-check" type="radio" name="filterRadio"
-                                   autocomplete="off" value="all" checked>
-                            <input class="btn-check" type="radio" name="filterRadio" id="filterMovie"
-                                   autocomplete="off" value="movie">
-                            <label class="btn btn-lg btn-primary filterBtn" for="filterMovie">Movies <span
-                                    class="badge rounded-pill bg-success" id="numberMovieResults"></span>
-                            </label>
-                            <input class="btn-check" type="radio" name="filterRadio" id="filterTV" autocomplete="off"
-                                   value="tv">
-                            <label class="btn btn-lg btn-primary filterBtn" for="filterTV">TV Shows <span
-                                    class="badge rounded-pill bg-success" id="numberTVResults"></span>
-                            </label>
-                            <!--                            <input class="btn-check" type="radio" name="filterRadio" id="filterPeople"-->
-                            <!--                                   autocomplete="off" value="person">-->
-                            <!--                            <label class="btn btn-lg btn-primary filterBtn" for="filterPeople">People <span-->
-                            <!--                                    class="badge rounded-pill bg-success" id="numberPeopleResults"></span>-->
-                            <!--                            </label>-->
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-8 justify-content-end" id="resultsContainer">
-            </div>
-        </section>
+        <!--        <section class="row justify-content-center d-none" id="searchResults">-->
+        <!--            <div class="col-11 input-group m-3">-->
+        <!--                <input class="form-control form-control-lg" type="text"-->
+        <!--                       placeholder="Search Movies and TV Shows" id="movieSearchInput">-->
+        <!--                <button class="btn btn-outline-secondary" type="button" id="movieSearchInputButton"><i-->
+        <!--                        class="fa-solid fa-magnifying-glass"></i></button>-->
+        <!--            </div>-->
+        <!--            <div class="col-3 p-0 m-3" id="searchResultFilter">-->
+        <!--                <div class="card text-white bg-warning mb-3">-->
+        <!--                    <div class="card-header h3 text-center">Filter Results</div>-->
+        <!--                    <div class="card-body">-->
+        <!--                        <div class="d-grid gap-2">-->
+        <!--                            <input class="btn-check" type="radio" name="filterRadio"-->
+        <!--                                   autocomplete="off" value="all" checked>-->
+        <!--                            <input class="btn-check" type="radio" name="filterRadio" id="filterMovie"-->
+        <!--                                   autocomplete="off" value="movie">-->
+        <!--                            <label class="btn btn-lg btn-primary filterBtn" for="filterMovie">Movies <span-->
+        <!--                                    class="badge rounded-pill bg-success" id="numberMovieResults"></span>-->
+        <!--                            </label>-->
+        <!--                            <input class="btn-check" type="radio" name="filterRadio" id="filterTV" autocomplete="off"-->
+        <!--                                   value="tv">-->
+        <!--                            <label class="btn btn-lg btn-primary filterBtn" for="filterTV">TV Shows <span-->
+        <!--                                    class="badge rounded-pill bg-success" id="numberTVResults"></span>-->
+        <!--                            </label>-->
+        <!--                            &lt;!&ndash;                            <input class="btn-check" type="radio" name="filterRadio" id="filterPeople"&ndash;&gt;-->
+        <!--                            &lt;!&ndash;                                   autocomplete="off" value="person">&ndash;&gt;-->
+        <!--                            &lt;!&ndash;                            <label class="btn btn-lg btn-primary filterBtn" for="filterPeople">People <span&ndash;&gt;-->
+        <!--                            &lt;!&ndash;                                    class="badge rounded-pill bg-success" id="numberPeopleResults"></span>&ndash;&gt;-->
+        <!--                            &lt;!&ndash;                            </label>&ndash;&gt;-->
+        <!--                        </div>-->
+        <!--                    </div>-->
+        <!--                </div>-->
+        <!--            </div>-->
+        <!--            <div class="col-8 justify-content-end" id="resultsContainer">-->
+        <!--            </div>-->
+        <!--        </section>-->
         <section class="row col-12 justify-content-center d-none" id="listsPage">
             <div class="row flex-column align-items-center mb-5" id="listPageHeader">
                 <h1 class="text-center titleFont homeScreenText m-1 mb-1">BUILD YOUR LIST.</h1>
@@ -487,13 +529,13 @@
                             <input class="popularListFilterRadio" type="radio" name="popularListFilter"
                                    id="popularListFilterMostLiked">
                             <label class="popularListFilterButton" for="popularListFilterMostLiked"><span
-                                    class="m-1 mb-0 btn btn-warning rounded-1 btn-sm"
+                                    class="m-1 mb-0 btn border-0 rounded-1 btn-sm"
                                     id="popularListFilterMostLikedLabel">Most Liked</span>
                             </label>
                             <input class="popularListFilterRadio" type="radio" name="popularListFilter"
                                    id="popularListFilterRecentlyUpdated">
                             <label class="popularListFilterButton" for="popularListFilterRecentlyUpdated"><span
-                                    class="m-1 mb-0 btn btn-warning rounded-1 btn-sm"
+                                    class="m-1 mb-0 btn border-0 rounded-1 btn-sm"
                                     id="popularListFilterRecentlyUpdatedLabel">Recently Updated</span>
                             </label>
                         </div>
@@ -514,7 +556,7 @@
                         <button type="button" class="btn btn-info btn-sm" id="profilePageEditButton">EDIT
                             PROFILE
                         </button>
-                        <button type="button" class="btn btn-warning btn-sm" id="profilePageFollowButton">
+                        <button type="button" class="btn border-0 btn-sm" id="profilePageFollowButton">
                             FOLLOW
                         </button>
                         <button type="button" class="btn btn-success btn-sm" id="profilePageFollowingButton">
@@ -567,7 +609,7 @@
 <div class="modal modal-xl fade" id="moreInfoModal">
     <div class="modal-dialog modal-dialog-centered" id="moreInfoModalDialog" role="document">
         <div class="modal-content justify-content-around rounded-3">
-            <div class="modal-header">
+            <div class="modal-header p-0 border-0">
                 <button type="button" class="btn btn-danger" id="backToListButton" data-bs-toggle="modal"
                         data-bs-target="#listModal">
                     <i class="fa-solid fa-left-long"></i> BACK TO LIST
@@ -587,16 +629,16 @@
                                     data-bs-toggle="dropdown" aria-expanded="false" id="listAddBtn">
                                 <i class="fa-solid fa-clapperboard"></i>
                             </button>
-                            <ul class="dropdown-menu dropdown-menu-dark disabled" id="addListList">
+                            <ul class="dropdown-menu disabled" id="addListList">
                             </ul>
                         </div>
                     </h1>
-                    <h5 class="text-muted"><span class="badge bg-danger" id="moreInfoRating"></span> <span
+                    <h5 class=""><span class="badge bg-danger" id="moreInfoRating"></span> <span
                             id="moreInfoGenre"></span> | <span id="moreInfoRuntime"></span></h5>
                     <h3><span id="moreInfoOverview"></span></h3>
-                    <h5 class="text-muted fw-bold" id="moreInfoDirector">Director: <span class="fw-normal"></span></h5>
-                    <h5 class="text-muted fw-bold" id="moreInfoCastElement">Cast: <span class="fw-normal"
-                                                                                        id="moreInfoCast"></span></h5>
+                    <h5 class=" fw-bold" id="moreInfoDirector">Director: <span class="fw-normal"></span></h5>
+                    <h5 class=" fw-bold" id="moreInfoCastElement">Cast: <span class="fw-normal"
+                                                                              id="moreInfoCast"></span></h5>
                 </div>
             </div>
         </div>
@@ -607,7 +649,7 @@
 <div class="modal modal-xl fade" id="listModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog" id="listModalDialog">
         <div class="row modal-content m-0 p-0 rounded-3">
-            <div class="col-12 modal-header">
+            <div class="col-12 modal-header p-3 border-0">
                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                         aria-label="Close"></button>
             </div>
@@ -661,7 +703,7 @@
      aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" id="editListModalDialog">
         <div class="row modal-content m-0 p-0 rounded-3">
-            <div class="col-12 modal-header">
+            <div class="col-12 modal-header p-3 border-0">
                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                         aria-label="Close"></button>
             </div>
@@ -730,7 +772,7 @@
                 </div>
             </div>
             <div class="d-grid gap-2 mt-3">
-                <button class="btn btn-lg btn-warning" type="submit" data-bs-dismiss="offcanvas">Create List</button>
+                <button class="btn btn-lg border-0" type="submit" data-bs-dismiss="offcanvas">Create List</button>
             </div>
         </form>
     </div>
@@ -766,7 +808,7 @@
                 </div>
             </div>
             <div class="d-grid gap-2 mt-3">
-                <button class="btn btn-lg btn-warning" type="submit" id="createNewAccountButton">Create Account</button>
+                <button class="btn btn-lg border-0" type="submit" id="createNewAccountButton">Create Account</button>
             </div>
         </form>
     </div>

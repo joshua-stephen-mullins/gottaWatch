@@ -570,7 +570,7 @@ $(document).ready(() => {
     function generateSmallCards(showInfo, numberOfCards, container, showType, cardType) {
         for (let i = 0; i < numberOfCards; i++) {
             $(container).append(`
-                <div class="p-0 m-3 mb-3 smallCard rounded-3 discoverCard" id="showCard_${showInfo.results[i].id}_${cardType}" data-type="${showType}" data-showId="${showInfo.results[i].id}">
+                <div class="p-0 m-1 mb-3 smallCard rounded-3 discoverCard" id="showCard_${showInfo.results[i].id}_${cardType}" data-type="${showType}" data-showId="${showInfo.results[i].id}">
                     <div>
                         <img class="w-100 h-100 smallCardImg" src="https://image.tmdb.org/t/p/original/${showInfo.results[i].poster_path}" alt="Poster">
                     </div>
@@ -1247,7 +1247,7 @@ $(document).ready(() => {
                     .then(response => response.json()).then((userData) => {
                         if (currentActivity.activity.type === "comment") {
                             $(`#homePageUserFeed`).append(`
-                                <div class="row justify-content-center">
+                                <div class="row userFeedItem">
                                     <p class="text-muted">${time_ago(currentActivity.activity.date)}</p>
                                     <p>${userData.id} commented on <span class="profilePageRecentActivityListLink listTitle" data-id="${activitiedList[0].id}">${activitiedList[0].list_name}</span></p>
                                     <div class="row col-8 p-0 m-0 p-3 rounded-3">
@@ -1266,7 +1266,7 @@ $(document).ready(() => {
                                 `)
                         } else if (currentActivity.activity.type === "like") {
                             $(`#homePageUserFeed`).append(`
-                                <div class="row justify-content-center">
+                                <div class="row userFeedItem">
                                     <p class="text-muted">${time_ago(currentActivity.activity.date)}</p>
                                     <p>${userData.id} liked <span class="profilePageRecentActivityListLink listTitle" data-id="${currentActivity.activity.listId}">${activitiedList[0].list_name}</span></p>
                                     <div class="row justify-content-center col-8 p-0 m-0 p-3 rounded-3">
@@ -1290,7 +1290,7 @@ $(document).ready(() => {
                             }
                         } else if (currentActivity.activity.type === "listAdd") {
                             $(`#homePageUserFeed`).append(`
-                                <div class="row justify-content-center">
+                                <div class="row userFeedItem">
                                     <p class="text-muted">${time_ago(currentActivity.activity.date)}</p>
                                     <p>${userData.id} added <span id="profilePageListAddName_${activitiedList[0].id}_homePageUserFeed_${currentActivity.activity.content.id}"></span> to <span class="profilePageRecentActivityListLink listTitle" data-id="${currentActivity.activity.listId}">${activitiedList[0].list_name}</span></p>
                                     <div class="row justify-content-center p-0 m-0">
@@ -1312,7 +1312,7 @@ $(document).ready(() => {
                             })
                         } else if (currentActivity.activity.type === "newList") {
                             $(`#homePageUserFeed`).append(`
-                                <div class="row justify-content-center">
+                                <div class="row userFeedItem">
                                     <p class="text-muted">${time_ago(currentActivity.activity.date)}</p>
                                     <p>${userData.id} created the list: <span class="profilePageRecentActivityListLink listTitle" data-id="${currentActivity.activity.listId}">${activitiedList[0].list_name}</span></p>
                                     <div class="row justify-content-center col-8 p-0 m-0 p-3 rounded-3">
@@ -1332,7 +1332,7 @@ $(document).ready(() => {
                             }
                         } else if (currentActivity.activity.type === "follow") {
                             $(`#homePageUserFeed`).append(`
-                                <div class="row justify-content-center">
+                                <div class="row userFeedItem">
                                     <p class="text-muted">${time_ago(currentActivity.activity.date)}</p>
                                     <p>${userData.id} began following ${currentActivity.activity.user}</p>
                                     <div class="row justify-content-center col-8 p-0 m-0 p-3 rounded-3">

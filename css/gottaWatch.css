@@ -161,13 +161,17 @@ nav .nav-item .active {
     position: relative;
 }
 
-.listCardFeatured {
-    height: 8em;
+.popularCardFont {
+    font-size: 1.5em;
 }
 
-.listCardPopular {
-    height: 7em;
-}
+/*.listCardFeatured {*/
+/*    height: 8em;*/
+/*}*/
+
+/*.listCardPopular {*/
+/*    height: 7em;*/
+/*}*/
 
 .listCard, .discoverCard {
     cursor: pointer;

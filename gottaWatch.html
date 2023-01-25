@@ -90,7 +90,7 @@
             </div>
         </div>
     </nav>
-    <main class="row justify-content-center col-10 m-0 p-0">
+    <main class="row justify-content-center col-12 col-lg-10 m-0 p-0">
         <section class="row justify-content-center p-0 m-0" id="homePage">
             <div class="d-flex flex-column justify-content-center col-12 text-center align-items-center"
                  id="homePageWelcome">
@@ -99,8 +99,8 @@
                 <h1 class="homeScreenText m-1">DISCOVER NEW SHOWS.</h1>
                 <h1 class="homeScreenText m-1">BUILD YOUR LIST.</h1>
                 <h1 class="homeScreenText m-1">SHOW YOUR FRIENDS.</h1>
-                <div class="col-12">
-                    <button type="button" class="btn btn-danger btn-lg w-25" id="getStartedButton"
+                <div class="row col-12 justify-content-center">
+                    <button type="button" class="btn btn-danger btn-lg col-sm-6 col-md-6 col-lg-4" id="getStartedButton"
                             data-bs-toggle="offcanvas"
                             href="#offcanvasAccountCreate"
                             role="button">CREATE AN ACCOUNT TO GET STARTED
@@ -504,7 +504,7 @@
         <section class="row col-12 justify-content-center d-none" id="listsPage">
             <div class="row flex-column align-items-center mb-5" id="listPageHeader">
                 <h1 class="text-center titleFont homeScreenText m-1 mb-1">BUILD YOUR LIST.</h1>
-                <a class="col-2 btn loginRequired disabled" data-bs-toggle="offcanvas"
+                <a class="col-6-sm col-md-4 col-lg-2 btn loginRequired disabled" data-bs-toggle="offcanvas"
                    href="#offcanvasListCreate"
                    role="button" aria-controls="offcanvasListCreate" id="createNewListButton">CREATE NEW
                     LIST</a>
@@ -512,7 +512,7 @@
             <div class="sectionDiv" id="featuredLists">
                 <h2 class="fw-bold titleFont mb-0">FEATURED LISTS</h2>
                 <hr class="mt-1">
-                <div class="row m-0 p-0 justify-content-around" id="featuredListsContainer">
+                <div class="row m-0 p-0 justify-content-center" id="featuredListsContainer">
                 </div>
             </div>
             <div class="row justify-content-center m-0 mt-5 sectionDiv" id="popularLists">
@@ -542,7 +542,7 @@
                     </div>
                 </div>
                 <hr class="mt-1">
-                <div class="col-10 row m-0 p-0 justify-content-around" id="popularListsContainer">
+                <div class="row m-0 p-0 justify-content-center" id="popularListsContainer">
                 </div>
             </div>
         </section>

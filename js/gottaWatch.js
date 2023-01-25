@@ -706,13 +706,13 @@ $(document).ready(() => {
     function generateFeaturedListsCards(lists) {
         for (let j = 0; j < 3; j++) {
             $('#featuredListsContainer').append(`
-            <div class="card m-1 mt-0 col-3 flex-grow-1 listCard border-0 p-3 rounded-3 listCard" id="listCard_${lists[j].id}" data-id="${lists[j].id}">
+            <div class="card m-1 mt-0 col-sm-12 col-md-6 col-lg-3 flex-grow-1 listCard border-0 p-3 rounded-3 listCard" id="listCard_${lists[j].id}" data-id="${lists[j].id}">
                 <div class="row">
                     <h5 class="fw-bold text-center">${lists[j].list_name}</h5>
-                    <div class="listCardFeatured listCardImages position-relative" id="listCardImages_${lists[j].id}">
+                    <div class="listCardFeatured listCardImages d-flex justify-content-center" id="listCardImages_${lists[j].id}">
                     </div>
                     <div class="d-flex col-12 m-1">
-                        <p class="mb-0 cardFontSize align-self-end"><img class="profilePicture" src="img/profilePictures/default.jpg" alt="Profile Picture" id="featuredListProfilePicture_${lists[j].id}"> <span class="fw-bold">${lists[j].creator}</span>  |  <span id="featuredListLastEdited_${lists[j].id}"></span> | <i class="fa-solid fa-heart"></i> <span id="listCardLikes_${lists[j].id}">${lists[j].likes}</span>  |  <i class="fa-solid fa-comment"></i><span id="listCardComments_${lists[j].id}"> ${lists[j].comments.length}</span> </p>
+                        <p class="mb-1 mt-1 cardFontSize align-self-end"><img class="profilePicture" src="img/profilePictures/default.jpg" alt="Profile Picture" id="featuredListProfilePicture_${lists[j].id}"> <span class="fw-bold">${lists[j].creator}</span>  |  <span id="featuredListLastEdited_${lists[j].id}"></span> | <i class="fa-solid fa-heart"></i> <span id="listCardLikes_${lists[j].id}">${lists[j].likes}</span>  |  <i class="fa-solid fa-comment"></i><span id="listCardComments_${lists[j].id}"> ${lists[j].comments.length}</span> </p>
                     </div>
                 </div>
             </div>
@@ -726,21 +726,21 @@ $(document).ready(() => {
             $(`#listCard_${lists[j].id}`).click(function () {
                 populateListModal($(this).data("id"));
             });
-            if (lists[j].content.length < 5) {
+            if (lists[j].content.length < 6) {
                 for (let i = 0; i < lists[j].content.length; i++) {
                     fetch(`https://api.themoviedb.org/3/${lists[j].content[i].type}/${lists[j].content[i].id}?api_key=${apiKeyTMDP}&language=en-US`)
                         .then(response => response.json()).then((data) => {
                         $(`#listCardImages_${lists[j].id}`).append(`
-                            <img src="https://image.tmdb.org/t/p/original/${data.poster_path}" class="border border-1" alt="Movie Poster" style="position: absolute; left: ${i * 18}%; height: 8em; z-index: ${500 - (5 * i)}">
+                            <img src="https://image.tmdb.org/t/p/original/${data.poster_path}" class="border border-1 col-2" alt="Movie Poster">
                         `)
                     })
                 }
             } else {
-                for (let i = 0; i < 5; i++) {
+                for (let i = 0; i < 6; i++) {
                     fetch(`https://api.themoviedb.org/3/${lists[j].content[i].type}/${lists[j].content[i].id}?api_key=${apiKeyTMDP}&language=en-US`)
                         .then(response => response.json()).then((data) => {
                         $(`#listCardImages_${lists[j].id}`).append(`
-                            <img src="https://image.tmdb.org/t/p/original/${data.poster_path}" class="border border-1" alt="Movie Poster" style="position: absolute; left: ${i * 19}%; height: 8em; z-index: ${500 - (5 * i)}">
+                            <img src="https://image.tmdb.org/t/p/original/${data.poster_path}" class="border border-1 col-2" alt="Movie Poster">
                         `)
                     })
                 }
@@ -752,13 +752,13 @@ $(document).ready(() => {
         $(`#${location}`).html('');
         lists.forEach((list) => {
             $(`#${location}`).append(`
-                <div class="card col-9 m-1 border-0 p-3 rounded-3 listCard" id="listCard_${list.id}_${location}" data-id="${list.id}">
-                    <div class="row m-0 p-0">
-                        <div class="col-5 listCardPopular listCardImages" id="listCardImages_${list.id}_${location}">
+                <div class="card col-sm-12 col-md-6 col-lg-6 border-0 p-3 rounded-3 listCard" id="listCard_${list.id}_${location}" data-id="${list.id}">
+                    <div class="row m-0 p-0 flex-column">
+                        <h3 class="fw-bold mb-1 text-center">${list.list_name}</h3>
+                        <div class="col-12 listCardPopular listCardImages d-flex justify-content-center" id="listCardImages_${list.id}_${location}">
                         </div>
-                        <div class="col-7">
-                            <h5 class="fw-bold mb-1">${list.list_name}</h5>
-                            <p class="mb-0 cardFontSize"><img class="profilePicture" src="img/profilePictures/default.jpg" alt="Profile Picture" id="popularListProfilePicture_${list.id}_${location}"> <span class="fw-bold">${list.creator}</span>  |  <span id="popularListLastEdited_${list.id}_${location}"></span> | <i class="fa-solid fa-heart"></i> <span id="listCardLikes_${list.id}_${location}">${list.likes}</span>  |  <i class="fa-solid fa-comment"></i> <span id="listCardComments_${list.id}_${location}">${list.comments.length}</span></p>
+                        <div class="col-12 popularCardFont">
+                            <p class="mb-1 mt-1 cardFontSize"><img class="profilePicture" src="img/profilePictures/default.jpg" alt="Profile Picture" id="popularListProfilePicture_${list.id}_${location}"> <span class="fw-bold">${list.creator}</span>  |  <span id="popularListLastEdited_${list.id}_${location}"></span> | <i class="fa-solid fa-heart"></i> <span id="listCardLikes_${list.id}_${location}">${list.likes}</span>  |  <i class="fa-solid fa-comment"></i> <span id="listCardComments_${list.id}_${location}">${list.comments.length}</span></p>
                             <p class="mb-0 mt-2 cardFontSize" id="listCard_desc${list.id}_${location}"></p>
                         </div>
                     </div>
@@ -773,23 +773,23 @@ $(document).ready(() => {
                 populateListModal($(this).data("id"));
             });
             (list.list_desc.length > 100) ? $(`#listCard_desc${list.id}_${location}`).html(list.list_desc.slice(0, 100) + "...") : $(`#listCard_desc${list.id}_${location}`).html(list.list_desc);
-            if (list.content.length < 5) {
+            if (list.content.length < 6) {
                 for (let i = 0; i < list.content.length; i++) {
                     fetch(`https://api.themoviedb.org/3/${list.content[i].type}/${list.content[i].id}?api_key=${apiKeyTMDP}&language=en-US`)
                         .then(response => response.json())
                         .then((data) => {
                             $(`#listCardImages_${list.id}_${location}`).append(`
-                            <img src="https://image.tmdb.org/t/p/original/${data.poster_path}" class="border border-1" alt="Movie Poster" style="position: absolute; left: ${(i * 15)}%; height: 7em; z-index: ${500 - (5 * i)}">
+                            <img src="https://image.tmdb.org/t/p/original/${data.poster_path}" class="border border-1 col-2" alt="Movie Poster">
                         `)
                         })
                 }
             } else {
-                for (let i = 0; i < 5; i++) {
+                for (let i = 0; i < 6; i++) {
                     fetch(`https://api.themoviedb.org/3/${list.content[i].type}/${list.content[i].id}?api_key=${apiKeyTMDP}&language=en-US`)
                         .then(response => response.json())
                         .then((data) => {
                             $(`#listCardImages_${list.id}_${location}`).append(`
-                            <img src="https://image.tmdb.org/t/p/original/${data.poster_path}" class="border border-1" alt="Movie Poster" style="position: absolute; left: ${(i * 15)}%; height: 7em; z-index: ${500 - (5 * i)}">
+                            <img src="https://image.tmdb.org/t/p/original/${data.poster_path}" class="border border-1 col-2" alt="Movie Poster">
                         `)
                         })
                 }

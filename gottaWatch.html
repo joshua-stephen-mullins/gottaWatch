@@ -25,69 +25,61 @@
 <body>
 <!--NAVBAR-->
 <main class="row justify-content-center p-0 m-0" id="mainPageBody">
-    <nav class="navbar navbar-expand-lg">
-        <div class="container-fluid">
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01"
-                    aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <img src="img/gotta-watch-website-favicon-color.png" alt="gotta Watch logo" id="navbarLogo">
-            <div class="collapse navbar-collapse justify-content-between">
-                <ul class="navbar-nav rounded-3">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="#" id="homeButton">HOME</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" id="discoverButton">DISCOVER</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" id="listsButton">LISTS</a>
-                    </li>
-                </ul>
-                <div class="d-flex dropdown">
-                    <button class="btn me-2 my-2 my-sm-0 dropdown-toggle creamBG text-white fw-bold"
-                            data-bs-toggle="dropdown"
-                            id="profileButton"><i
-                            class="fa-solid fa-user"></i><span id="userName"> LOGIN</span></button>
-                    <ul class="dropdown-menu creamBG loginDropdown">
-                        <li id="loginSection">
-                            <form id="loginSubmit">
-                                <div class="d-flex justify-content-center flex-column form-group m-1">
-                                    <label for="usernameInput" class="form-label mt-1">Username</label>
-                                    <input type="text" class="form-control" id="usernameInput"
-                                           placeholder="Enter Username" required>
-                                    <small class="text-warning d-none text-center" id="invalidUserName">Invalid
-                                        Username</small>
-                                    <label for="passwordInput" class="form-label mt-1">Password</label>
-                                    <input type="password" class="form-control" id="passwordInput"
-                                           placeholder="Password">
-                                    <small class="text-warning d-none text-center" id="incorrectPassword">Incorrect
-                                        Password</small>
-                                    <div class="d-flex justify-content-center">
-                                        <button type="submit" class="btn btn-danger" id="loginSubmitButton">Login
-                                        </button>
-                                    </div>
-                                    <div class="d-flex justify-content-center">
-                                        <button type="button" class="btn btn-info" id="createAccountButton"
-                                                data-bs-toggle="offcanvas"
-                                                href="#offcanvasAccountCreate"
-                                                role="button" aria-controls="offcanvasAccountCreate">Create Account
-                                        </button>
-                                    </div>
-                                </div>
-                            </form>
-                        </li>
-                        <li class="loggedInDropdown d-none"><a class="dropdown-item text-light"
-                                                               id="myProfileButton">My
-                            Profile</a></li>
-                        <li class="loggedInDropdown d-none"><a class="dropdown-item text-light"
-                                                               id="logoutButton">Logout</a></li>
-                    </ul>
-<!--                    <button class="btn creamBG my-2 my-sm-0 text-white fw-bold" id="movieSearchButton"><i-->
-<!--                            class="fa-solid fa-magnifying-glass"></i> SEARCH-->
-<!--                    </button>-->
-                </div>
+    <nav class="d-flex justify-content-between">
+        <img src="img/gotta-watch-website-favicon-color.png" alt="gotta Watch logo" id="navbarLogo">
+        <div class="d-flex rounded-3">
+            <div class="nav-item">
+                <a class="nav-link active" href="#" id="homeButton">HOME</a>
             </div>
+            <div class="nav-item">
+                <a class="nav-link" href="#" id="discoverButton">DISCOVER</a>
+            </div>
+            <div class="nav-item">
+                <a class="nav-link" href="#" id="listsButton">LISTS</a>
+            </div>
+        </div>
+        <div class="d-flex dropdown">
+            <button class="btn me-2 my-2 my-sm-0 dropdown-toggle creamBG text-white fw-bold"
+                    data-bs-toggle="dropdown"
+                    id="profileButton"><i
+                    class="fa-solid fa-user"></i><span id="userName"> LOGIN</span></button>
+            <ul class="dropdown-menu creamBG loginDropdown">
+                <li id="loginSection">
+                    <form id="loginSubmit">
+                        <div class="d-flex justify-content-center flex-column form-group m-1">
+                            <label for="usernameInput" class="form-label mt-1">Username</label>
+                            <input type="text" class="form-control" id="usernameInput"
+                                   placeholder="Enter Username" required>
+                            <small class="text-warning d-none text-center" id="invalidUserName">Invalid
+                                Username</small>
+                            <label for="passwordInput" class="form-label mt-1">Password</label>
+                            <input type="password" class="form-control" id="passwordInput"
+                                   placeholder="Password">
+                            <small class="text-warning d-none text-center" id="incorrectPassword">Incorrect
+                                Password</small>
+                            <div class="d-flex justify-content-center">
+                                <button type="submit" class="btn btn-danger" id="loginSubmitButton">Login
+                                </button>
+                            </div>
+                            <div class="d-flex justify-content-center">
+                                <button type="button" class="btn btn-info" id="createAccountButton"
+                                        data-bs-toggle="offcanvas"
+                                        href="#offcanvasAccountCreate"
+                                        role="button" aria-controls="offcanvasAccountCreate">Create Account
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </li>
+                <li class="loggedInDropdown d-none"><a class="dropdown-item text-light"
+                                                       id="myProfileButton">My
+                    Profile</a></li>
+                <li class="loggedInDropdown d-none"><a class="dropdown-item text-light"
+                                                       id="logoutButton">Logout</a></li>
+            </ul>
+            <!--                    <button class="btn creamBG my-2 my-sm-0 text-white fw-bold" id="movieSearchButton"><i-->
+            <!--                            class="fa-solid fa-magnifying-glass"></i> SEARCH-->
+            <!--                    </button>-->
         </div>
     </nav>
     <main class="row justify-content-center col-12 col-lg-10 m-0 p-0">
@@ -219,7 +211,8 @@
                                 </button>
                             </li>
                             <li class="nav-item m-1 mb-0" role="presentation">
-                                <button class="btn border-0 rounded-1 w-100 btn-sm contentToggleButton" id="popularTVResultsTabButton"
+                                <button class="btn border-0 rounded-1 w-100 btn-sm contentToggleButton"
+                                        id="popularTVResultsTabButton"
                                         data-bs-toggle="pill"
                                         data-bs-target="#popularTVResultsTab"
                                         type="button" role="tab" aria-controls="pills-profile" aria-selected="false">TV
@@ -254,7 +247,8 @@
                                 </button>
                             </li>
                             <li class="nav-item m-1" role="presentation">
-                                <button class="btn border-0 rounded-1 w-100 btn-sm contentToggleButton" id="topRatedTVResultsTabButton"
+                                <button class="btn border-0 rounded-1 w-100 btn-sm contentToggleButton"
+                                        id="topRatedTVResultsTabButton"
                                         data-bs-toggle="pill"
                                         data-bs-target="#topRatedTVResultsTab"
                                         type="button" role="tab" aria-controls="pills-profile" aria-selected="false">TV

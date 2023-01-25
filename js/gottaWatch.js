@@ -725,7 +725,14 @@ $(document).ready(() => {
                 })
             $(`#listCard_${lists[j].id}`).click(function () {
                 populateListModal($(this).data("id"));
-            });
+            }).hover(
+            function () {
+                $(`#listCard_${lists[j].id}`).addClass('contentOutlineWhite');
+            },
+            function () {
+                $(`#listCard_${lists[j].id}`).removeClass('contentOutlineWhite');
+            }
+        );
             if (lists[j].content.length < 6) {
                 for (let i = 0; i < lists[j].content.length; i++) {
                     fetch(`https://api.themoviedb.org/3/${lists[j].content[i].type}/${lists[j].content[i].id}?api_key=${apiKeyTMDP}&language=en-US`)
@@ -754,10 +761,10 @@ $(document).ready(() => {
             $(`#${location}`).append(`
                 <div class="card col-sm-12 col-md-6 col-lg-6 border-0 p-3 rounded-3 listCard" id="listCard_${list.id}_${location}" data-id="${list.id}">
                     <div class="row m-0 p-0 flex-column">
-                        <h3 class="fw-bold mb-1 text-center">${list.list_name}</h3>
                         <div class="col-12 listCardPopular listCardImages d-flex justify-content-center" id="listCardImages_${list.id}_${location}">
                         </div>
                         <div class="col-12 popularCardFont">
+                             <h3 class="fw-bold mb-1 mt-1">${list.list_name}</h3>
                             <p class="mb-1 mt-1 cardFontSize"><img class="profilePicture" src="img/profilePictures/default.jpg" alt="Profile Picture" id="popularListProfilePicture_${list.id}_${location}"> <span class="fw-bold">${list.creator}</span>  |  <span id="popularListLastEdited_${list.id}_${location}"></span> | <i class="fa-solid fa-heart"></i> <span id="listCardLikes_${list.id}_${location}">${list.likes}</span>  |  <i class="fa-solid fa-comment"></i> <span id="listCardComments_${list.id}_${location}">${list.comments.length}</span></p>
                             <p class="mb-0 mt-2 cardFontSize" id="listCard_desc${list.id}_${location}"></p>
                         </div>
@@ -771,7 +778,14 @@ $(document).ready(() => {
             })
             $(`#listCard_${list.id}_${location}`).click(function () {
                 populateListModal($(this).data("id"));
-            });
+            }).hover(
+                function () {
+                    $(`#listCard_${list.id}_${location}`).addClass('contentOutlineWhite');
+                },
+                function () {
+                    $(`#listCard_${list.id}_${location}`).removeClass('contentOutlineWhite');
+                }
+            );;
             (list.list_desc.length > 100) ? $(`#listCard_desc${list.id}_${location}`).html(list.list_desc.slice(0, 100) + "...") : $(`#listCard_desc${list.id}_${location}`).html(list.list_desc);
             if (list.content.length < 6) {
                 for (let i = 0; i < list.content.length; i++) {

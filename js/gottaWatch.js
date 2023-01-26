@@ -15,6 +15,7 @@ $(document).ready(() => {
     function loadPopular(showType, location) {
         fetch(`https://api.themoviedb.org/3/${showType}/popular?api_key=${apiKeyTMDP}&language=en-US&page=1`)
             .then(response => response.json()).then((response) => {
+            console.log(response);
             if (showType === 'tv') {
                 let filteredResponse = {results: []};
                 response.results.forEach((result) => {
@@ -1248,8 +1249,8 @@ $(document).ready(() => {
                         if (currentActivity.activity.type === "comment") {
                             $(`#homePageUserFeed`).append(`
                                 <div class="row userFeedItem">
-                                    <p class="text-muted">${time_ago(currentActivity.activity.date)}</p>
-                                    <p>${userData.id} commented on <span class="profilePageRecentActivityListLink listTitle" data-id="${activitiedList[0].id}">${activitiedList[0].list_name}</span></p>
+                                    <p class="text-muted fw-bold">${time_ago(currentActivity.activity.date)}</p>
+                                    <p><img class="profilePictureFeedItem comment_${userData.id}" src="img/profilePictures/${userData.profilePic}.jpg" alt="Profile Picture"> <span class="fw-bold userLink" data-id="${userData.id}">${userData.id}</span> commented on <span class="profilePageRecentActivityListLink listTitle" data-id="${activitiedList[0].id}">${activitiedList[0].list_name}</span></p>
                                     <div class="row col-8 p-0 m-0 p-3 rounded-3">
                                         <div class="col-3 listComment" data-commenterId="${userData.id}">
                                             <img class="profilePictureListComment comment_${userData.id}" src="img/profilePictures/${userData.profilePic}.jpg" alt="Profile Picture">
@@ -1268,7 +1269,7 @@ $(document).ready(() => {
                             $(`#homePageUserFeed`).append(`
                                 <div class="row userFeedItem">
                                     <p class="text-muted">${time_ago(currentActivity.activity.date)}</p>
-                                    <p>${userData.id} liked <span class="profilePageRecentActivityListLink listTitle" data-id="${currentActivity.activity.listId}">${activitiedList[0].list_name}</span></p>
+                                    <p><img class="profilePictureFeedItem comment_${userData.id}" src="img/profilePictures/${userData.profilePic}.jpg" alt="Profile Picture"> <span class="fw-bold userLink" data-id="${userData.id}">${userData.id}</span> liked <span class="profilePageRecentActivityListLink listTitle" data-id="${currentActivity.activity.listId}">${activitiedList[0].list_name}</span></p>
                                     <div class="row justify-content-center col-8 p-0 m-0 p-3 rounded-3">
                                         <div>
                                             <h5 class="listTitle mb-1">${activitiedList[0].list_name}</h5>
@@ -1292,7 +1293,7 @@ $(document).ready(() => {
                             $(`#homePageUserFeed`).append(`
                                 <div class="row userFeedItem">
                                     <p class="text-muted">${time_ago(currentActivity.activity.date)}</p>
-                                    <p>${userData.id} added <span id="profilePageListAddName_${activitiedList[0].id}_homePageUserFeed_${currentActivity.activity.content.id}"></span> to <span class="profilePageRecentActivityListLink listTitle" data-id="${currentActivity.activity.listId}">${activitiedList[0].list_name}</span></p>
+                                    <p><img class="profilePictureFeedItem comment_${userData.id}" src="img/profilePictures/${userData.profilePic}.jpg" alt="Profile Picture"> <a href="#homeButton" class="fw-bold userLink" data-id="${userData.id}">${userData.id}</a> added <span id="profilePageListAddName_${activitiedList[0].id}_homePageUserFeed_${currentActivity.activity.content.id}"></span> to <span class="profilePageRecentActivityListLink listTitle" data-id="${currentActivity.activity.listId}">${activitiedList[0].list_name}</span></p>
                                     <div class="row justify-content-center p-0 m-0">
                                         <div class="col-4 p-3 rounded-3">
                                             <img class="w-100" src="" alt="" id="profilePageActivityListAdd_homePageUserFeed_${currentActivity.activity.content.id}_${currentActivity.activity.content.id}">
@@ -1314,7 +1315,7 @@ $(document).ready(() => {
                             $(`#homePageUserFeed`).append(`
                                 <div class="row userFeedItem">
                                     <p class="text-muted">${time_ago(currentActivity.activity.date)}</p>
-                                    <p>${userData.id} created the list: <span class="profilePageRecentActivityListLink listTitle" data-id="${currentActivity.activity.listId}">${activitiedList[0].list_name}</span></p>
+                                    <p><img class="profilePictureFeedItem comment_${userData.id}" src="img/profilePictures/${userData.profilePic}.jpg" alt="Profile Picture"> <span class="fw-bold userLink" data-id="${userData.id}">${userData.id}</span> created the list: <span class="profilePageRecentActivityListLink listTitle" data-id="${currentActivity.activity.listId}">${activitiedList[0].list_name}</span></p>
                                     <div class="row justify-content-center col-8 p-0 m-0 p-3 rounded-3">
                                         <div>
                                             <h5 class="listTitle mb-1">${activitiedList[0].list_name}</h5>
@@ -1334,7 +1335,7 @@ $(document).ready(() => {
                             $(`#homePageUserFeed`).append(`
                                 <div class="row userFeedItem">
                                     <p class="text-muted">${time_ago(currentActivity.activity.date)}</p>
-                                    <p>${userData.id} began following ${currentActivity.activity.user}</p>
+                                    <p><img class="profilePictureFeedItem comment_${userData.id}" src="img/profilePictures/${userData.profilePic}.jpg" alt="Profile Picture"> <span class="fw-bold userLink" data-id="${userData.id}">${userData.id}</span> began following ${currentActivity.activity.user}</p>
                                     <div class="row justify-content-center col-8 p-0 m-0 p-3 rounded-3">
                                         <div class="row justify-content-center">
                                             <div class="col-3">
@@ -1374,8 +1375,12 @@ $(document).ready(() => {
                                 }
                             });
                         }
+                    $('.userLink').click(function(){
+                        console.log("function ran");
+                        populateProfilePage($(this).data('id'));
                     })
-            })
+                    })
+                })
         })
     }
 
@@ -1915,8 +1920,8 @@ $(document).ready(() => {
         }
     }
 
-    $('.nav-link').click(function(){
-        $('.nav-link').removeClass('active');
+    $('.navLink').click(function(){
+        $('.navLink').removeClass('active');
         $(this).addClass('active');
     })
 })

@@ -35,7 +35,7 @@ body {
 .navTabsDiv{
     color: white;
     background-color: #77A6F7BA;
-    height: 5em;
+    height: 4em;
     margin-bottom: 2em;
     margin-top: 1em;
 }
@@ -49,7 +49,17 @@ body {
     /*background-color: #77A6F7;*/
     font-weight: bold;
     transition-duration: 1.0s;
-    transform: scale(1.25);
+    transform: scale(1.2);
+}
+
+div:has(> a.active) {
+    transition-duration: 1.0s;
+    background-color: #e95d38;
+}
+
+div:has(> .active #homeButton) {
+    transition-duration: 1.0s;
+    border-radius: 25% 0 0 25%;
 }
 
 /*nav .nav-item a {*/

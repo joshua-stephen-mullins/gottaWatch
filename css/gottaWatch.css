@@ -117,7 +117,7 @@ div:has(> .active #homeButton) {
     background-color: #e95d38;
 }
 
-#createNewListButton{
+#createNewListButton, #getStartedButton{
     background-color: #e95d38;
     color: white;
     border: none;

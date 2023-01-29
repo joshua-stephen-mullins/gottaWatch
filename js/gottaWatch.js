@@ -1257,7 +1257,7 @@ $(document).ready(() => {
                     if (currentActivity.activity.type === "comment") {
                         $(`#homePageUserFeed`).append(`
                                 <div class="row col-10 userFeedItem">
-                                    <p class="text-muted fw-bold">${time_ago(currentActivity.activity.date)}</p>
+                                    <p class="text-muted fs-5">${time_ago(currentActivity.activity.date)}</p>
                                     <p><img class="profilePictureFeedItem comment_${userData.id}" src="img/profilePictures/${userData.profilePic}.jpg" alt="Profile Picture"> <a class="fw-bold userLink" data-id="${userData.id}">${userData.id}</a> commented on <span class="profilePageRecentActivityListLink listTitle" data-id="${activitiedList[0].id}">${activitiedList[0].list_name}</span></p>
                                     <div class="row col-8 p-0 m-0 p-3 rounded-3">
                                         <div class="col-3 listComment" data-commenterId="${userData.id}">
@@ -1276,7 +1276,7 @@ $(document).ready(() => {
                     } else if (currentActivity.activity.type === "like") {
                         $(`#homePageUserFeed`).append(`
                                 <div class="row col-10 userFeedItem">
-                                    <p class="text-muted">${time_ago(currentActivity.activity.date)}</p>
+                                    <p class="text-muted fs-5">${time_ago(currentActivity.activity.date)}</p>
                                     <p><img class="profilePictureFeedItem comment_${userData.id}" src="img/profilePictures/${userData.profilePic}.jpg" alt="Profile Picture"> <a class="fw-bold userLink" data-id="${userData.id}">${userData.id}</a> liked <span class="profilePageRecentActivityListLink listTitle" data-id="${currentActivity.activity.listId}">${activitiedList[0].list_name}</span></p>
                                     <div class="row justify-content-center col-8 p-0 m-0 p-3 rounded-3">
                                         <div>
@@ -1300,7 +1300,7 @@ $(document).ready(() => {
                     } else if (currentActivity.activity.type === "listAdd") {
                         $(`#homePageUserFeed`).append(`
                                 <div class="row col-10 userFeedItem">
-                                    <p class="text-muted">${time_ago(currentActivity.activity.date)}</p>
+                                    <p class="text-muted fs-5">${time_ago(currentActivity.activity.date)}</p>
                                     <p><img class="profilePictureFeedItem comment_${userData.id}" src="img/profilePictures/${userData.profilePic}.jpg" alt="Profile Picture"> <a href="#mainPageBody" class="fw-bold userLink" data-id="${userData.id}">${userData.id}</a> added <span id="profilePageListAddName_${activitiedList[0].id}_homePageUserFeed_${currentActivity.activity.content.id}"></span> to <span class="profilePageRecentActivityListLink listTitle" data-id="${currentActivity.activity.listId}">${activitiedList[0].list_name}</span></p>
                                     <div class="row justify-content-center p-0 m-0">
                                         <div class="col-4 p-3 rounded-3">
@@ -1322,7 +1322,7 @@ $(document).ready(() => {
                     } else if (currentActivity.activity.type === "newList") {
                         $(`#homePageUserFeed`).append(`
                                 <div class="row col-10 userFeedItem">
-                                    <p class="text-muted">${time_ago(currentActivity.activity.date)}</p>
+                                    <p class="text-muted fs-5">${time_ago(currentActivity.activity.date)}</p>
                                     <p><img class="profilePictureFeedItem comment_${userData.id}" src="img/profilePictures/${userData.profilePic}.jpg" alt="Profile Picture"> <a class="fw-bold userLink" data-id="${userData.id}">${userData.id}</a> created the list: <span class="profilePageRecentActivityListLink listTitle" data-id="${currentActivity.activity.listId}">${activitiedList[0].list_name}</span></p>
                                     <div class="row justify-content-center col-8 p-0 m-0 p-3 rounded-3">
                                         <div>
@@ -1342,7 +1342,7 @@ $(document).ready(() => {
                     } else if (currentActivity.activity.type === "follow") {
                         $(`#homePageUserFeed`).append(`
                                 <div class="row col-10 userFeedItem">
-                                    <p class="text-muted">${time_ago(currentActivity.activity.date)}</p>
+                                    <p class="text-muted fs-5">${time_ago(currentActivity.activity.date)}</p>
                                     <p><img class="profilePictureFeedItem comment_${userData.id}" src="img/profilePictures/${userData.profilePic}.jpg" alt="Profile Picture"> <a class="fw-bold userLink" data-id="${userData.id}">${userData.id}</a> began following ${currentActivity.activity.user}</p>
                                     <div class="row justify-content-center col-8 p-0 m-0 p-3 rounded-3">
                                         <div class="row justify-content-center">

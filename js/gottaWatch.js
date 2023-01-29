@@ -253,13 +253,14 @@ $(document).ready(() => {
         $(`#resultsContainer`).html('');
         for (let i = 0; i < data.length; i++) {
             $('#resultsContainer').append(`
-                <div class="card col-12 searchResultCard rounded border-1 border-primary m-3 row flex-row" id="searchResult_${data[i].id}">
+                <div class="m-3 row" id="searchResult_${data[i].id}">
                     <div class="row col-2 m-0 p-0">
                         <img class="col-12" src="" id="searchResult_${i}" alt="Search Result">
                     </div>
                     <div class="col-10" id="searchResultBody_${data[i].id}">
                     </div>
                 </div>
+                <hr>
             `)
             if (data[i].media_type === 'person') {
                 $(`#searchResultBody_${data[i].id}`).append(`

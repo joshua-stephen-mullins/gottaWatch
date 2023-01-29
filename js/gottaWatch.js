@@ -255,7 +255,7 @@ $(document).ready(() => {
             $('#resultsContainer').append(`
                 <div class="m-3 row" id="searchResult_${data[i].id}">
                     <div class="row col-2 m-0 p-0">
-                        <img class="col-12" src="" id="searchResult_${i}" alt="Search Result">
+                        <img class="rounded-5" src="" id="searchResult_${i}" alt="Search Result">
                     </div>
                     <div class="col-10" id="searchResultBody_${data[i].id}">
                     </div>

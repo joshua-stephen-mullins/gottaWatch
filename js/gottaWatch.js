@@ -51,11 +51,11 @@ $(document).ready(() => {
             if (itemsToPopulate.results.length === 0) {
                 $('#topRatedMovieResults').append(`<h1 class="m-1">No Results Found</h1>`);
             } else {
-                generateSmallCards(itemsToPopulate, 10, '#topRatedMovieResults', 'movie', 'topRatedMovie');
+                generateSmallCards(itemsToPopulate, 18, '#topRatedMovieResults', 'movie', 'topRatedMovie');
             }
         } else {
             $('#topRatedMovieResults').html('');
-            generateSmallCards(defaultMovies, 10, '#topRatedMovieResults', 'movie', 'topRatedMovie')
+            generateSmallCards(defaultMovies, 18, '#topRatedMovieResults', 'movie', 'topRatedMovie')
         }
     }
 
@@ -71,7 +71,7 @@ $(document).ready(() => {
                 });
                 if (i === 1) {
                     defaultMovies = response;
-                    generateSmallCards(defaultMovies, 10, '#topRatedMovieResults', 'movie', 'topRatedMovie');
+                    generateSmallCards(defaultMovies, 18, '#topRatedMovieResults', 'movie', 'topRatedMovie');
                 }
             })
         }
@@ -97,11 +97,11 @@ $(document).ready(() => {
             if (itemsToPopulate.results.length === 0) {
                 $('#topRatedTVResults').append(`<h1 class="m-1">No Results Found</h1>`);
             } else {
-                generateSmallCards(itemsToPopulate, 10, '#topRatedTVResults', 'tv', 'topRatedTV');
+                generateSmallCards(itemsToPopulate, 18, '#topRatedTVResults', 'tv', 'topRatedTV');
             }
         } else {
             $('#topRatedTVResults').html('');
-            generateSmallCards(defaultTV, 10, '#topRatedTVResults', 'tv', 'topRatedTV')
+            generateSmallCards(defaultTV, 18, '#topRatedTVResults', 'tv', 'topRatedTV')
         }
     }
 
@@ -117,7 +117,7 @@ $(document).ready(() => {
                 });
                 if (i === 1) {
                     defaultTV = response;
-                    generateSmallCards(defaultTV, 10, '#topRatedTVResults', 'tv', 'topRatedTV');
+                    generateSmallCards(defaultTV, 18, '#topRatedTVResults', 'tv', 'topRatedTV');
                 }
             })
         }
@@ -177,7 +177,8 @@ $(document).ready(() => {
     $('#homeButton').click(() => {
         showHomePage();
     })
-    function showHomePage(){
+
+    function showHomePage() {
         $('#homePage').removeClass('d-none');
         // $('#searchResults').addClass('d-none');
         $('#listsPage').addClass('d-none');
@@ -188,7 +189,8 @@ $(document).ready(() => {
     $('#discoverButton').click((e) => {
         showDiscoverPage()
     })
-    function showDiscoverPage(){
+
+    function showDiscoverPage() {
         $('#homePage').addClass('d-none');
         // $('#searchResults').addClass('d-none');
         $('#listsPage').addClass('d-none');
@@ -204,7 +206,8 @@ $(document).ready(() => {
     $('#listsButton').click(() => {
         showListsPage();
     })
-    function showListsPage(){
+
+    function showListsPage() {
         $('#homePage').addClass('d-none');
         // $('#searchResults').addClass('d-none');
         $('#listsPage').removeClass('d-none');
@@ -227,7 +230,8 @@ $(document).ready(() => {
     $(`#myProfileButton`).click(() => {
         showProfilePage();
     })
-    function showProfilePage(){
+
+    function showProfilePage() {
         $('#homePage').addClass('d-none');
         // $('#searchResults').addClass('d-none');
         $('#listsPage').addClass('d-none');
@@ -542,13 +546,13 @@ $(document).ready(() => {
                     hideBackToListButton();
                     searchById($(this).data('type'), $(this).data('id'));
                 }).hover(
-                function () {
-                    $(`#smallPosterCard_${showInfo.results[i].id}_trending`).addClass('contentOutlineWhite');
-                },
-                function () {
-                    $(`#smallPosterCard_${showInfo.results[i].id}_trending`).removeClass('contentOutlineWhite');
-                }
-            );
+                    function () {
+                        $(`#smallPosterCard_${showInfo.results[i].id}_trending`).addClass('contentOutlineWhite');
+                    },
+                    function () {
+                        $(`#smallPosterCard_${showInfo.results[i].id}_trending`).removeClass('contentOutlineWhite');
+                    }
+                );
             }
         })
     }
@@ -727,13 +731,13 @@ $(document).ready(() => {
             $(`#listCard_${lists[j].id}`).click(function () {
                 populateListModal($(this).data("id"));
             }).hover(
-            function () {
-                $(`#listCard_${lists[j].id}`).addClass('contentOutlineWhite');
-            },
-            function () {
-                $(`#listCard_${lists[j].id}`).removeClass('contentOutlineWhite');
-            }
-        );
+                function () {
+                    $(`#listCard_${lists[j].id}`).addClass('contentOutlineWhite');
+                },
+                function () {
+                    $(`#listCard_${lists[j].id}`).removeClass('contentOutlineWhite');
+                }
+            );
             if (lists[j].content.length < 6) {
                 for (let i = 0; i < lists[j].content.length; i++) {
                     fetch(`https://api.themoviedb.org/3/${lists[j].content[i].type}/${lists[j].content[i].id}?api_key=${apiKeyTMDP}&language=en-US`)
@@ -786,7 +790,8 @@ $(document).ready(() => {
                 function () {
                     $(`#listCard_${list.id}_${location}`).removeClass('contentOutlineWhite');
                 }
-            );;
+            );
+            ;
             (list.list_desc.length > 100) ? $(`#listCard_desc${list.id}_${location}`).html(list.list_desc.slice(0, 100) + "...") : $(`#listCard_desc${list.id}_${location}`).html(list.list_desc);
             if (list.content.length < 6) {
                 for (let i = 0; i < list.content.length; i++) {
@@ -1169,50 +1174,50 @@ $(document).ready(() => {
         $(`.nav-link`).removeClass('active');
         fetch(`https://wave-kaput-giant.glitch.me/users/${username}`)
             .then(response => response.json()).then((profileUser) => {
-                $(`#profilePageProfilePicture`).attr('src', `img/profilePictures/${profileUser.profilePic}.jpg`);
-                $(`#profilePageUsername`).html(`${profileUser.id}`);
-                let dateCreated = new Date(profileUser.userCreated);
-                $(`#profilePageMemberDate`).html(dateCreated.toDateString().substring(4, dateCreated.toDateString().length));
-                $(`#profilePageListsCreated`).html(`${profileUser.createdLists.length}`);
-                $(`#profilePageFollowers`).html(`${profileUser.followers.length}`);
-                $(`#profilePageFollowing`).html(`${profileUser.following.length}`);
-                $(`#profilePageUserDesc`).html(`${profileUser.description}`);
-                $('#profilePageActivity').html('');
-                populateRecentActivity(profileUser, "profilePageActivity");
-                if (user.id === username) {
-                    $(`#profilePageEditButton`).removeClass('d-none');
-                    $(`#profilePageFollowButton`).addClass('d-none');
-                    $(`#profilePageFollowingButton`).addClass('d-none');
-                } else if (user.hasOwnProperty('id') && user.following.includes(username)) {
-                    $(`#profilePageEditButton`).addClass('d-none');
-                    $(`#profilePageFollowButton`).addClass('d-none');
-                    $(`#profilePageFollowingButton`).removeClass('d-none');
-                } else if (user.hasOwnProperty('id')) {
-                    $(`#profilePageEditButton`).addClass('d-none');
-                    $(`#profilePageFollowButton`).removeClass('d-none');
-                    $(`#profilePageFollowingButton`).addClass('d-none');
-                } else {
-                    $(`#profilePageEditButton`).addClass('d-none');
-                    $(`#profilePageFollowButton`).addClass('d-none');
-                    $(`#profilePageFollowingButton`).addClass('d-none');
-                }
-                if (profileUser.createdLists.length > 0) {
-                    let profileUserCreatedList = allPopularLists.filter((list) => {
-                        return profileUser.createdLists.includes(list.id);
-                    });
-                    generateProfileListsCards(username, profileUserCreatedList, "profilePageLists")
-                } else {
-                    $('#profilePageLists').html("<h1 class='text-center'>No Lists Created</h1>")
-                }
-            }).then(() => {
-                setTimeout(function(){
-                    $('#homePage').addClass('d-none');
-                    $('#searchResults').addClass('d-none');
-                    $('#listsPage').addClass('d-none');
-                    $('#discoverPage').addClass('d-none');
-                    $('#profilePage').removeClass('d-none')
-                    $(`#listModal`).modal('hide');
-                },1000);
+            $(`#profilePageProfilePicture`).attr('src', `img/profilePictures/${profileUser.profilePic}.jpg`);
+            $(`#profilePageUsername`).html(`${profileUser.id}`);
+            let dateCreated = new Date(profileUser.userCreated);
+            $(`#profilePageMemberDate`).html(dateCreated.toDateString().substring(4, dateCreated.toDateString().length));
+            $(`#profilePageListsCreated`).html(`${profileUser.createdLists.length}`);
+            $(`#profilePageFollowers`).html(`${profileUser.followers.length}`);
+            $(`#profilePageFollowing`).html(`${profileUser.following.length}`);
+            $(`#profilePageUserDesc`).html(`${profileUser.description}`);
+            $('#profilePageActivity').html('');
+            populateRecentActivity(profileUser, "profilePageActivity");
+            if (user.id === username) {
+                $(`#profilePageEditButton`).removeClass('d-none');
+                $(`#profilePageFollowButton`).addClass('d-none');
+                $(`#profilePageFollowingButton`).addClass('d-none');
+            } else if (user.hasOwnProperty('id') && user.following.includes(username)) {
+                $(`#profilePageEditButton`).addClass('d-none');
+                $(`#profilePageFollowButton`).addClass('d-none');
+                $(`#profilePageFollowingButton`).removeClass('d-none');
+            } else if (user.hasOwnProperty('id')) {
+                $(`#profilePageEditButton`).addClass('d-none');
+                $(`#profilePageFollowButton`).removeClass('d-none');
+                $(`#profilePageFollowingButton`).addClass('d-none');
+            } else {
+                $(`#profilePageEditButton`).addClass('d-none');
+                $(`#profilePageFollowButton`).addClass('d-none');
+                $(`#profilePageFollowingButton`).addClass('d-none');
+            }
+            if (profileUser.createdLists.length > 0) {
+                let profileUserCreatedList = allPopularLists.filter((list) => {
+                    return profileUser.createdLists.includes(list.id);
+                });
+                generateProfileListsCards(username, profileUserCreatedList, "profilePageLists")
+            } else {
+                $('#profilePageLists').html("<h1 class='text-center'>No Lists Created</h1>")
+            }
+        }).then(() => {
+            setTimeout(function () {
+                $('#homePage').addClass('d-none');
+                $('#searchResults').addClass('d-none');
+                $('#listsPage').addClass('d-none');
+                $('#discoverPage').addClass('d-none');
+                $('#profilePage').removeClass('d-none')
+                $(`#listModal`).modal('hide');
+            }, 1000);
         })
     }
 
@@ -1245,12 +1250,13 @@ $(document).ready(() => {
             console.log("sorted", sortedActivity);
             sortedActivity.forEach((currentActivity) => {
                 let activitiedList = allLists.filter((list) => {
-                    return currentActivity.activity.listId === list.id})
+                    return currentActivity.activity.listId === list.id
+                })
                 fetch(`https://wave-kaput-giant.glitch.me/users/${currentActivity.userId}`)
                     .then(response => response.json()).then((userData) => {
-                        if (currentActivity.activity.type === "comment") {
-                            $(`#homePageUserFeed`).append(`
-                                <div class="row userFeedItem">
+                    if (currentActivity.activity.type === "comment") {
+                        $(`#homePageUserFeed`).append(`
+                                <div class="row col-10 userFeedItem">
                                     <p class="text-muted fw-bold">${time_ago(currentActivity.activity.date)}</p>
                                     <p><img class="profilePictureFeedItem comment_${userData.id}" src="img/profilePictures/${userData.profilePic}.jpg" alt="Profile Picture"> <a class="fw-bold userLink" data-id="${userData.id}">${userData.id}</a> commented on <span class="profilePageRecentActivityListLink listTitle" data-id="${activitiedList[0].id}">${activitiedList[0].list_name}</span></p>
                                     <div class="row col-8 p-0 m-0 p-3 rounded-3">
@@ -1264,12 +1270,12 @@ $(document).ready(() => {
                                             <p>${currentActivity.activity.comment}</p>
                                         </div>
                                     </div>
-                                    <hr class="mt-4 col-10 text-center">
+                                    <hr class="mt-4 text-center">
                                 </div>
                                 `)
-                        } else if (currentActivity.activity.type === "like") {
-                            $(`#homePageUserFeed`).append(`
-                                <div class="row userFeedItem">
+                    } else if (currentActivity.activity.type === "like") {
+                        $(`#homePageUserFeed`).append(`
+                                <div class="row col-10 userFeedItem">
                                     <p class="text-muted">${time_ago(currentActivity.activity.date)}</p>
                                     <p><img class="profilePictureFeedItem comment_${userData.id}" src="img/profilePictures/${userData.profilePic}.jpg" alt="Profile Picture"> <a class="fw-bold userLink" data-id="${userData.id}">${userData.id}</a> liked <span class="profilePageRecentActivityListLink listTitle" data-id="${currentActivity.activity.listId}">${activitiedList[0].list_name}</span></p>
                                     <div class="row justify-content-center col-8 p-0 m-0 p-3 rounded-3">
@@ -1279,21 +1285,21 @@ $(document).ready(() => {
                                             <p class="mb-0 cardFontSize" id="listCard_desc${activitiedList[0].id}_homePageUserFeed"></p>
                                         </div>
                                     </div>
-                                    <hr class="mt-4 col-10 text-center">
+                                    <hr class="mt-4 text-center">
                                 </div>
                                 `)
-                            fetch(`https://wave-kaput-giant.glitch.me/users/${activitiedList[0].creator}`)
-                                .then(response => response.json()).then((creator) => {
-                                    $(`#popularListProfilePicture_${activitiedList[0].id}_homePageUserFeed_${activitiedList[0].creator}`).attr('src', `img/profilePictures/${creator.profilePic}.jpg`);
-                                })
-                            if (activitiedList[0].list_desc.length > 100) {
-                                $(`#listCard_desc${activitiedList[0].id}_homePageUserFeed`).html(activitiedList[0].list_desc.slice(0, 100) + "...");
-                            } else {
-                                $(`#listCard_desc${activitiedList[0].id}_homePageUserFeed`).html(activitiedList[0].list_desc);
-                            }
-                        } else if (currentActivity.activity.type === "listAdd") {
-                            $(`#homePageUserFeed`).append(`
-                                <div class="row userFeedItem">
+                        fetch(`https://wave-kaput-giant.glitch.me/users/${activitiedList[0].creator}`)
+                            .then(response => response.json()).then((creator) => {
+                            $(`#popularListProfilePicture_${activitiedList[0].id}_homePageUserFeed_${activitiedList[0].creator}`).attr('src', `img/profilePictures/${creator.profilePic}.jpg`);
+                        })
+                        if (activitiedList[0].list_desc.length > 100) {
+                            $(`#listCard_desc${activitiedList[0].id}_homePageUserFeed`).html(activitiedList[0].list_desc.slice(0, 100) + "...");
+                        } else {
+                            $(`#listCard_desc${activitiedList[0].id}_homePageUserFeed`).html(activitiedList[0].list_desc);
+                        }
+                    } else if (currentActivity.activity.type === "listAdd") {
+                        $(`#homePageUserFeed`).append(`
+                                <div class="row col-10 userFeedItem">
                                     <p class="text-muted">${time_ago(currentActivity.activity.date)}</p>
                                     <p><img class="profilePictureFeedItem comment_${userData.id}" src="img/profilePictures/${userData.profilePic}.jpg" alt="Profile Picture"> <a href="#mainPageBody" class="fw-bold userLink" data-id="${userData.id}">${userData.id}</a> added <span id="profilePageListAddName_${activitiedList[0].id}_homePageUserFeed_${currentActivity.activity.content.id}"></span> to <span class="profilePageRecentActivityListLink listTitle" data-id="${currentActivity.activity.listId}">${activitiedList[0].list_name}</span></p>
                                     <div class="row justify-content-center p-0 m-0">
@@ -1301,21 +1307,21 @@ $(document).ready(() => {
                                             <img class="w-100" src="" alt="" id="profilePageActivityListAdd_homePageUserFeed_${currentActivity.activity.content.id}_${currentActivity.activity.content.id}">
                                         </div>
                                     </div>
-                                    <hr class="mt-4 col-10 text-center">
+                                    <hr class="mt-4 text-center">
                                 </div>
                                 `)
-                            fetch(`https://api.themoviedb.org/3/${currentActivity.activity.content.type}/${currentActivity.activity.content.id}?api_key=${apiKeyTMDP}&language=en-US`)
-                                .then(response => response.json()).then((data) => {
-                                if (data.hasOwnProperty("title")) {
-                                    $(`#profilePageListAddName_${activitiedList[0].id}_homePageUserFeed_${currentActivity.activity.content.id}`).html(data.title)
-                                } else {
-                                    $(`#profilePageListAddName_${activitiedList[0].id}_homePageUserFeed_${currentActivity.activity.content.id}`).html(data.name)
-                                }
-                                $(`#profilePageActivityListAdd_homePageUserFeed_${currentActivity.activity.content.id}_${currentActivity.activity.content.id}`).attr('src', `https://image.tmdb.org/t/p/original/${data.poster_path}`)
-                            })
-                        } else if (currentActivity.activity.type === "newList") {
-                            $(`#homePageUserFeed`).append(`
-                                <div class="row userFeedItem">
+                        fetch(`https://api.themoviedb.org/3/${currentActivity.activity.content.type}/${currentActivity.activity.content.id}?api_key=${apiKeyTMDP}&language=en-US`)
+                            .then(response => response.json()).then((data) => {
+                            if (data.hasOwnProperty("title")) {
+                                $(`#profilePageListAddName_${activitiedList[0].id}_homePageUserFeed_${currentActivity.activity.content.id}`).html(data.title)
+                            } else {
+                                $(`#profilePageListAddName_${activitiedList[0].id}_homePageUserFeed_${currentActivity.activity.content.id}`).html(data.name)
+                            }
+                            $(`#profilePageActivityListAdd_homePageUserFeed_${currentActivity.activity.content.id}_${currentActivity.activity.content.id}`).attr('src', `https://image.tmdb.org/t/p/original/${data.poster_path}`)
+                        })
+                    } else if (currentActivity.activity.type === "newList") {
+                        $(`#homePageUserFeed`).append(`
+                                <div class="row col-10 userFeedItem">
                                     <p class="text-muted">${time_ago(currentActivity.activity.date)}</p>
                                     <p><img class="profilePictureFeedItem comment_${userData.id}" src="img/profilePictures/${userData.profilePic}.jpg" alt="Profile Picture"> <a class="fw-bold userLink" data-id="${userData.id}">${userData.id}</a> created the list: <span class="profilePageRecentActivityListLink listTitle" data-id="${currentActivity.activity.listId}">${activitiedList[0].list_name}</span></p>
                                     <div class="row justify-content-center col-8 p-0 m-0 p-3 rounded-3">
@@ -1325,17 +1331,17 @@ $(document).ready(() => {
                                             <p class="mb-0 cardFontSize" id="listCard_desc${activitiedList[0].id}_homePageUserFeed"></p>
                                         </div>
                                     </div>
-                                    <hr class="mt-4 col-10 text-center">
+                                    <hr class="mt-4 text-center">
                                 </div>
                                 `)
-                            if (activitiedList[0].list_desc.length > 100) {
-                                $(`#listCard_desc${activitiedList[0].id}_homePageUserFeed`).html(activitiedList[0].list_desc.slice(0, 100) + "...");
-                            } else {
-                                $(`#listCard_desc${activitiedList[0].id}_homePageUserFeed`).html(activitiedList[0].list_desc);
-                            }
-                        } else if (currentActivity.activity.type === "follow") {
-                            $(`#homePageUserFeed`).append(`
-                                <div class="row userFeedItem">
+                        if (activitiedList[0].list_desc.length > 100) {
+                            $(`#listCard_desc${activitiedList[0].id}_homePageUserFeed`).html(activitiedList[0].list_desc.slice(0, 100) + "...");
+                        } else {
+                            $(`#listCard_desc${activitiedList[0].id}_homePageUserFeed`).html(activitiedList[0].list_desc);
+                        }
+                    } else if (currentActivity.activity.type === "follow") {
+                        $(`#homePageUserFeed`).append(`
+                                <div class="row col-10 userFeedItem">
                                     <p class="text-muted">${time_ago(currentActivity.activity.date)}</p>
                                     <p><img class="profilePictureFeedItem comment_${userData.id}" src="img/profilePictures/${userData.profilePic}.jpg" alt="Profile Picture"> <a class="fw-bold userLink" data-id="${userData.id}">${userData.id}</a> began following ${currentActivity.activity.user}</p>
                                     <div class="row justify-content-center col-8 p-0 m-0 p-3 rounded-3">
@@ -1361,28 +1367,27 @@ $(document).ready(() => {
                                             </div>
                                         </div>
                                     </div>
-                                    <hr class="mt-4 col-10 text-center">
+                                    <hr class="mt-4 text-center">
                                 </div>
                                 `)
-                            fetch(`https://wave-kaput-giant.glitch.me/users/${currentActivity.activity.user}`)
-                                .then(response => response.json()).then((followedUser) => {
-                                $(`#followedUserProfilePic_${currentActivity.activity.user}_homePageUserFeed`).attr('src', `img/profilePictures/${followedUser.profilePic}.jpg`);
-                                $(`#followedUserListsCreated_${currentActivity.activity.user}_homePageUserFeed`).html(followedUser.createdLists.length);
-                                $(`#followedUserFollowers_${currentActivity.activity.user}_homePageUserFeed`).html(followedUser.followers.length);
-                                $(`#followedUserFollowing_${currentActivity.activity.user}_homePageUserFeed`).html(followedUser.following.length);
-                                if (followedUser.description.length > 100) {
-                                    $(`#userCard_desc_${currentActivity.activity.user}_homePageUserFeed`).html(followedUser.description.slice(0, 100) + "...");
-                                } else {
-                                    $(`#userCard_desc_${currentActivity.activity.user}_homePageUserFeed`).html(followedUser.description);
-                                }
-                            });
-                        }
-                    $('.userLink').click(function(){
-                        console.log("function ran");
+                        fetch(`https://wave-kaput-giant.glitch.me/users/${currentActivity.activity.user}`)
+                            .then(response => response.json()).then((followedUser) => {
+                            $(`#followedUserProfilePic_${currentActivity.activity.user}_homePageUserFeed`).attr('src', `img/profilePictures/${followedUser.profilePic}.jpg`);
+                            $(`#followedUserListsCreated_${currentActivity.activity.user}_homePageUserFeed`).html(followedUser.createdLists.length);
+                            $(`#followedUserFollowers_${currentActivity.activity.user}_homePageUserFeed`).html(followedUser.followers.length);
+                            $(`#followedUserFollowing_${currentActivity.activity.user}_homePageUserFeed`).html(followedUser.following.length);
+                            if (followedUser.description.length > 100) {
+                                $(`#userCard_desc_${currentActivity.activity.user}_homePageUserFeed`).html(followedUser.description.slice(0, 100) + "...");
+                            } else {
+                                $(`#userCard_desc_${currentActivity.activity.user}_homePageUserFeed`).html(followedUser.description);
+                            }
+                        });
+                    }
+                    $('.userLink').click(function () {
                         populateProfilePage($(this).data('id'));
                     })
-                    })
                 })
+            })
         })
     }
 
@@ -1435,8 +1440,8 @@ $(document).ready(() => {
             `)
                 fetch(`https://wave-kaput-giant.glitch.me/users/${activitiedList[0].creator}`)
                     .then(response => response.json()).then((creator) => {
-                        $(`#popularListProfilePicture_${activitiedList[0].id}_${location}_${activitiedList[0].creator}`).attr('src', `img/profilePictures/${creator.profilePic}.jpg`);
-                    })
+                    $(`#popularListProfilePicture_${activitiedList[0].id}_${location}_${activitiedList[0].creator}`).attr('src', `img/profilePictures/${creator.profilePic}.jpg`);
+                })
                 if (activitiedList[0].list_desc.length > 100) {
                     $(`#listCard_desc${activitiedList[0].id}_${location}`).html(activitiedList[0].list_desc.slice(0, 100) + "...");
                 } else {
@@ -1922,7 +1927,7 @@ $(document).ready(() => {
         }
     }
 
-    $('.navLink').click(function(){
+    $('.navLink').click(function () {
         $('.navLink').removeClass('active');
         $(this).addClass('active');
     })

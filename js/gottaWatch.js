@@ -558,21 +558,6 @@ $(document).ready(() => {
         })
     }
 
-    //     small card template
-    // <div className="p-0 m-3 mb-3 smallCard rounded-3 discoverCard" id="showCard_${showInfo.results[i].id}_${cardType}"
-    //      data-type="${showType}" data-showId="${showInfo.results[i].id}">
-    //     <div>
-    //         <img className="w-100 h-100 smallCardImg"
-    //              src="https://image.tmdb.org/t/p/original/${showInfo.results[i].poster_path}" alt="Poster">
-    //     </div>
-    //     <div className="card-footer p-3">
-    //         <h5><span className="fw-bold" id="resultTitle_${showInfo.results[i].id}_${cardType}"></span> <span
-    //             className="text-muted" id="resultDate_${showInfo.results[i].id}_${cardType}"></span></h5>
-    //         <p><span className="badge bg-danger" id="smallCardRating_${showInfo.results[i].id}_${cardType}"></span>
-    //             <span id="previewGenre_${showInfo.results[i].id}_${cardType}"></span></p>
-    //     </div>
-    // </div>
-
     function generateSmallCards(showInfo, numberOfCards, container, showType, cardType) {
         for (let i = 0; i < numberOfCards; i++) {
             $(container).append(`

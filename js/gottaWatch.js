@@ -145,9 +145,6 @@ $(document).ready(() => {
                 tvCounter += 1;
                 allData.results.push(data.results[i]);
             }
-            // else if (data.results[i].media_type === 'person') {
-            //     personCounter += 1;
-            // }
         }
         for (let i = 0; i < allData.results.length; i++) {
             if ($('input[name=filterRadio]:checked').val() === 'all') {

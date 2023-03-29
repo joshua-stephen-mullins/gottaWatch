@@ -105,6 +105,7 @@ $(document).ready(() => {
         }
     }
 
+    // Set equal to zero
     let allTopRatedTV = [];
     let defaultTV = {};
 

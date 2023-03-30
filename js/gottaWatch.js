@@ -168,7 +168,6 @@ $(document).ready(() => {
         e.preventDefault();
         $('#homePage').addClass('d-none');
         $('#listsPage').addClass('d-none');
-        // $('#searchResults').removeClass('d-none');
         $('#profilePage').addClass('d-none');
         $('#discoverPage').addClass('d-none');
     })
@@ -178,7 +177,6 @@ $(document).ready(() => {
 
     function showHomePage() {
         $('#homePage').removeClass('d-none');
-        // $('#searchResults').addClass('d-none');
         $('#listsPage').addClass('d-none');
         $('#profilePage').addClass('d-none');
         $('#discoverPage').addClass('d-none');
@@ -190,7 +188,6 @@ $(document).ready(() => {
 
     function showDiscoverPage() {
         $('#homePage').addClass('d-none');
-        // $('#searchResults').addClass('d-none');
         $('#listsPage').addClass('d-none');
         $('#profilePage').addClass('d-none');
         $('#discoverPage').removeClass('d-none');
@@ -207,7 +204,6 @@ $(document).ready(() => {
 
     function showListsPage() {
         $('#homePage').addClass('d-none');
-        // $('#searchResults').addClass('d-none');
         $('#listsPage').removeClass('d-none');
         $('#profilePage').addClass('d-none');
         $('#discoverPage').addClass('d-none');
@@ -231,7 +227,6 @@ $(document).ready(() => {
 
     function showProfilePage() {
         $('#homePage').addClass('d-none');
-        // $('#searchResults').addClass('d-none');
         $('#listsPage').addClass('d-none');
         $('#profilePage').addClass('d-none');
         $('#discoverPage').addClass('d-none');

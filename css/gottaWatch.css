@@ -41,11 +41,9 @@ body {
 
 .navTabsDiv div {
     height: 100%;
-    /*width: 100%;*/
 }
 
 .navTabsDiv .active{
-    /*background-color: #77A6F7;*/
     font-weight: bold;
     transition-duration: 1.0s;
     transform: scale(1.1);
@@ -60,35 +58,6 @@ div:has(> .active #homeButton) {
     transition-duration: 1.0s;
     border-radius: 25% 0 0 25%;
 }
-
-/*nav .nav-item a {*/
-/*    transition-duration: 1.0s;*/
-/*    transform-origin: 50% 50%;*/
-/*    margin: 1rem;*/
-/*    background-color: #77A6F7BA;*/
-/*    border: none;*/
-/*    padding: 1rem;*/
-/*    font-weight: bold;*/
-/*    border-radius: 2rem !important;*/
-/*    color: white !important*/
-/*}*/
-
-/*nav .nav-item a:before {*/
-/*    transition-duration: 1.0s;*/
-/*    transform: scale(0);*/
-/*    border: none;*/
-/*    !*color: white !important;*!*/
-/*}*/
-
-/*nav .nav-item .active {*/
-/*    transition-duration: 1.0s;*/
-/*    transform: scale(1.4);*/
-/*    margin-right: 1.5rem;*/
-/*    margin-left: 1.5rem;*/
-/*    background-color: #77A6F7 !important;*/
-/*    border: none;*/
-/*    color: white !important;*/
-/*}*/
 
 .sectionDiv, .modal-content {
     background-color: #53b2d5;
@@ -148,7 +117,6 @@ div:has(> .active #homeButton) {
     height: 12em;
     border: black 1px solid;
     border-radius: 50%;
-    /*box-shadow: black 0 0 20px;*/
 }
 
 .smallCard {
@@ -165,8 +133,6 @@ div:has(> .active #homeButton) {
 }
 
 .smallCardImg {
-    /*border-top-right-radius: .5rem;*/
-    /*border-top-left-radius: .5rem;*/
     border-radius: .5rem;
 }
 
@@ -211,14 +177,6 @@ div:has(> .active #homeButton) {
     font-size: 1.5em;
     justify-content: center;
 }
-
-/*.listCardFeatured {*/
-/*    height: 8em;*/
-/*}*/
-
-/*.listCardPopular {*/
-/*    height: 7em;*/
-/*}*/
 
 .listCard, .discoverCard {
     cursor: pointer;
@@ -326,8 +284,6 @@ div:has(> .active #homeButton) {
 }
 
 .popularListFilterButtonsContainer label:before {
-    /*background-color: white;*/
-    /*color: white;*/
     content: " ";
     position: absolute;
     top: -5px;

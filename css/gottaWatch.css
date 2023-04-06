@@ -31,7 +31,7 @@ body {
     background-color: #41a1cb;
 }
 
-.navTabsDiv{
+.navTabsDiv {
     color: white;
     background-color: #77A6F7BA;
     height: 4em;
@@ -43,7 +43,7 @@ body {
     height: 100%;
 }
 
-.navTabsDiv .active{
+.navTabsDiv .active {
     font-weight: bold;
     transition-duration: 1.0s;
     transform: scale(1.1);
@@ -85,7 +85,7 @@ div:has(> .active #homeButton) {
     background-color: #e95d38;
 }
 
-#createNewListButton, #getStartedButton{
+#createNewListButton, #getStartedButton {
     background-color: #e95d38;
     color: white;
     border: none;
@@ -156,7 +156,6 @@ div:has(> .active #homeButton) {
 }
 
 .smallPoster {
-    /*height: 4em;*/
     width: 15%;
     cursor: pointer;
 }
@@ -226,7 +225,7 @@ div:has(> .active #homeButton) {
     z-index: -1;
 }
 
-.contentToggleButton{
+.contentToggleButton {
     background-color: #eeb04d !important;
     color: white !important;
 }

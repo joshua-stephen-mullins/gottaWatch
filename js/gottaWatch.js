@@ -255,6 +255,7 @@ $(document).ready(() => {
                 </div>
                 <hr>
             `)
+            // probably redudunant need to check later
             if (data[i].media_type === 'person') {
                 $(`#searchResultBody_${data[i].id}`).append(`
                 <h3 class=searchResultTitle_${data[i].id}></h3>

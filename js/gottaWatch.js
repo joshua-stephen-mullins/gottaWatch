@@ -15,7 +15,6 @@ $(document).ready(() => {
     function loadPopular(showType, location) {
         fetch(`https://api.themoviedb.org/3/${showType}/popular?api_key=${apiKeyTMDP}&language=en-US&page=1`)
             .then(response => response.json()).then((response) => {
-            console.log(response);
             if (showType === 'tv') {
                 let filteredResponse = {results: []};
                 response.results.forEach((result) => {
@@ -447,7 +446,6 @@ $(document).ready(() => {
         fetch(url, options)
             .then(response => response.json()).then(data2 => {
             let replacementIndex = allPopularLists.findIndex((list) => {
-                console.log(list);
                 return list.id === parseInt(listId);
             })
             allPopularLists[replacementIndex] = data2;
@@ -664,7 +662,6 @@ $(document).ready(() => {
     function filterPopularListsSearch() {
         let filteredPopularList = [];
         allPopularLists.forEach((list) => {
-            console.log(list);
             if (list.list_name.toLowerCase().includes($('#popularListFilterSearchInput').val().toLowerCase()) || list.list_desc.toLowerCase().includes($('#popularListFilterSearchInput').val().toLowerCase())) {
                 filteredPopularList.push(list);
             }
@@ -970,7 +967,6 @@ $(document).ready(() => {
                 .then(response => response.json()).then(data => {
             })
             let updatedLikes = {likes: parseInt($('#listLike').html()) - 1};
-            console.log(updatedLikes.likes);
             const url1 = `https://daffy-tasteful-brownie.glitch.me/lists/${$(`#listModal`).data('data-list-id')}`;
             const options1 = {
                 method: 'PATCH',

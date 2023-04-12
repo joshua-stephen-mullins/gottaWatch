@@ -1219,11 +1219,9 @@ $(document).ready(() => {
                     }
                 })
             }).then(() => {
-            console.log("all", allActivity)
             let sortedActivity = allActivity.sort((a, b) => {
                 return new Date(b.activity.date).getTime() - new Date(a.activity.date).getTime();
             })
-            console.log("sorted", sortedActivity);
             sortedActivity.forEach((currentActivity) => {
                 let activitiedList = allLists.filter((list) => {
                     return currentActivity.activity.listId === list.id

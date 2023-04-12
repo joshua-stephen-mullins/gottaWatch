@@ -1424,7 +1424,6 @@ $(document).ready(() => {
                     $(`#listCard_desc${activitiedList[0].id}_${location}`).html(activitiedList[0].list_desc);
                 }
             } else if (sortedActivity[i].type === "listAdd") {
-                console.log(sortedActivity[i]);
                 $(`#${location}`).append(`
             <div class="row justify-content-center">
                 <p class="text-muted">${time_ago(sortedActivity[i].date)}</p>
@@ -1439,14 +1438,12 @@ $(document).ready(() => {
             `)
                 fetch(`https://api.themoviedb.org/3/${sortedActivity[i].content.type}/${sortedActivity[i].content.id}?api_key=${apiKeyTMDP}&language=en-US`)
                     .then(response => response.json()).then((data) => {
-                    console.log(data);
                     if (data.hasOwnProperty("title")) {
                         $(`#profilePageListAddName_${activitiedList[0].id}_${location}_${sortedActivity[i].content.id}`).html(data.title)
                     } else {
                         $(`#profilePageListAddName_${activitiedList[0].id}_${location}_${sortedActivity[i].content.id}`).html(data.name)
                     }
                     $(`#profilePageActivityListAdd_${sortedActivity[i].content.id}`).attr('src', `https://image.tmdb.org/t/p/original/${data.poster_path}`)
-                    console.log($(`#profilePageActivityListAdd_${sortedActivity[i].content.id}`).attr('src'));
                 })
             } else if (sortedActivity[i].type === "newList") {
                 $(`#${location}`).append(`
@@ -1739,10 +1736,6 @@ $(document).ready(() => {
         update: function (event, ui) {
             let changedList = this.id;
             let order = $('#editListModalMovies').sortable('toArray');
-            console.log({
-                id: changedList,
-                positions: order
-            });
         }
     });
 
@@ -1774,7 +1767,6 @@ $(document).ready(() => {
         };
         fetch(url, options)
             .then(response => response.json()).then(data2 => {
-            console.log(data2);
             let replacementIndex = allPopularLists.findIndex((list) => {
                 return list.id === parseInt(listId);
             })
